@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html th:lang="vi"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Movie Online</title>
+    <meta content="Movie online" name="description"/>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
+
+
+    <!--main script file-->
+    <script th:src="@{/web/js/main-script.js}"></script>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css"
+          integrity="sha256-t2kyTgkh+fZJYRET5l9Sjrrl4UDain5jxdbqe8ejO8A=" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/web/css/global.css}">
+    <link rel="stylesheet" th:href="@{/web/css/browse.css}">
+</head>
+
+<body>
+<!--=== Header ===-->
+<header th:fragment="header"class="d-flex space-between flex-center flex-middle">
+    <div class="nav-links d-flex flex-center flex-middle">
+        <a href="/">
+            <h2 class="logo logo-text logo-color f-s-28 m-r-25">MovieOline</h2>
+        </a>
+        <a class="nav-item home" href="browse.html">Home</a>
+        <a class="nav-item" href="tvshow.html">TV Show</a>
+        <a class="nav-item" href="movies.html">Movies</a>
+        <a class="nav-item latest" href="latest.html">Latest</a>
+        <a class="nav-item" href="mylist.html">My List</a>
+    </div>
+    <div class="righticons d-flex flex-end flex-middle">
+        <a href="search.html">
+            <i aria-hidden="true" class="fa fa-search icon-search"></i>
+        </a>
+        <div class="dropdown notification">
+            <i aria-hidden="true" class="fa fa-heart icon-heart"></i>
+            <div class="dropdown-content">
+                <a class="profile-item d-flex flex-middle" href="#">
+                    <img alt="user profile icon" class="user-icon" src="../../images/icons/user2.png">
+                    <span>You have new notification from <span>User 123</span></span>
+                </a>
+                <a class="profile-item d-flex flex-middle" href="#">
+                    <img alt="user profile icon" class="user-icon" src="../../images/icons/user1.png">
+                    <span>You have new notification from <span>User 123</span></span>
+                </a>
+                <a class="profile-item d-flex flex-middle" href="#">
+                    <img alt="user profile icon" class="user-icon" src="../../images/icons/user4.png">
+                    <span>You have new notification from <span>User 123</span></span>
+                </a>
+                <a class="profile-item d-flex flex-middle" href="#">
+                    <img alt="user profile icon" class="user-icon" src="../../images/icons/user3.png">
+                    <span>You have new notification from <span>User 123</span></span>
+                </a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <i aria-hidden="true" class="fa fa-info-circle icon-info"></i>
+            <span class="profile-arrow"></span>
+            <div class="dropdown-content">
+                <div class="profile-links">
+                    <a class="profile-item d-flex flex-middle" href="#">
+                        <img alt="user profile icon" class="user-icon" src="../images/icons/user1.png">
+                        <span>Rajesh</span>
+                    </a>
+                    <a class="profile-item d-flex flex-middle" href="#">
+                        <img alt="user profile icon" class="user-icon" src="../images/icons/user2.png">
+                        <span>Karan</span>
+                    </a>
+                    <a class="profile-item d-flex flex-middle" href="#">
+                        <img alt="user profile icon" class="user-icon" src="../images/icons/user3.png">
+                        <span>Pappy</span>
+                    </a>
+                    <a class="profile-item d-flex flex-middle" href="#" style="margin-bottom: 13px;">
+                        <img alt="user profile icon" class="user-icon" src="../images/icons/user4.png">
+                        <span>Denny</span>
+                    </a>
+                    <a class="profile-item last" href="#">Manage Profiles</a>
+                </div>
+                <div class="line"></div>
+                <div class="links d-flex direction-column">
+                    <a href="user-profile/home.html">Account</a>
+                    <a href="#">Help Center</a>
+                    <a href="/">Sign Out of Netflix</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!--=== footer area ===-->
+<section class="footer-area" th:fragment="footer">
+
+</section>
+<script crossorigin="anonymous"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script crossorigin="anonymous"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script crossorigin="anonymous"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</body>
+
+</html>
