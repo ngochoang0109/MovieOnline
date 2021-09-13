@@ -48,9 +48,13 @@ public class WelcomeController {
     }
 
     @RequestMapping(value = "/register", method=RequestMethod.POST)
-    public String register(@ModelAttribute RegisterRequest registerRequest, Model model) throws Exception {
-        User user=userService.registerAccount(registerRequest);
-        model.addAttribute("register", user);
+    public String register(User user, @ModelAttribute RegisterRequest registerRequest, Model model) throws Exception {
+
+        if(userService.emailExist(user.getEmail())){
+            model.addAttribute("err", "Email already exists!");
+            return "/web/register";
+        }
+        userService.registerAccount(registerRequest);
         return "/web/index";
     }
 
