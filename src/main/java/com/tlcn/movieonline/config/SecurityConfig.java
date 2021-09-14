@@ -29,16 +29,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
-                .loginPage("/login")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/")
-                .failureForwardUrl("/login?error");
+
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/home").hasRole("CUS")
-                .antMatchers("/login","/register").permitAll()
+                .antMatchers("/login","/register","/adminLogin").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN");
+
+        http.formLogin()
+                .loginPage("/login")
+                .loginPage("/adminLogin")
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/admin/home")
+                .failureForwardUrl("/login?error");
     }
 }

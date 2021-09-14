@@ -1,0 +1,34 @@
+package com.tlcn.movieonline.controller.admin;
+
+import com.tlcn.movieonline.model.Genre;
+import com.tlcn.movieonline.service.GenreService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+
+@Controller
+@RequestMapping(value = "/admin")
+public class GenreController {
+
+    @Autowired
+    GenreService genreService;
+
+    @RequestMapping(value = "/genre-manager")
+    public String listGenre(Model model){
+        List<Genre> lstGenre= genreService.findAll();
+        model.addAttribute("lstGenre", lstGenre);
+        model.addAttribute("genre", new Genre());
+        return "admin/genre-manager";
+    }
+
+    @RequestMapping(value = "/genre-manager/add")
+    public String addGenre(@ModelAttribute Genre newGenre, Model model){
+        genreService.addGenre(newGenre);
+        return "redirect:/admin/genre-manager";
+    }
+
+}
