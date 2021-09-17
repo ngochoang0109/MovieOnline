@@ -1,83 +1,83 @@
-<!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
-<head>
-    <link th:href="@{/web/css/login.css}" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-</head>
-<body>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-10 col-xl-9 mx-auto">
-            <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
-                <div class="card-img-left d-none d-md-flex">
-                    <!-- Background image for card set in CSS! -->
-                </div>
-                <div class="card-body p-4 p-sm-5">
-                    <h5 class="card-title text-center mb-5 fw-light fs-5">Đăng ký</h5>
-                    <form th:action="@{/register}" th:object="${registerRequest}" th:method="post">
-                        <div class="form-floating mb-3">
-                            <label for="floatingInputUsername">Tên người dùng</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="floatingInputUsername"
-                                   placeholder="Tên người dùng"
-                                   th:field="*{name}">
-                        </div>
-                        <div class="form-floating mb-3">
-                            <label for="floatingInputEmail">Email address</label>
-                            <input type="email"
-                                   class="form-control"
-                                   id="floatingInputEmail"
-                                   placeholder="Địa chỉ email đăng ký"
-                                   th:field="*{email}">
-                            <p th:text="${err}" style="color: red"></p>
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="https://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <link th:href="@{/web/css/login.css}" rel="stylesheet">-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <div class="row">-->
+<!--        <div class="col-lg-10 col-xl-9 mx-auto">-->
+<!--            <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">-->
+<!--                <div class="card-img-left d-none d-md-flex">-->
+<!--                    &lt;!&ndash; Background image for card set in CSS! &ndash;&gt;-->
+<!--                </div>-->
+<!--                <div class="card-body p-4 p-sm-5">-->
+<!--                    <h5 class="card-title text-center mb-5 fw-light fs-5">Đăng ký</h5>-->
+<!--                    <form th:action="@{/register}" th:object="${registerRequest}" th:method="post">-->
+<!--                        <div class="form-floating mb-3">-->
+<!--                            <label for="floatingInputUsername">Tên người dùng</label>-->
+<!--                            <input type="text"-->
+<!--                                   class="form-control"-->
+<!--                                   id="floatingInputUsername"-->
+<!--                                   placeholder="Tên người dùng"-->
+<!--                                   th:field="*{name}">-->
+<!--                        </div>-->
+<!--                        <div class="form-floating mb-3">-->
+<!--                            <label for="floatingInputEmail">Email address</label>-->
+<!--                            <input type="email"-->
+<!--                                   class="form-control"-->
+<!--                                   id="floatingInputEmail"-->
+<!--                                   placeholder="Địa chỉ email đăng ký"-->
+<!--                                   th:field="*{email}">-->
+<!--                            <p th:text="${err}" style="color: red"></p>-->
 
-                        </div>
-                        <hr>
-                        <div class="form-floating mb-3">
-                            <label for="floatingPassword">Mật khẩu</label>
-                            <input type="password"
-                                   class="form-control"
-                                   id="floatingPassword"
-                                   placeholder="Mật khẩu"
-                                   th:field="*{password}">
-                        </div>
-                        <div class="form-floating mb-3">
-                            <label for="floatingPasswordConfirm">Nhập lại mật khẩu</label>
-                            <input type="password"
-                                   oninput="checkPasswordMatch(this);"
-                                   class="form-control"
-                                   id="floatingPasswordConfirm"
-                                   placeholder="Nhập lại mật khẩu"
-                                   th:field="*{matchingPassword}">
-                        </div>
+<!--                        </div>-->
+<!--                        <hr>-->
+<!--                        <div class="form-floating mb-3">-->
+<!--                            <label for="floatingPassword">Mật khẩu</label>-->
+<!--                            <input type="password"-->
+<!--                                   class="form-control"-->
+<!--                                   id="floatingPassword"-->
+<!--                                   placeholder="Mật khẩu"-->
+<!--                                   th:field="*{password}">-->
+<!--                        </div>-->
+<!--                        <div class="form-floating mb-3">-->
+<!--                            <label for="floatingPasswordConfirm">Nhập lại mật khẩu</label>-->
+<!--                            <input type="password"-->
+<!--                                   oninput="checkPasswordMatch(this);"-->
+<!--                                   class="form-control"-->
+<!--                                   id="floatingPasswordConfirm"-->
+<!--                                   placeholder="Nhập lại mật khẩu"-->
+<!--                                   th:field="*{matchingPassword}">-->
+<!--                        </div>-->
 
-                        <div class="form-floating mb-3">
+<!--                        <div class="form-floating mb-3">-->
 
-                        </div>
+<!--                        </div>-->
 
-                        <div class="d-grid mb-2">
-                            <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Register</button>
-                        </div>
-                        <a class="d-block text-center mt-2 small" th:href="@{/login}">Have an account? Sign In</a>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
-    function checkPasswordMatch(fieldConfirmPassword) {
-        if (fieldConfirmPassword.value != $("#floatingPassword").val()) {
-            fieldConfirmPassword.setCustomValidity("Passwords do not match!");
-        } else {
-            fieldConfirmPassword.setCustomValidity("");
-        }
-    }
-</script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-</body>
+<!--                        <div class="d-grid mb-2">-->
+<!--                            <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Register</button>-->
+<!--                        </div>-->
+<!--                        <a class="d-block text-center mt-2 small" th:href="@{/login}">Have an account? Sign In</a>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<script type="text/javascript">-->
+<!--    function checkPasswordMatch(fieldConfirmPassword) {-->
+<!--        if (fieldConfirmPassword.value != $("#floatingPassword").val()) {-->
+<!--            fieldConfirmPassword.setCustomValidity("Passwords do not match!");-->
+<!--        } else {-->
+<!--            fieldConfirmPassword.setCustomValidity("");-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>-->
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>-->
+<!--</body>-->
 
-</html>
+<!--</html>-->

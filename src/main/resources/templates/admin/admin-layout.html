@@ -82,7 +82,19 @@
                 </a>
                 <a class="nav-link" th:href="@{/admin/genre-manager}">
                     <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                    Tables
+                    Quản lý thể loại
+                </a>
+                <a class="nav-link" th:href="@{/admin/genre-manager}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                    Quản lý từ khóa
+                </a>
+                <a class="nav-link" th:href="@{/admin/genre-manager}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                    Quản lý quốc gia
+                </a>
+                <a class="nav-link" th:href="@{/admin/genre-manager}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                    Quản lý năm phát hành
                 </a>
             </div>
         </div>
@@ -102,12 +114,13 @@
 </footer>
 
 <section th:fragment="js">
+
     <script crossorigin="anonymous"
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/admin/js/scripts.js}"></script>
     <script crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-    <script th:src="@{/admin/assets/demo/chart-area-demo.js}"></script>
-    <script th:src="@{/admin/assets/demo/chart-bar-demo.js}"></script>
+<!--    <script th:src="@{/admin/assets/demo/chart-area-demo.js}"></script>-->
+<!--    <script th:src="@{/admin/assets/demo/chart-bar-demo.js}"></script>-->
     <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
     <script th:src="@{/admin/js/datatables-simple-demo.js}"></script>
 </section>

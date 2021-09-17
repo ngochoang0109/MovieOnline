@@ -14,30 +14,30 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Tables</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Tables</li>
-                </ol>
-                <button class="btn btn-primary  mb-4" type="button" data-bs-toggle="modal" data-bs-target="#addGenre">Thêm thể loại</button>
-                <div class="modal fade" id="addGenre" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <button class="btn btn-primary mb-4 mt-4"
+                        type="button"
+                        data-bs-target="#addGenre" data-bs-toggle="modal">
+                    Thêm thể loại
+                </button>
+                <div aria-hidden="true" aria-labelledby="exampleModalLabel"
+                     class="modal fade"
+                     id="addGenre"
+                     tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Thêm thể loại</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                        type="button"></button>
                             </div>
                             <div class="modal-body">
-                                <form th:action="@{/admin/genre-manager/add}" th:object="${genre}" th:method="post">
+                                <form>
                                     <div class="mb-3">
                                         <label class="col-form-label">Tên thể loại</label>
-                                        <input type="text" class="form-control" th:field="*{name}">
+                                        <input id="txtNameGenre" class="form-control" type="text">
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Send message</button>
+                                    <button id="btnAddGenre" class="btn btn-primary" >Send message</button>
                                 </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
@@ -51,22 +51,14 @@
                         <table id="datatablesSimple">
                             <thead>
                             <tr>
-                                <th>STT</th>
-                                <th>Tên thể loại</th>
-                                <th>Số phim</th>
-                                <th>Hành động</th>
+                                <th class="text-center">STT</th>
+                                <th class="text-center">Tên thể loại</th>
+                                <th class="text-center"> Số phim</th>
+                                <th class="text-center">Hành động</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>STT</th>
-                                <th>Tên thể loại</th>
-                                <th>Số phim</th>
-                                <th>Hành động</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
-                            <tr th:each="item, state : ${lstGenre}">
+                            <tr class="text-center" th:each="item, state : ${lstGenre}">
                                 <td th:text="${state.index}">Thor Walton</td>
                                 <td th:text="${item.name}"></td>
                                 <td>New York</td>
@@ -82,12 +74,14 @@
             </div>
         </main>
         <footer th:replace="admin/admin-layout.html::footer">
-
         </footer>
     </div>
 </div>
 <section th:replace="admin/admin-layout.html::js">
-
 </section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="application/javascript" th:src="@{/admin/js/genre.js}">
+
+</script>
 </body>
 </html>

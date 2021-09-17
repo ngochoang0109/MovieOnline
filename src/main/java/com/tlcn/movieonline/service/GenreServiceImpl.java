@@ -5,6 +5,7 @@ import com.tlcn.movieonline.repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -14,8 +15,10 @@ public class GenreServiceImpl implements GenreService{
     GenreRepository genreRepository;
 
     @Override
-    public void addGenre(Genre genre) {
-        genreRepository.save(genre);
+    @Transactional
+    public Genre addGenre(Genre g) {
+        Genre genre= genreRepository.save(g);
+        return genre;
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
@@ -21,14 +22,7 @@ public class GenreController {
     public String listGenre(Model model){
         List<Genre> lstGenre= genreService.findAll();
         model.addAttribute("lstGenre", lstGenre);
-        model.addAttribute("genre", new Genre());
-        return "admin/genre-manager";
-    }
-
-    @RequestMapping(value = "/genre-manager/add")
-    public String addGenre(@ModelAttribute Genre newGenre, Model model){
-        genreService.addGenre(newGenre);
-        return "redirect:/admin/genre-manager";
+                return "admin/genre-manager";
     }
 
 }
