@@ -26,4 +26,15 @@ public class GenreServiceImpl implements GenreService{
         List<Genre> lstGenre=genreRepository.findAll();
         return lstGenre;
     }
+
+    @Override
+    public Genre getGenreById(Long id) {
+        Genre genre= genreRepository.getGenreById(id);
+        return genre;
+    }
+
+    @Override
+    public void deleteGenreById(Long id) {
+        genreRepository.deleteById(id);
+    }
 }
