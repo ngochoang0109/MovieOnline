@@ -19,9 +19,37 @@
                         data-bs-target="#addGenre" data-bs-toggle="modal">
                     Thêm thể loại
                 </button>
-                <div aria-hidden="true" aria-labelledby="exampleModalLabel"
+                <div aria-hidden="true"
+                     aria-labelledby="exampleModalLabel"
                      class="modal fade"
                      id="addGenre"
+                     tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                        type="button"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="col-form-label">Tên thể loại</label>
+                                        <input id="txtIdGenre" class="form-control" type="hidden">
+                                        <input id="txtNameGenre" class="form-control" type="text">
+                                    </div>
+                                    <button id="btnAddGenre" type="button"
+                                            class="btn btn-primary"
+                                            data-bs-dismiss="modal">Gửi</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div aria-hidden="true"
+                     aria-labelledby="exampleModalLabel"
+                     class="modal fade"
+                     id="editGenre"
                      tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -34,9 +62,10 @@
                                 <form>
                                     <div class="mb-3">
                                         <label class="col-form-label">Tên thể loại</label>
-                                        <input id="txtNameGenre" class="form-control" type="text">
+                                        <input id="a" class="form-control" type="text">
                                     </div>
-                                    <button id="btnAddGenre" class="btn btn-primary" >Send message</button>
+                                    <button id="btnEdit" type="button"
+                                            class="btn btn-primary" data-bs-dismiss="modal">Send message</button>
                                 </form>
                             </div>
                         </div>
@@ -51,7 +80,7 @@
                         <table id="datatablesSimple">
                             <thead>
                             <tr>
-                                <th class="text-center">STT</th>
+                                <th class="text-center">ID</th>
                                 <th class="text-center">Tên thể loại</th>
                                 <th class="text-center"> Số phim</th>
                                 <th class="text-center">Hành động</th>
@@ -59,12 +88,15 @@
                             </thead>
                             <tbody>
                             <tr class="text-center" th:each="item, state : ${lstGenre}">
-                                <td th:text="${state.index}">Thor Walton</td>
-                                <td th:text="${item.name}"></td>
+                                <td id="idGenre" th:text="${item.id}"></td>
+                                <td id="nameGenre" th:text="${item.name}"></td>
                                 <td>New York</td>
                                 <td>
-                                    <button class="btn btn-info mx-3" type="button">Sửa</button>
-                                    <button class="btn btn-danger" type="button">Xóa</button>
+                                    <button class="btn btn-info mx-3 btnEditGenre"
+                                            th:id="${item.id}"
+                                            type="button"
+                                            data-bs-target="#addGenre" data-bs-toggle="modal">Sửa</button>
+                                    <button class="btn btn-danger btnDeleteGenre" th:id="${item.id}" type="button">Xóa</button>
                                 </td>
                             </tr>
                             </tbody>

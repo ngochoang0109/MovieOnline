@@ -1,22 +1,76 @@
-$(document).ready(function (){
+$(document).ready(function () {
 
     // add genre
     //url: /api/admin/genre-manager
-    $("#btnAddGenre").click(function (event){
-        event.preventDefault();
-        var name=$("#txtNameGenre").val();
-        jsonData={name:name};
+    // input: { name:"name"}
+    //output: genre object
+    $("#btnAddGenre").click(function (event) {
+        var name = $("#txtNameGenre").val();
+        jsonData = {name: name};
         $.ajax({
-            type:"POST",
+            type: "POST",
             url: "http://localhost:8080/admin/api/genre/add",
-            data:JSON.stringify(jsonData),
-            contentType:"application/json",
-            success: function (data){
-                // alert("Thêm thành công: "+data.id);
-            },
-            error:function (){
-                alert("That bai");
+            data: JSON.stringify(jsonData),
+            contentType: "application/json",
+            success: function (data) {
+                $("#txtNameGenre").val("");
+                $("#datatablesSimple > tbody:last-child")
+                    .append(`<tr class="text-center">
+                                <td>${data.id} </td>
+                                <td>${data.name}</td>
+                                <td>New York</td>
+                                <td>
+                                    <button class="btn btn-info mx-3" type="button" ${data.id}>Sửa</button>
+                                    <button class="btn btn-danger" type="button" ${data.id}>Xóa</button>
+                                </td>
+                             </tr>`);
             }
         })
     });
+
+    var element=null;
+    $(".btnEditGenre").click(function (event){
+        var id= $(this).attr("id");
+        element=$(this).parent().parent();
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/admin/api/genre/edit?id="+id,
+            success:function(data){
+                $("#txtIdGenre").val(data.id);
+                $("#txtNameGenre").val(data.name);
+            }
+        })
+    })
+
+    $("#btnAddGenre").click(function() {
+        var id = $("#txtIdGenre").val();
+        var name = $("#txtNameGenre").val();
+        jsonData = {
+            id: id,
+            name: name
+        };
+        $.ajax({
+            type: "PUT",
+            url: "http://localhost:8080/admin/api/genre/edit",
+            data: JSON.stringify(jsonData),
+            contentType: "application/json",
+            success: function (data) {
+                element.children("td:nth-child(2)").text(data.name);
+            }
+        })
+    });
+
+    $(".btnDeleteGenre").click(function(){
+        var parent=$(this).parent().parent();
+        var id=parent.children("td:nth-child(1)").text();
+        $.ajax({
+            type:"DELETE",
+            url:"http://localhost:8080/admin/api/genre/delete/"+id,
+            success:function(){
+                parent.fadeOut('slow', function() {
+                    $(this).remove();
+                });
+            }
+        })
+    })
 })
