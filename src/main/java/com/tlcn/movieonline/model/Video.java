@@ -3,6 +3,7 @@ package com.tlcn.movieonline.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -19,6 +20,9 @@ public class Video {
 
     @Column(name = "source")
     private String source;
+
+    @Transient
+    private MultipartFile file;
 
     @ManyToMany(mappedBy = "videos")
     private Set<Movie> movies;
