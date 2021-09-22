@@ -3,6 +3,7 @@ package com.tlcn.movieonline.controller.admin;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.tlcn.movieonline.model.Video;
+import com.tlcn.movieonline.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +21,13 @@ public class VideoController {
     @Autowired
     private Cloudinary cloudinary;
 
+    @Autowired
+    private VideoService videoService;
+
     @GetMapping(value = "/admin/videos")
     public String listVideo(Model model){
         List<Video> lstVideo= new ArrayList<>();
+        lstVideo= videoService.getAll();
         model.addAttribute("lstVideo",lstVideo);
         model.addAttribute("video", new Video());
         return "admin/video-manager";
@@ -33,8 +38,12 @@ public class VideoController {
         try {
             Map jsonResult=cloudinary.uploader().uploadLarge(video.getFile().getBytes(),
                     ObjectUtils.asMap("resource_type","video",
-                            "chunk_size", 600000000));
-            String urlImg=(String) jsonResult.get("secure_url");
+                            "chunk_size", 6000000));
+            String urlVideo=(String) jsonResult.get("secure_url");
+            Video v= new Video();
+            v.setSource(urlVideo);
+            v.setType(video.getType());
+            videoService.addVideo(v);
             return "redirect:/admin/videos";
         }
         catch (Exception e){

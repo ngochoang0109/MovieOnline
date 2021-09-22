@@ -1,0 +1,11 @@
+.img-table{
+    width: 30%;
+    height: 30%;
+}
+
+.table-image td{
+    vertical-align: middle;
+}
+.table-image th{
+    vertical-align: middle;
+}

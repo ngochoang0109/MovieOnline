@@ -8,6 +8,7 @@
     <title> Admin Movie Online</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
     <link rel="stylesheet" th:href="@{/admin/css/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/admin/css/custom.css}"/>
     <script crossorigin="anonymous"
             src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 </head>
@@ -99,6 +100,10 @@
                 <a class="nav-link" th:href="@{/admin/videos}">
                     <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                     Quản lý Video
+                </a>
+                <a class="nav-link" th:href="@{/admin/images}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                    Quản lý Image
                 </a>
             </div>
         </div>
