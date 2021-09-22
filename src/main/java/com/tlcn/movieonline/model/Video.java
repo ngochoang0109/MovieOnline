@@ -21,6 +21,9 @@ public class Video {
     @Column(name = "source")
     private String source;
 
+    @Column(name = "type")
+    private String type;
+
     @Transient
     private MultipartFile file;
 
