@@ -12,9 +12,9 @@ public class HomeController {
 //        return "/login";
 //    }
 //
-//    @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
-//    public String adminHome(){
-//        return "/admin/admin-index";
-//    }
+    @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
+    public String adminHome(){
+        return "/admin/admin-index";
+    }
 
 }
