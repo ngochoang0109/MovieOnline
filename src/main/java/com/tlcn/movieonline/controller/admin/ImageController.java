@@ -41,6 +41,7 @@ public class ImageController {
             String urlImg=(String) jsonResult.get("secure_url");
             Image i= new Image();
             i.setSource(urlImg);
+            i.setType(image.getType());
             imageService.addImage(i);
             return "redirect:/admin/images";
         }

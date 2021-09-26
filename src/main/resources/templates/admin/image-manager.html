@@ -19,6 +19,13 @@
                         <label for="file" class="form-label">Chọn tệp ảnh</label>
                         <input type="file" class="form-control" id="file" th:field="*{file}">
                     </div>
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Chọn loại video</label>
+                        <select id="type" class="form-select" th:field="*{type}">
+                            <option value="trailer">Ảnh poster</option>
+                            <option value="movie">Ảnh movide</option>
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary">Thêm ảnh</button>
                 </form>
                 <div class="card mb-4">
@@ -32,15 +39,17 @@
                             <tr>
                                 <th class="text-center">ID</th>
                                 <th class="text-center">Hình ảnh</th>
+                                <th class="text-center">Thể loại ảnh</th>
                                 <th class="text-center">Hành động</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr class="text-center" th:each="item, state : ${lstImage}">
-                                <td id="idGenre" th:text="${item.id}"></td>
-                                <td id="nameGenre" class="w-50 h-50">
+                                <td id="idImgae" th:text="${item.id}"></td>
+                                <td id="sourceImage" class="w-50 h-50">
                                     <img class="w-25 h-25 img-fluid img-thumbnail"  th:src="${item.source}">
                                 </td>
+                                <td id="typeImage" th:text="${item.type}"></td>
                                 <td class="w-25">
                                     <button class="btn btn-info mx-3 btnEditGenre"
                                             th:id="${item.id}"
