@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/admin-layout.html::head">
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="admin/admin-layout.html::header">
+
+</nav>
+<div id="layoutSidenav">
+    <div th:replace="admin/admin-layout.html::menu">
+    </div>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div th:object="${country}" class="container-fluid px-4">
+                <button class="btn btn-primary mb-4 mt-4"
+                        type="button"
+                        data-bs-target="#addCountry" data-bs-toggle="modal">
+                    Thêm Quốc gia
+                </button>
+                <div aria-hidden="true"
+                     aria-labelledby="exampleModalLabel"
+                     class="modal fade"
+                     id="addCountry"
+                     tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                        type="button"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form th:action="@{/country/add}" method="post">
+                                    <div class="mb-3">
+                                        <label class="col-form-label">Tên Quốc gia</label>
+                                        <input id="txtIdCountry" class="form-control" type="hidden" th:field="*{id}">
+                                        <input id="txtNameCountry" class="form-control" type="text" th:field="*{name}">
+                                    </div>
+                                    <input  id="btnAddCountry" type="submit"
+                                            class="btn btn-primary" value="Thêm"
+                                            data-bs-dismiss="modal"></input>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div aria-hidden="true"
+                     aria-labelledby="exampleModalLabel"
+                     class="modal fade"
+                     id="editCountry"
+                     tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Thêm Quốc gia</h5>
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                        type="button"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="col-form-label">Tên Quốc gia</label>
+                                        <input id="a" class="form-control" type="text">
+                                    </div>
+                                    <button id="btnEdit" type="button"
+                                            class="btn btn-primary" data-bs-dismiss="modal">Send message</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Danh sách Quốc gia
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple">
+                            <thead>
+                            <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Tên Quốc gia</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="text-center" th:each="item, state : ${lstCountry}">
+                                <td id="idCountry" th:text="${item.id}"></td>
+                                <td id="nameCountry" th:text="${item.name}"></td>
+
+                                <td>
+
+                                    <a class="btn btn-danger" th:href="@{'/country/delete/' + ${item.id}}">Xóa</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="admin/admin-layout.html::footer">
+        </footer>
+    </div>
+</div>
+<section th:replace="admin/admin-layout.html::js">
+</section>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--<script type="application/javascript" th:src="@{/admin/js/Country.js}">-->
+
+</script>
+</body>
+</html>
