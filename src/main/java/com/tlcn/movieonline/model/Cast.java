@@ -26,11 +26,4 @@ public class Cast {
     @ManyToMany(mappedBy = "casts")
     private Set<Movie> movies;
 
-    @ManyToMany
-    @JoinTable(
-            name = "castimage",
-            joinColumns = @JoinColumn(name = "castid"),
-            inverseJoinColumns = @JoinColumn(name = "imageid")
-    )
-    private Set<Image> images;
 }

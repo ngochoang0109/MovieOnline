@@ -1,10 +1,8 @@
 package com.tlcn.movieonline.controller.admin.api;
 
-import com.tlcn.movieonline.model.YearRelease;
+import com.tlcn.movieonline.model.ReleaseYear;
 import com.tlcn.movieonline.service.YearReleaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,25 +24,25 @@ public class YearReleaseApiController {
 //    }
 
     @PostMapping("/YearRelease/add")
-    public String addYearRelease(YearRelease g, Model model) {
+    public String addYearRelease(ReleaseYear g, Model model) {
 
         model.addAttribute("YearRelease", g);
-        YearRelease YearRelease=YearReleaseService.addYearRelease(g);
+        ReleaseYear YearRelease=YearReleaseService.addYearRelease(g);
         return "redirect:/admin/release-year-manager";
     }
 
     @PutMapping(value = "/YearRelease/edit")
-    public @ResponseBody YearRelease editYearRelease(@RequestBody YearRelease g){
-        YearRelease YearRelease=YearReleaseService.addYearRelease(g);
+    public @ResponseBody ReleaseYear editYearRelease(@RequestBody ReleaseYear g){
+        ReleaseYear YearRelease=YearReleaseService.addYearRelease(g);
         return YearRelease;
     }
 
     @GetMapping(value = "/year-release/edit/{id}")
     public String editYearRelease(@PathVariable("id") Long id, Model model){
 
-        YearRelease yearRelease = YearReleaseService.getYearReleaseById(id);
+        ReleaseYear yearRelease = YearReleaseService.getYearReleaseById(id);
         model.addAttribute("yearRelease", yearRelease);
-        YearRelease YearRelease= YearReleaseService.getYearReleaseById(id);
+        ReleaseYear YearRelease= YearReleaseService.getYearReleaseById(id);
         return "redirect:/admin/release-year-manager";
     }
 
