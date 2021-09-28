@@ -1,6 +1,6 @@
 package com.tlcn.movieonline.controller.admin;
 
-import com.tlcn.movieonline.model.YearRelease;
+import com.tlcn.movieonline.model.ReleaseYear;
 import com.tlcn.movieonline.service.YearReleaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,9 +18,9 @@ public class ReleaseYearController {
 
     @RequestMapping(value = "/release-year-manager")
     public String listYearRelease(Model model){
-        List<YearRelease> lstYearRelease= YearReleaseService.findAll();
+        List<ReleaseYear> lstYearRelease= YearReleaseService.findAll();
 
-        YearRelease yearRelease = new YearRelease();
+        ReleaseYear yearRelease = new ReleaseYear();
         model.addAttribute("yearRelease", yearRelease);
         model.addAttribute("lstYearRelease", lstYearRelease);
                 return "admin/year-release-manager";

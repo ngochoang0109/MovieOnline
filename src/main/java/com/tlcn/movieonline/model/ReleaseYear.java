@@ -8,11 +8,11 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "yearrelease")
+@Table(name = "releaseYear")
 @Getter
 @Setter
 @NoArgsConstructor
-public class YearRelease {
+public class ReleaseYear {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,11 +20,6 @@ public class YearRelease {
     @Column(name = "year")
     private int year;
 
-    public YearRelease(int year, Set<Movie> movies) {
-        this.year = year;
-        this.movies = movies;
-    }
-
-    @ManyToMany(mappedBy = "yearReleases")
+    @OneToMany(mappedBy = "relYearId")
     private Set<Movie> movies;
 }

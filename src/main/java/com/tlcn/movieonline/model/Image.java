@@ -30,9 +30,4 @@ public class Image {
     @ManyToMany(mappedBy = "images")
     private Set<Movie> movies;
 
-    @ManyToMany(mappedBy = "images")
-    private Set<Cast> casts;
-
-    @ManyToMany(mappedBy = "images")
-    private Set<Director> directors;
 }

@@ -26,11 +26,4 @@ public class Director {
     @ManyToMany(mappedBy = "directors")
     private Set<Movie> movies;
 
-    @ManyToMany
-    @JoinTable(
-            name = "directorycast",
-            joinColumns = @JoinColumn(name = "directoryid"),
-            inverseJoinColumns = @JoinColumn(name = "castid")
-    )
-    private Set<Image> images;
 }

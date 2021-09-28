@@ -21,6 +21,7 @@ public class Movie {
     private int duration;
     private int view;
     private boolean status;
+    private int number;
 
     @ManyToMany
     @JoinTable(
@@ -70,35 +71,15 @@ public class Movie {
     )
     private Set<Director> directors;
 
-    @ManyToMany
-    @JoinTable(
-            name = "moviekeyword",
-            joinColumns = @JoinColumn(name = "movieid"),
-            inverseJoinColumns = @JoinColumn(name = "keywordid")
-    )
-    private Set<KeyWord> keyWords;
-
-    @ManyToMany
-    @JoinTable(
-            name = "movierelease",
-            joinColumns = @JoinColumn(name = "movieid"),
-            inverseJoinColumns = @JoinColumn(name = "releaseid")
-    )
-    private Set<YearRelease> yearReleases;
+    @ManyToOne
+    @JoinColumn(name = "relYearId")
+    private ReleaseYear relYearId;
 
     @OneToMany(mappedBy = "movie")
     private Set<Comment> comments;
 
     @OneToMany(mappedBy = "movie")
     private Set<UserMovie> userMovies;
-
-    public Movie(String title, String description, int duration, int view, boolean status) {
-        this.title = title;
-        this.description = description;
-        this.duration = duration;
-        this.view = view;
-        this.status = status;
-    }
 
     public Movie(){
         this.view=0;
