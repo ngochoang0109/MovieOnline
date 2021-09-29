@@ -21,8 +21,7 @@ public class MovieRequest {
     private MultipartFile image;
     private MultipartFile videoTrailer;
     private MultipartFile videoMovie;
-    private List<String> country;
-    private List<String> genre;
-    private String releaseYear;
-
+    private String country;
+    private String genre;
+    private int releaseYear;
 }

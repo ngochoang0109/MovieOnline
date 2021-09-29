@@ -15,7 +15,7 @@ public class YearReleaseServiceImpl implements YearReleaseService{
     YearReleaseRepository YearReleaseRepository;
 
     @Override
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public ReleaseYear addYearRelease(ReleaseYear g) {
         ReleaseYear YearRelease= YearReleaseRepository.save(g);
         return YearRelease;

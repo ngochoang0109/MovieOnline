@@ -20,9 +20,6 @@ public class Director {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
-    private String description;
-
     @ManyToMany(mappedBy = "directors")
     private Set<Movie> movies;
 
