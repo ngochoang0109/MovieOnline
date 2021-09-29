@@ -20,9 +20,6 @@ public class Cast {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
-    private String description;
-
     @ManyToMany(mappedBy = "casts")
     private Set<Movie> movies;
 

@@ -36,7 +36,7 @@ public class ImageController {
     @PostMapping(value = "/image/add")
     public String addImage(@ModelAttribute(value = "image") Image image){
         try {
-            Map jsonResult=cloudinary.uploader().uploadLarge(image.getFile().getBytes(),
+            Map jsonResult=cloudinary.uploader().upload(image.getFile().getBytes(),
                     ObjectUtils.asMap("resource_type","image"));
             String urlImg=(String) jsonResult.get("secure_url");
             Image i= new Image();

@@ -23,7 +23,7 @@ public class Movie {
     private boolean status;
     private int number;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "movieimage",
             joinColumns = @JoinColumn(name = "movieid"),
@@ -31,7 +31,7 @@ public class Movie {
     )
     private Set<Image> images;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "movievideo",
             joinColumns = @JoinColumn(name = "movieid"),
@@ -39,7 +39,7 @@ public class Movie {
     )
     private Set<Video> videos;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "moviegenre",
             joinColumns = @JoinColumn(name = "movieid"),
@@ -47,7 +47,7 @@ public class Movie {
     )
     private Set<Genre> genres;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "moviecast",
             joinColumns = @JoinColumn(name = "movieid"),
@@ -55,7 +55,7 @@ public class Movie {
     )
     private Set<Cast> casts;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "moviecoutry",
             joinColumns = @JoinColumn(name = "movieid"),
@@ -63,7 +63,7 @@ public class Movie {
     )
     private Set<Country> countries;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "moviedirector",
             joinColumns = @JoinColumn(name = "movieid"),
@@ -71,7 +71,7 @@ public class Movie {
     )
     private Set<Director> directors;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinColumn(name = "relYearId")
     private ReleaseYear relYearId;
 
