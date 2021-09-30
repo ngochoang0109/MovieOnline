@@ -17,7 +17,10 @@ public class Movie {
 
     @Column(name = "title")
     private String title;
+
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+
     private int duration;
     private int view;
     private boolean status;

@@ -170,143 +170,43 @@
     <!-- continure watching -->
     <section class="container p-t-40" id="continue-watching">
         <h4 class="continue-watching-heading">
-            Continue watching for Rajesh Royal
+            Phim mới cập nhật
         </h4>
+
         <div class="continue-watching-container d-flex flex-start flex-middle flex-no-wrap owl-carousel">
-            <div class="video">
-                <img alt=""
-                     class="mylist-img p-r-10 p-t-10 video-item" th:src="@{/web/images/tv-show/poster/never-have-ever-short poster.jpg}">
-                <div class="video-description d-flex flex-end direction-column">
-                    <div class="play-button">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M6 4l15 8-15 8z" fill="black"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="heading f-w-8 text-shadow">
-                            Horrible Bosses
-                        </h4>
-                    </div>
-                    <div class="info d-flex flex-middle flex-no-wrap">
-                        <p class="rated text-shadow"><strong>18+</strong></p>
-                        <p class="season-count text-shadow">Movie</p>
-                    </div>
-                    <div class="genere d-flex flex-no-wrap text-shadow">
-                        <p>#Nudeity</p>
-                        <p>#sex</p>
-                        <p>#Comedy</p>
+
+            <th:block th:each="item, state:${newPosts}">
+                <div class="video">
+                    <th:block th:each="img:${item.getImg()}">
+                        <img alt=""
+                             class="mylist-img p-r-10 p-t-10 video-item"
+                             th:src="${img.getSource()}">
+                    </th:block>
+
+                    <div class="video-description d-flex flex-end direction-column">
+                        <div class="play-button">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M6 4l15 8-15 8z" fill="black"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="heading f-w-8 text-shadow" th:text="${item.getTitle()}">
+
+                            </h4>
+                        </div>
+                        <div class="info d-flex flex-middle flex-no-wrap">
+                            <p class="rated text-shadow"></p>
+                            <p class="season-count text-shadow"></p>
+                        </div>
+                        <div class="genere d-flex flex-no-wrap text-shadow">
+                            <th:block th:each="genre:${item.getGenres()}">
+                                <p th:text="${genre.getName()}"></p>
+                            </th:block>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </th:block>
 
-
-            <div class="video">
-                <img alt=""
-                     class="mylist-img p-r-10 p-t-10 video-item" th:src="@{/web/images/tv-show/poster/never-have-ever-short poster.jpg}">
-
-                <div class="video-description d-flex flex-end direction-column">
-                    <div class="play-button">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M6 4l15 8-15 8z" fill="black"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="heading f-w-8 text-shadow">
-                            Horrible Bosses
-                        </h4>
-                    </div>
-                    <div class="info d-flex flex-middle flex-no-wrap">
-                        <p class="rated text-shadow"><strong>18+</strong></p>
-                        <p class="season-count text-shadow">Movie</p>
-                    </div>
-                    <div class="genere d-flex flex-no-wrap text-shadow">
-                        <p>#Nudeity</p>
-                        <p>#sex</p>
-                        <p>#Comedy</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video">
-                <img alt=""
-                     class="mylist-img p-r-10 p-t-10 video-item" th:src="@{/web/images/tv-show/poster/never-have-ever-short poster.jpg}">
-
-                <div class="video-description d-flex flex-end direction-column">
-                    <div class="play-button">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M6 4l15 8-15 8z" fill="black"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="heading f-w-8 text-shadow">
-                            Horrible Bosses
-                        </h4>
-                    </div>
-                    <div class="info d-flex flex-middle flex-no-wrap">
-                        <p class="rated text-shadow"><strong>18+</strong></p>
-                        <p class="season-count text-shadow">Movie</p>
-                    </div>
-                    <div class="genere d-flex flex-no-wrap text-shadow">
-                        <p>#Nudeity</p>
-                        <p>#sex</p>
-                        <p>#Comedy</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video">
-                <img alt=""
-                     class="mylist-img p-r-10 p-t-10 video-item" th:src="@{/web/images/tv-show/poster/never-have-ever-short poster.jpg}">
-
-                <div class="video-description d-flex flex-end direction-column">
-                    <div class="play-button">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M6 4l15 8-15 8z" fill="black"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="heading f-w-8 text-shadow">
-                            Horrible Bosses
-                        </h4>
-                    </div>
-                    <div class="info d-flex flex-middle flex-no-wrap">
-                        <p class="rated text-shadow"><strong>18+</strong></p>
-                        <p class="season-count text-shadow">Movie</p>
-                    </div>
-                    <div class="genere d-flex flex-no-wrap text-shadow">
-                        <p>#Nudeity</p>
-                        <p>#sex</p>
-                        <p>#Comedy</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video">
-                <img alt=""
-                     class="mylist-img p-r-10 p-t-10 video-item" th:src="@{/web/images/tv-show/poster/never-have-ever-short poster.jpg}">
-
-                <div class="video-description d-flex flex-end direction-column">
-                    <div class="play-button">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M6 4l15 8-15 8z" fill="black"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="heading f-w-8 text-shadow">
-                            Horrible Bosses
-                        </h4>
-                    </div>
-                    <div class="info d-flex flex-middle flex-no-wrap">
-                        <p class="rated text-shadow"><strong>18+</strong></p>
-                        <p class="season-count text-shadow">Movie</p>
-                    </div>
-                    <div class="genere d-flex flex-no-wrap text-shadow">
-                        <p>#Nudeity</p>
-                        <p>#sex</p>
-                        <p>#Comedy</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
