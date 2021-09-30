@@ -1,6 +1,7 @@
 package com.tlcn.movieonline.controller.admin;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.tlcn.movieonline.dto.MovieRequest;
 import com.tlcn.movieonline.model.*;
 import com.tlcn.movieonline.service.MovieService;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.tlcn.movieonline.utils.Utils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -45,14 +46,14 @@ public class MovieController {
         Image image= new Image();
         Video video= new Video();
 
-        String urlImage=Utils.doUpload(movieRequest.getImage());
+        String urlImage=doUpload(movieRequest.getImage());
         if (urlImage!=""){
             image.setSource(urlImage);
         }
         Set<Image> images= new HashSet<>();
         images.add(image);
 
-        String urlVideoTrailer=Utils.doUpload(movieRequest.getVideoTrailer());
+        String urlVideoTrailer=doUpload(movieRequest.getVideoTrailer());
         if (urlVideoTrailer!=""){
             video.setSource(urlVideoTrailer);
         }
@@ -116,7 +117,18 @@ public class MovieController {
         return "admin/movie-manager";
     }
 
-
+    public String doUpload(MultipartFile params){
+        String url="";
+        try{
+            Map jsonResult= cloudinary.uploader().uploadLarge(params.getBytes(),
+                    ObjectUtils.asMap("resource_type","auto","chunk_size",100000000));
+            url=(String) jsonResult.get("secure_url");
+            return url;
+        }
+        catch (Exception e){
+            return url;
+        }
+    }
 
 
 

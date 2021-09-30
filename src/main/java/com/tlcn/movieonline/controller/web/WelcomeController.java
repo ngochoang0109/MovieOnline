@@ -1,7 +1,12 @@
 package com.tlcn.movieonline.controller.web;
 
+import com.tlcn.movieonline.dto.MovieRespone;
 import com.tlcn.movieonline.dto.RegisterRequest;
+import com.tlcn.movieonline.model.Movie;
 import com.tlcn.movieonline.model.User;
+import com.tlcn.movieonline.service.GenreService;
+import com.tlcn.movieonline.service.ImageService;
+import com.tlcn.movieonline.service.MovieService;
 import com.tlcn.movieonline.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,17 +15,40 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class WelcomeController {
 
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MovieService movieService;
+
+    @Autowired
+    private GenreService genreService;
+
+    @Autowired
+    private ImageService imageService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(){
+    public String index(Model model){
+        List<Movie> lstMovie=movieService.getAll();
+        List<MovieRespone> newPosts= new ArrayList<>();
+        for (Movie item: lstMovie) {
+            MovieRespone movieRespone= new MovieRespone();
+            movieRespone.setGenres(item.getGenres());
+            movieRespone.setTitle(item.getTitle());
+            movieRespone.setImg(item.getImages());
+            newPosts.add(movieRespone);
+        }
+
+        model.addAttribute("newPosts", newPosts);
         return "/web/index";
     }
+
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(){
