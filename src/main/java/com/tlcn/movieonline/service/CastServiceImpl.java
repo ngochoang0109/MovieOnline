@@ -22,4 +22,9 @@ public class CastServiceImpl implements CastService{
     public Cast add(Cast cast) {
         return castRepository.save(cast);
     }
+
+    @Override
+    public Cast getCastByName(String name) {
+        return castRepository.getCastByName(name);
+    }
 }

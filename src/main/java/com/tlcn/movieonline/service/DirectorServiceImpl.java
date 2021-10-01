@@ -20,4 +20,9 @@ public class DirectorServiceImpl implements DirectorService{
     public Director add(Director director) {
         return directorRepository.save(director);
     }
+
+    @Override
+    public Director getDirectorByName(String name) {
+        return directorRepository.getDirectorByName(name);
+    }
 }

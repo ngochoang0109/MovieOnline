@@ -4,7 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.tlcn.movieonline.dto.MovieRequest;
 import com.tlcn.movieonline.model.*;
-import com.tlcn.movieonline.service.MovieService;
+import com.tlcn.movieonline.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -26,15 +29,33 @@ public class MovieController {
     @Autowired
     private Cloudinary cloudinary;
 
+    @Autowired
+    private YearReleaseService releaseService;
+
+    @Autowired
+    private CastService castService;
+
+    @Autowired
+    private DirectorService directorService;
+
+    @Autowired
+    private CountryService countryService;
+
+    @Autowired
+    private GenreService genreService;
+
+
     @GetMapping(value = "/movies")
-    public String getAllMovie(Model model){
-        List<Movie> lstMovie= movieService.getAll();
+    public String getAllMovie(Model model) {
+        List<Movie> lstMovie = movieService.getAll();
         model.addAttribute("lstMovie", lstMovie);
         return "admin/movie-manager";
     }
 
     @GetMapping(value = "/movies/add")
-    public String add(Model model){
+    public String add(Model model) {
+        List<ReleaseYear> lstRelease = releaseService.findAll();
+        model.addAttribute("lstRelease", lstRelease);
         model.addAttribute("movieRequest", new MovieRequest());
         return "admin/movie-add";
     }
@@ -63,41 +84,64 @@ public class MovieController {
         String[] strCasts= movieRequest.getCast().split(",");
         Set<Cast> casts= new HashSet<>();
         for (String item: strCasts) {
-            Cast cast= new Cast();
-            cast.setName(item);
-            casts.add(cast);
+            Cast cast = castService.getCastByName(item);
+            if (cast == null) {
+                Cast c = new Cast();
+                c.setName(item);
+                casts.add(c);
+            }
+            else {
+                casts.add(cast);
+            }
+
         }
 
         String[] strDirectors= movieRequest.getDirector().split(",");
         Set<Director> directors= new HashSet<>();
         for (String item: strDirectors) {
-            Director director= new Director();
-            director.setName(item);
-            directors.add(director);
+            Director director = directorService.getDirectorByName(item);
+            if (director == null) {
+                Director d= new Director();
+                d.setName(item);
+                directors.add(d);
+            }
+            else {
+                directors.add(director);
+            }
         }
-
-
 
         String[] strCountries= movieRequest.getCountry().split(",");
         Set<Country> countries= new HashSet<>();
         for (String item: strCountries) {
-            Country country= new Country();
-            country.setName(item);
-            countries.add(country);
+            Country country = countryService.getCountryByName(item);
+            if (country == null) {
+                Country c= new Country();
+                c.setName(item);
+                countries.add(c);
+            }
+            else {
+                countries.add(country);
+            }
         }
 
         String[] strGenre= movieRequest.getGenre().split(",");
         Set<Genre> genres= new HashSet<>();
         for (String item: strGenre) {
-            Genre genre= new Genre();
-            genre.setName(item);
-            genres.add(genre);
+            Genre genre = genreService.getGenreByName(item);
+            if (genre == null) {
+                Genre g= new Genre();
+                g.setName(item);
+                genres.add(g);
+            }
+            else {
+                genres.add(genre);
+            }
         }
 
 
         //do something
+        releaseYear = releaseService.getYearReleaseById(movieRequest.getReleaseYear());
 
-        releaseYear.setYear(movieRequest.getReleaseYear());
         movie.setTitle(movieRequest.getTitle());
         movie.setDescription(movieRequest.getDescription());
         movie.setDuration(movieRequest.getDuration());
@@ -129,7 +173,5 @@ public class MovieController {
             return url;
         }
     }
-
-
 
 }

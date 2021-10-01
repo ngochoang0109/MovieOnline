@@ -23,5 +23,5 @@ public class MovieRequest {
     private MultipartFile videoMovie;
     private String country;
     private String genre;
-    private int releaseYear;
+    private Long releaseYear;
 }
