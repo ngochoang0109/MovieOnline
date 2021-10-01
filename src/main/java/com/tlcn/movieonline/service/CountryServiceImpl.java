@@ -12,29 +12,34 @@ import java.util.List;
 public class CountryServiceImpl implements CountryService{
 
     @Autowired
-    CountryRepository CountryRepository;
+    CountryRepository countryRepository;
 
     @Override
     @Transactional
     public Country addCountry(Country g) {
-        Country Country= CountryRepository.save(g);
+        Country Country= countryRepository.save(g);
         return Country;
     }
 
     @Override
     public List<Country> findAll() {
-        List<Country> lstCountry=CountryRepository.findAll();
+        List<Country> lstCountry=countryRepository.findAll();
         return lstCountry;
     }
 
     @Override
     public Country getCountryById(Long id) {
-        Country Country= CountryRepository.getCountryById(id);
+        Country Country= countryRepository.getCountryById(id);
         return Country;
     }
 
     @Override
     public void deleteCountryById(Long id) {
-        CountryRepository.deleteById(id);
+        countryRepository.deleteById(id);
+    }
+
+    @Override
+    public Country getCountryByName(String name) {
+        return countryRepository.getCountryByName(name);
     }
 }

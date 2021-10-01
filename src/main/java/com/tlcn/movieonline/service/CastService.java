@@ -7,4 +7,5 @@ import java.util.List;
 public interface CastService {
     List<Cast> getAllCast();
     Cast add(Cast cast);
+    Cast getCastByName(String name);
 }

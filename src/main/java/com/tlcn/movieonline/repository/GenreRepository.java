@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface GenreRepository extends JpaRepository<Genre, Long > {
     Genre getGenreById(Long id);
     void deleteById(Long id);
+    Genre getGenreByName(String name);
 }

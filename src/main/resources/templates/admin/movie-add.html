@@ -34,7 +34,13 @@
                             </div>
                             <div class="mb-3">
                                 <label for="releaseYear" class="form-label">Nam phat hanh</label>
-                                <input type="number" id="releaseYear" th:field="*{releaseYear}" class="form-control">
+                                <select id="releaseYear" class="form-control" th:field="*{releaseYear}" >
+                                    <option th:each="item : ${lstRelease}"
+                                            th:value="${item.id}"
+                                            th:text="${item.year}">
+                                    </option>
+
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="title" class="form-label">Chon anh</label>
