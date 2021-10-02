@@ -2,6 +2,7 @@ package com.tlcn.movieonline.controller.web;
 
 import com.tlcn.movieonline.dto.MovieRespone;
 import com.tlcn.movieonline.dto.RegisterRequest;
+import com.tlcn.movieonline.model.Genre;
 import com.tlcn.movieonline.model.Movie;
 import com.tlcn.movieonline.model.User;
 import com.tlcn.movieonline.service.GenreService;
@@ -38,13 +39,14 @@ public class WelcomeController {
         List<Movie> lstMovie=movieService.getAll();
         List<MovieRespone> newPosts= new ArrayList<>();
         for (Movie item: lstMovie) {
-            MovieRespone movieRespone= new MovieRespone();
+            MovieRespone movieRespone = new MovieRespone();
             movieRespone.setGenres(item.getGenres());
             movieRespone.setTitle(item.getTitle());
             movieRespone.setImg(item.getImages());
             newPosts.add(movieRespone);
         }
-
+        List<Genre> lstGenre= genreService.findAll();
+        model.addAttribute("lstGenre", lstGenre);
         model.addAttribute("newPosts", newPosts);
         return "/web/index";
     }
