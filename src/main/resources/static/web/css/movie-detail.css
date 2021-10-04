@@ -1,0 +1,177 @@
+.container-movie{
+    margin-left: auto;
+    margin-right: auto;
+    width: 1170px;
+}
+.column {
+    float: left;
+    padding: 2rem;
+}
+
+.left {
+    width: 25%;
+    height: auto;
+}
+
+.right {
+    width: 60%;
+    height: auto;
+}
+
+/* Clear floats after the columns */
+.row{
+    margin-top: 5rem;
+}
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.img-poster{
+    width: 20rem;
+    height: auto;
+}
+.tilte-movie{
+    color: yellow;
+}
+
+.tilte-movie h1{
+    font-size: 1.8rem;
+    font-weight: 100;
+    margin: 0px;
+}
+
+.actions{
+    margin-top: 0.5rem;
+}
+.actions i{
+    font-size: 1.5rem;
+}
+.actions a{
+    color: rgba(255, 255, 255, 0.658);
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 12px;
+    margin-right: 60px;
+}
+
+.left-btn{
+    padding: 0rem;
+    width: 50%;
+}
+
+.right-btn{
+    padding: 0rem;
+    width: 50%;
+}
+.button1 {
+    background-image: linear-gradient(135deg, #008aff, #86d472);
+    border-radius: 6px;
+    box-sizing: border-box;
+    color: #ffffff;
+    display: block;
+    height: 50px;
+    font-size: 1.4em;
+    font-weight: 600;
+    padding: 4px;
+    position: relative;
+    text-decoration: none;
+    width: 7em;
+    z-index: 2;
+}
+.button1:hover {
+    color: #fff;
+}
+
+.button1 .btn1 {
+    align-items: center;
+    background: #0e0e10;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    transition: background 0.5s ease;
+    width: 100%;
+}
+
+.button1:hover .btn1 {
+    background: transparent;
+}
+
+.desc-movie{
+    margin-top: 1rem;
+}
+
+.row-detail{
+    margin-top: 1rem;
+}
+
+.row-detail:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.detail{
+    list-style: none;
+    padding-left: 0rem;
+}
+.detail li p{
+    color: yellow;
+    font-size: 0.8rem;
+    padding-bottom: 0.5rem;
+}
+
+.container-comment{
+    max-width: 100%;
+    margin-left: 1.6rem;
+    margin-right: 1.6rem;
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.comment {
+    display: block;
+    transition: all 1s;
+}
+.commentClicked {
+    min-height: 0px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 5px 10px
+}
+.container-comment textarea {
+    width: 95%;
+    border: none;
+    background: #E8E8E8;
+    padding: 5px 10px;
+    height: 50%;
+    border-radius: 5px 5px 0px 0px;
+    border-bottom: 2px solid #016BA8;
+    transition: all 0.5s;
+    color: black;
+    margin-top: 15px;
+}
+.primaryContained {
+    background: #016ba8;
+    color: black;
+    padding: 10px 10px;
+    border: none;
+    margin-top: 0px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25);
+    transition: 1s all;
+    font-size: 10px;
+    border-radius: 5px;
+}
+
+.primaryContained:hover {
+    background: #9201A8;
+}
+
+.checked {
+    color: orange;
+}

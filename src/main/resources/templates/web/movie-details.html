@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+>
+<head th:replace="web/layout :: head">
+
+</head>
+<body>
+<header th:replace="web/layout :: header">
+</header>
+
+
+<section class="container-movie">
+    <div class="row">
+        <div class="column left">
+            <img class="img-poster" src="https://static.247phim.com/163045/conversions/6152beaf4f503_a5wqWGe-435_627.jpg" alt="">
+        </div>
+        <div class="column right">
+            <div class="details-movie">
+                <div class="tilte-movie">
+                    <h1>Tên phim trình chiếu</h1>
+                </div>
+                <div class="actions d-flex flex-start flex-middle">
+                    <a href="#" class="link-item">
+                        <i class="fa fa-plus"></i></br>
+                        Yêu thích
+                    </a>
+                    <a href="#" class="link-item">
+                        <i class="fa fa-eye"></i></br>
+                        Lượt xem
+                    </a>
+                    <a href="#" class="link-item">
+                        <i class="fa fa-share"></i></br>
+                        Share
+                    </a>
+                </div>
+            </div>
+            <div class="row-detail">
+                <div class="column left-btn">
+                    <a class="button1" href="https://www.niemvuilaptrinh.com/">
+                            <span class="btn1">
+                                Xem Trailer</span></a>
+                </div>
+                <div class="column right-btn">
+                    <a class="button1" href="https://www.niemvuilaptrinh.com/">
+                        <span class="btn1">Xem Phim</span></a>
+                </div>
+            </div>
+            <div class="desc-movie">
+                <p>Công Chúa Yakuza kể về người thừa kế của một nửa tổ chức tội phạm Yakuza đã tạo dựng một liên
+                    minh không dễ chịu với một người lạ bị mất trí nhớ, người tin rằng một thanh kiếm cổ sẽ gắn kết
+                    hai số phận của họ. Cô phải mở cuộc chiến chống lại một nửa còn lại của tổ chức muốn cô chết.
+                </p>
+            </div>
+            <div class="row-detail">
+                <div class="column left-btn">
+                    <ul class="detail">
+                        <li>
+                            <p>Thời lượng: 111 phút</p>
+                        </li>
+                        <li>
+                            <p>Đạo diễn: Vicente Amorim</p>
+                        </li>
+                        <li>
+                            <p>Quốc gia: Nhật Bản</p>
+                        </li>
+                        <li>
+                            <p>Thể loại: Hành động, Phim mới, Phim chiếu rạp</p>
+                        </li>
+                        <li>
+                            <p>Phát hành: 2021</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column right-btn">
+                    <ul class="detail">
+                        <li>
+                            <p>Diễn viên: MASUMI, Jonathan Rhys Meyers, Tsuyoshi Ihara</p>
+                        </li>
+                        <li>
+                            <div class="rate">
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container-comment">
+        <div>
+            <div class="col-6">
+                <div class="comment">
+                    <p>
+                        alo
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="col-6">
+                <textarea type="text" class="input" placeholder="Write a comment" v-model="newItem"></textarea>
+                <button class='primaryContained float-right' type=" submit">Add Comment</button>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<!--Hollywood Action movies-->
+<section id="similar" class="container p-t-40">
+    <h4 class="romantic-heading">
+        More LIke This
+    </h4>
+    <div class="romantic-container d-flex flex-start flex-middle">
+        <a href="#">
+            <img src="https://static.247phim.com/163045/conversions/6152beaf4f503_a5wqWGe-435_627.jpg" alt=""
+                 class="mylist-img p-r-10 p-t-10 image-size item"></a>
+        <a href="#">
+            <img src="https://static.247phim.com/163045/conversions/6152beaf4f503_a5wqWGe-435_627.jpg" alt=""
+                 class="mylist-img p-r-10 p-t-10 image-size item"></a>
+    </div>
+</section>
+<footer th:replace="web/layout::footer">
+
+</footer>
+</body>
+</html>
