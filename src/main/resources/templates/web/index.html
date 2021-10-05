@@ -75,7 +75,7 @@
                     </th:block>
 
                     <div class="video-description d-flex flex-end direction-column">
-                        <div class="play-button">
+                        <div class="play-button" th:id="${item.id}">
                             <svg viewBox="0 0 24 24">
                                 <path d="M6 4l15 8-15 8z" fill="black"></path>
                             </svg>
@@ -138,5 +138,6 @@
 <footer th:replace="web/layout::footer">
 
 </footer>
+<script type="application/javascript" th:src="@{/web/js/index.js}"></script>
 </body>
 </html>

@@ -27,4 +27,9 @@ public class MovieServiceImpl implements MovieService{
         Movie m= movieRepository.save(movie);
         return m;
     }
+
+    @Override
+    public Movie getMovieById(Long id) {
+        return movieRepository.getMovieById(id);
+    }
 }

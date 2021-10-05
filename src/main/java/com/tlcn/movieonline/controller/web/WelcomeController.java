@@ -40,6 +40,7 @@ public class WelcomeController {
         List<MovieRespone> newPosts= new ArrayList<>();
         for (Movie item: lstMovie) {
             MovieRespone movieRespone = new MovieRespone();
+            movieRespone.setId(item.getId());
             movieRespone.setGenres(item.getGenres());
             movieRespone.setTitle(item.getTitle());
             movieRespone.setImg(item.getImages());

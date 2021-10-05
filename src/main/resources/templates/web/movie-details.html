@@ -17,7 +17,7 @@
         <div class="column right">
             <div class="details-movie">
                 <div class="tilte-movie">
-                    <h1>Tên phim trình chiếu</h1>
+                    <h1 th:text="${movie.title}">Tên phim trình chiếu</h1>
                 </div>
                 <div class="actions d-flex flex-start flex-middle">
                     <a href="#" class="link-item">
@@ -46,35 +46,33 @@
                 </div>
             </div>
             <div class="desc-movie">
-                <p>Công Chúa Yakuza kể về người thừa kế của một nửa tổ chức tội phạm Yakuza đã tạo dựng một liên
-                    minh không dễ chịu với một người lạ bị mất trí nhớ, người tin rằng một thanh kiếm cổ sẽ gắn kết
-                    hai số phận của họ. Cô phải mở cuộc chiến chống lại một nửa còn lại của tổ chức muốn cô chết.
+                <p th:text="${movie.description}">
                 </p>
             </div>
             <div class="row-detail">
                 <div class="column left-btn">
                     <ul class="detail">
                         <li>
-                            <p>Thời lượng: 111 phút</p>
+                            <p th:text="${'Thời lượng: ' + movie.duration +' Phút'}"></p>
                         </li>
                         <li>
-                            <p>Đạo diễn: Vicente Amorim</p>
+                            <p th:text="${'Đạo diễn: ' + movie.director}"></p>
                         </li>
                         <li>
-                            <p>Quốc gia: Nhật Bản</p>
+                            <p th:text="${'Quốc gia: ' + movie.country}"></p>
                         </li>
                         <li>
-                            <p>Thể loại: Hành động, Phim mới, Phim chiếu rạp</p>
+                            <p th:text="${'Thể loại: ' + movie.genre}"></p>
                         </li>
                         <li>
-                            <p>Phát hành: 2021</p>
+                            <p th:text="${'Phát hành: ' + movie.releaseYear.year}"> </p>
                         </li>
                     </ul>
                 </div>
                 <div class="column right-btn">
                     <ul class="detail">
                         <li>
-                            <p>Diễn viên: MASUMI, Jonathan Rhys Meyers, Tsuyoshi Ihara</p>
+                            <p th:text="${'Diễn viên: ' + movie.cast}"></p>
                         </li>
                         <li>
                             <div class="rate">

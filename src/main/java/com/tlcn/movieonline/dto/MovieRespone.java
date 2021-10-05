@@ -12,6 +12,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class MovieRespone {
+    private Long id;
     private String title;
     private Set<Genre> genres;
     private Set<Image> img;
