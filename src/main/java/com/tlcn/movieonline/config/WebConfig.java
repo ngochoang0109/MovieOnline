@@ -19,5 +19,13 @@ public class WebConfig {
         return c;
     }
 
+//    @Bean
+//    public MinioClient minioClient(){
+//        MinioClient m=MinioClient.builder()
+//                .endpoint("http://localhost:9000")
+//                .credentials("minioadmin", "minioadmin")
+//                .build();
+//        return m;
+//    }
 
 }

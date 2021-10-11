@@ -36,7 +36,7 @@
             </div>
             <div class="row-detail">
                 <div class="column left-btn">
-                    <a class="button1" href="https://www.niemvuilaptrinh.com/">
+                    <a class="button1" href="#trailer">
                             <span class="btn1">
                                 Xem Trailer</span></a>
                 </div>
@@ -86,6 +86,23 @@
                     </ul>
                 </div>
             </div>
+            <span id="trailer"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="block-trailer">
+            <div class="caption">
+                <p>
+                    <i class="fa fa-film"></i>
+                    trailer phim ne
+                </p>
+            </div>
+            <div class="trailer-player">
+                <iframe  src="https://www.youtube.com/embed/dZJYS6gXqNU" title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+            </div>
         </div>
     </div>
 
@@ -109,25 +126,48 @@
         </div>
     </div>
 
-</section>
+    <div class="row">
+        <div class="more-like-this">
+            <div class="title-relate">
+                <h4 class="romantic-heading">
+                    More LIke This
+                </h4>
+            </div>
+            <div class="row-movie-relate">
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
 
-
-<!--Hollywood Action movies-->
-<section id="similar" class="container p-t-40">
-    <h4 class="romantic-heading">
-        More LIke This
-    </h4>
-    <div class="romantic-container d-flex flex-start flex-middle">
-        <a href="#">
-            <img src="https://static.247phim.com/163045/conversions/6152beaf4f503_a5wqWGe-435_627.jpg" alt=""
-                 class="mylist-img p-r-10 p-t-10 image-size item"></a>
-        <a href="#">
-            <img src="https://static.247phim.com/163045/conversions/6152beaf4f503_a5wqWGe-435_627.jpg" alt=""
-                 class="mylist-img p-r-10 p-t-10 image-size item"></a>
+            </div>
+        </div>
     </div>
+
 </section>
 <footer th:replace="web/layout::footer">
 
 </footer>
+<script type="application/javascript" th:src="@{web/js/movie-detail.js}"></script>
 </body>
 </html>

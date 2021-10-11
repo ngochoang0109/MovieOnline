@@ -20,8 +20,8 @@ $(document).ready(function () {
                                 <td>${data.name}</td>
                                 <td>New York</td>
                                 <td>
-                                    <button class="btn btn-info mx-3" type="button" ${data.id}>Sửa</button>
-                                    <button class="btn btn-danger" type="button" ${data.id}>Xóa</button>
+                                    <button class="btn btn-info mx-3 btnEditGenre" id="${data.id}" type="button">Sửa</button>
+                                    <button class="btn btn-danger btnDeleteGenre" id="${data.id}" type="button">Xóa</button>
                                 </td>
                              </tr>`);
             }
@@ -42,7 +42,7 @@ $(document).ready(function () {
         })
     })
 
-    $("#btnAddGenre").click(function() {
+    $("#btnEdit").click(function() {
         var id = $("#txtIdGenre").val();
         var name = $("#txtNameGenre").val();
         jsonData = {
@@ -61,6 +61,7 @@ $(document).ready(function () {
     });
 
     $(".btnDeleteGenre").click(function(){
+        console.log("delete");
         var parent=$(this).parent().parent();
         var id=parent.children("td:nth-child(1)").text();
         $.ajax({

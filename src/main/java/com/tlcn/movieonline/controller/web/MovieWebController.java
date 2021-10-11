@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
+
 
 @Controller
 public class MovieWebController {
@@ -18,7 +18,8 @@ public class MovieWebController {
     @Autowired
     private MovieService movieService;
 
-    @GetMapping("/movie")
+
+    @GetMapping("/home/movie")
     public String movieDetail(@RequestParam("id") Long id, Model model){
         Movie movie=movieService.getMovieById(id) ;
         MovieDetailRespone movieDetail= new MovieDetailRespone();
@@ -51,11 +52,13 @@ public class MovieWebController {
         }
         movieDetail.setCountry(joinerCountry.toString());
 
-
-
-
         model.addAttribute("movie", movieDetail);
         return "web/movie-details";
+    }
+
+    @GetMapping("/home/movie/watch")
+    public String movieWatch(){
+        return "web/movie-watch";
     }
 
 }

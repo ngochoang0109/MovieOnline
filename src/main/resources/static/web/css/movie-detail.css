@@ -123,13 +123,15 @@
 }
 
 .container-comment{
-    max-width: 100%;
+    width: 88%;
     margin-left: 1.6rem;
     margin-right: 1.6rem;
     background: #fff;
     border-radius: 8px;
     padding: 20px;
+    margin-top: 5rem;
 }
+
 
 .comment {
     display: block;
@@ -174,4 +176,54 @@
 
 .checked {
     color: orange;
+}
+
+.block-trailer{
+    max-width: 96%  ;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 2rem;
+}
+
+.block-trailer p{
+    width: 96%;
+    font-size: 1.4rem;
+    color: rgb(204, 204, 98);
+    background-color: green;
+}
+
+.block-trailer iframe{
+    width: 96%;
+    height: 500px;
+}
+
+.more-like-this{
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 1.4rem;
+}
+
+.title-relate{
+    width: 96%;
+    font-size: 1.4rem;
+    color: rgb(204, 204, 98);
+    background-color: green;
+}
+
+.column-movie-relate{
+    float: left;
+    width: 25%;
+    padding-bottom: 2rem;
+}
+.column-movie-relate .img-relate{
+    width: 84%;
+    height: auto;
+}
+.row-movie-relate{
+    margin-top: 0rem;
+}
+.row-movie-relate:after {
+    content: "";
+    display: table;
+    clear: both;
 }
