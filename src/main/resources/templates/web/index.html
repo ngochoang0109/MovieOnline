@@ -138,6 +138,15 @@
 <footer th:replace="web/layout::footer">
 
 </footer>
-<script type="application/javascript" th:src="@{/web/js/index.js}"></script>
+<script type="application/javascript">
+    $(document).ready(function (){
+        $(".play-button").click(function (){
+            var id= $(this).attr("id");
+            console.log("http://localhost:8080/home/movie?id="+id);
+            var url="http://localhost:8080/home/movie?id="+id;
+            window.location.replace(url)
+        });
+    })
+</script>
 </body>
 </html>
