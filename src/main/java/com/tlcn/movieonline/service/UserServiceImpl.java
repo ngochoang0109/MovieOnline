@@ -6,6 +6,7 @@ import com.tlcn.movieonline.model.User;
 import com.tlcn.movieonline.repository.RoleRepository;
 import com.tlcn.movieonline.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -18,8 +19,8 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -41,7 +42,8 @@ public class UserServiceImpl implements UserService{
             roles.add(lstRole.get(1));
             user.setName(registerRequest.getName());
             user.setEmail(registerRequest.getEmail());
-//            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+            user.setEnable(true);
+            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             user.setRoles(roles);
             userRepository.save(user);
         }

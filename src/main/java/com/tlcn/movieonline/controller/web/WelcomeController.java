@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +35,13 @@ public class WelcomeController {
     @Autowired
     private ImageService imageService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value ={"/","/home"} , method = RequestMethod.GET)
     public String index(Model model){
         List<Movie> lstMovie=movieService.getAll();
         List<MovieRespone> newPosts= new ArrayList<>();
         for (Movie item: lstMovie) {
             MovieRespone movieRespone = new MovieRespone();
+            movieRespone.setId(item.getId());
             movieRespone.setGenres(item.getGenres());
             movieRespone.setTitle(item.getTitle());
             movieRespone.setImg(item.getImages());
@@ -50,7 +52,6 @@ public class WelcomeController {
         model.addAttribute("newPosts", newPosts);
         return "/web/index";
     }
-
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(){
@@ -65,14 +66,14 @@ public class WelcomeController {
     }
 
     @RequestMapping(value = "/register", method=RequestMethod.POST)
-    public String register(User user, @ModelAttribute RegisterRequest registerRequest, Model model) throws Exception {
+    public ModelAndView register(User user, @ModelAttribute RegisterRequest registerRequest, Model model) throws Exception {
 
         if(userService.emailExist(user.getEmail())){
             model.addAttribute("err", "Email already exists!");
-            return "/web/register";
+            return new ModelAndView("redirect:" + "/register");
         }
         userService.registerAccount(registerRequest);
-        return "/web/index";
+        return new ModelAndView("redirect:" + "/");
     }
 
 }

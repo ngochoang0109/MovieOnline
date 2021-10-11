@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +46,6 @@ public class MovieController {
 
     @Autowired
     private GenreService genreService;
-
 
     @GetMapping(value = "/movies")
     public String getAllMovie(Model model) {
@@ -89,11 +91,9 @@ public class MovieController {
                 Cast c = new Cast();
                 c.setName(item);
                 casts.add(c);
-            }
-            else {
+            } else {
                 casts.add(cast);
             }
-
         }
 
         String[] strDirectors= movieRequest.getDirector().split(",");
@@ -173,5 +173,19 @@ public class MovieController {
             return url;
         }
     }
+
+    public File convertMultipartFile(MultipartFile multipartFile){
+        File file= new File(multipartFile.getOriginalFilename());
+        try {
+            FileOutputStream fileOutputStream= new FileOutputStream(file);
+            fileOutputStream.write(multipartFile.getBytes());
+            fileOutputStream.close();
+            return file;
+        }
+        catch (Exception e){
+            return file;
+        }
+    }
+
 
 }
