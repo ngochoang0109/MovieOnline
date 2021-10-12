@@ -136,6 +136,10 @@
 .comment {
     display: block;
     transition: all 1s;
+
+}
+.comment p{
+    color: black;
 }
 .commentClicked {
     min-height: 0px;

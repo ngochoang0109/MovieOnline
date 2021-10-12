@@ -1,15 +1,19 @@
 package com.tlcn.movieonline.controller.web;
 
-import com.tlcn.movieonline.dto.MovieDetailRespone;
+import com.tlcn.movieonline.dto.CommentResponse;
+import com.tlcn.movieonline.dto.MovieDetailResponse;
 import com.tlcn.movieonline.model.*;
+import com.tlcn.movieonline.service.CommentService;
 import com.tlcn.movieonline.service.MovieService;
+import com.tlcn.movieonline.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.StringJoiner;
+import java.security.Principal;
+import java.util.*;
 
 
 @Controller
@@ -18,11 +22,19 @@ public class MovieWebController {
     @Autowired
     private MovieService movieService;
 
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CommentService commentService;
+
 
     @GetMapping("/home/movie")
-    public String movieDetail(@RequestParam("id") Long id, Model model){
+    public String movieDetail(@RequestParam("id") Long id, Model model, Principal principal){
+        User user= userService.getUserByEmail(principal.getName());
+        System.out.println(user.getName());
+
         Movie movie=movieService.getMovieById(id) ;
-        MovieDetailRespone movieDetail= new MovieDetailRespone();
+        MovieDetailResponse movieDetail= new MovieDetailResponse();
         movieDetail.setTitle(movie.getTitle());
         movieDetail.setDescription(movie.getDescription());
         movieDetail.setDuration(movie.getDuration());
@@ -52,7 +64,19 @@ public class MovieWebController {
         }
         movieDetail.setCountry(joinerCountry.toString());
 
+        Set<Comment> lstComment=movie.getComments();
+        List<CommentResponse> lstCommentResponse= new LinkedList<>();
+        for (Comment item: lstComment) {
+            CommentResponse commentResponse= new CommentResponse();
+            commentResponse.setContent(item.getContent());
+            commentResponse.setCreateDate(item.getCreateDate());
+            commentResponse.setUsername("ngoc hoang");
+            lstCommentResponse.add(commentResponse);
+        }
+
+        movieDetail.setLstComment(lstCommentResponse);
         model.addAttribute("movie", movieDetail);
+
         return "web/movie-details";
     }
 

@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class MovieDetailRespone {
+public class MovieDetailResponse {
     private long id;
     private String description;
     private int duration;
@@ -18,4 +20,5 @@ public class MovieDetailRespone {
     private String cast;
     private String genre;
     private String country;
+    private List<CommentResponse> lstComment;
 }

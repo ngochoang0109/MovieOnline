@@ -26,7 +26,7 @@ public class Movie {
     private boolean status;
     private int number;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "movieimage",
             joinColumns = @JoinColumn(name = "movieid"),
@@ -34,7 +34,7 @@ public class Movie {
     )
     private Set<Image> images;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "movievideo",
             joinColumns = @JoinColumn(name = "movieid"),
@@ -42,7 +42,7 @@ public class Movie {
     )
     private Set<Video> videos;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "moviegenre",
             joinColumns = @JoinColumn(name = "movieid"),
@@ -50,7 +50,7 @@ public class Movie {
     )
     private Set<Genre> genres;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "moviecast",
             joinColumns = @JoinColumn(name = "movieid"),
@@ -58,7 +58,7 @@ public class Movie {
     )
     private Set<Cast> casts;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "moviecoutry",
             joinColumns = @JoinColumn(name = "movieid"),
@@ -66,7 +66,7 @@ public class Movie {
     )
     private Set<Country> countries;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "moviedirector",
             joinColumns = @JoinColumn(name = "movieid"),
@@ -74,11 +74,11 @@ public class Movie {
     )
     private Set<Director> directors;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name = "relYearId")
     private ReleaseYear relYearId;
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Comment> comments;
 
     @OneToMany(mappedBy = "movie")

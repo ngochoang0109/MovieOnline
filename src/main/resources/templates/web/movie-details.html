@@ -99,32 +99,35 @@
                 </p>
             </div>
             <div class="trailer-player">
-                <iframe  src="https://www.youtube.com/embed/dZJYS6gXqNU" title="YouTube video player" frameborder="0"
+                <iframe frameborder="0" src="https://www.youtube.com/embed/dZJYS6gXqNU" title="YouTube video player"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen></iframe>
             </div>
         </div>
     </div>
 
-
-
-    <div class="container-comment">
-        <div>
-            <div class="col-6">
-                <div class="comment">
-                    <p>
-                        alo
-                    </p>
+    <th:block th:each="item, iStat: ${movie.lstComment}">
+        <div class="container-comment">
+            <div>
+                <div class="col-6">
+                    <div class="comment">
+                        <p style="color:black;" th:text="${item.username}">
+                        </p>
+                        <p style="color:black;" th:text="${item.content}">
+                        </p>
+                        <p style="color:black;" th:text="${item.createDate}">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="col-6">
+                    <textarea class="input-comment" placeholder="Write a comment" type="text"></textarea>
+                    <button class='primaryContained float-right btn-add-comment' type=" submit">Bình luận</button>
                 </div>
             </div>
         </div>
-        <div>
-            <div class="col-6">
-                <textarea type="text" class="input" placeholder="Write a comment" v-model="newItem"></textarea>
-                <button class='primaryContained float-right' type=" submit">Add Comment</button>
-            </div>
-        </div>
-    </div>
+    </th:block>
 
     <div class="row">
         <div class="more-like-this">
@@ -168,6 +171,6 @@
 <footer th:replace="web/layout::footer">
 
 </footer>
-<script type="application/javascript" th:src="@{web/js/movie-detail.js}"></script>
+<script th:src="@{/web/js/comment.js}" type="application/javascript"></script>
 </body>
 </html>
