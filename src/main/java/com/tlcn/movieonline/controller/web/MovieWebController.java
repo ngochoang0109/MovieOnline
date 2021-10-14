@@ -24,6 +24,7 @@ public class MovieWebController {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private CommentService commentService;
 
@@ -35,6 +36,7 @@ public class MovieWebController {
 
         Movie movie=movieService.getMovieById(id) ;
         MovieDetailResponse movieDetail= new MovieDetailResponse();
+        movieDetail.setId(movie.getId());
         movieDetail.setTitle(movie.getTitle());
         movieDetail.setDescription(movie.getDescription());
         movieDetail.setDuration(movie.getDuration());
@@ -70,7 +72,7 @@ public class MovieWebController {
             CommentResponse commentResponse= new CommentResponse();
             commentResponse.setContent(item.getContent());
             commentResponse.setCreateDate(item.getCreateDate());
-            commentResponse.setUsername("ngoc hoang");
+            commentResponse.setUsername(user.getName());
             lstCommentResponse.add(commentResponse);
         }
 

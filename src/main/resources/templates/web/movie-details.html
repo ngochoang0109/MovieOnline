@@ -123,7 +123,8 @@
             <div>
                 <div class="col-6">
                     <textarea class="input-comment" placeholder="Write a comment" type="text"></textarea>
-                    <button class='primaryContained float-right btn-add-comment' type=" submit">Bình luận</button>
+                    <button th:id="${movie.id}"
+                            class='primaryContained float-right btn-add-comment' type=" submit">Bình luận</button>
                 </div>
             </div>
         </div>
