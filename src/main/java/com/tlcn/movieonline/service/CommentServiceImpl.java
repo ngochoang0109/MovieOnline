@@ -40,7 +40,8 @@ public class CommentServiceImpl implements CommentService{
         comment.setContent(commentRequest.getContent());
         comment.setCreateDate(commentRequest.getCreateDate());
         comment.setMovie(movie);
-        comment.setParentId(this.getCommentByParentId(commentRequest.getParentId()));
+        System.out.println(commentRepository.getCommentByParentId((long) 1));
+//        comment.setParentId(this.getCommentByParentId(commentRequest.getParentId()));
 
         return commentRepository.save(comment);
     }

@@ -31,6 +31,7 @@ public class UserMovie {
     private boolean favorite;
 
     public UserMovie(User user, Movie movie, int rate, boolean favorite) {
+        this.id= new UserMovieKey(user.getId(), movie.getId());
         this.user = user;
         this.movie = movie;
         this.rate = rate;
