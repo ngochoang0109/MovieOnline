@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -16,4 +17,5 @@ public class MovieRespone {
     private String title;
     private Set<Genre> genres;
     private Set<Image> img;
+    private List<CommentResponse> commentRespones;
 }

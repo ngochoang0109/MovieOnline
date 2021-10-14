@@ -6,4 +6,5 @@ import com.tlcn.movieonline.model.User;
 public interface UserService {
     User registerAccount(RegisterRequest registerRequest);
     Boolean emailExist(String email);
+    User getUserByEmail(String email);
 }
