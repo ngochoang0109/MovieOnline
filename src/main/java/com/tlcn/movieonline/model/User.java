@@ -35,6 +35,9 @@ public class User{
     @OneToMany(mappedBy = "user")
     private Set<UserMovie> userMovies;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Comment> comments;
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;

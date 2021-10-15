@@ -17,6 +17,8 @@ public class CommentRequest {
     private Long parentId;
 
     public CommentRequest(){
+        this.parentId=(long)0;
+
         Date date= new Date();
         long time= date.getTime();
         this.createDate= new Timestamp(time);

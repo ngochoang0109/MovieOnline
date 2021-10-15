@@ -1,11 +1,13 @@
 package com.tlcn.movieonline.dto;
 
+import com.tlcn.movieonline.model.Image;
 import com.tlcn.movieonline.model.ReleaseYear;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,5 +22,6 @@ public class MovieDetailResponse {
     private String cast;
     private String genre;
     private String country;
-    private List<CommentResponse> lstComment;
+    private String img;
+    private String trailer;
 }

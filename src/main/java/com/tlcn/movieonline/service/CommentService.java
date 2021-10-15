@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface CommentService {
     Comment addComment(CommentRequest commentRequest, Principal principal);
-    Comment getCommentByParentId(Long parentId);
 }

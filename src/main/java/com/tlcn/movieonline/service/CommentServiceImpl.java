@@ -1,10 +1,7 @@
 package com.tlcn.movieonline.service;
 
 import com.tlcn.movieonline.dto.CommentRequest;
-import com.tlcn.movieonline.model.Comment;
-import com.tlcn.movieonline.model.Movie;
-import com.tlcn.movieonline.model.User;
-import com.tlcn.movieonline.model.UserMovie;
+import com.tlcn.movieonline.model.*;
 import com.tlcn.movieonline.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,26 +25,34 @@ public class CommentServiceImpl implements CommentService{
     @Autowired
     private UserMovieService userMovieService;
 
+    @Autowired
+    private ParentCommentService parentCommentService;
+
     @Override
     @Transactional(rollbackOn = Exception.class)
     public Comment addComment(CommentRequest commentRequest, Principal principal) {
-        Comment comment= new Comment();
-
         User user= userService.getUserByEmail(principal.getName());
         Movie movie= movieService.getMovieById(commentRequest.getMovieId());
         UserMovie userMovie=userMovieService.add(user, movie);
 
+
+        Comment comment= new Comment();
         comment.setContent(commentRequest.getContent());
         comment.setCreateDate(commentRequest.getCreateDate());
         comment.setMovie(movie);
-        System.out.println(commentRepository.getCommentByParentId((long) 1));
-//        comment.setParentId(this.getCommentByParentId(commentRequest.getParentId()));
-
-        return commentRepository.save(comment);
+        comment.setUser(user);
+        if (commentRequest.getParentId()==0){
+            // comment to root comment of user.
+            ParentComment parentComment= parentCommentService.add(new ParentComment(commentRequest.getParentId()));
+            comment.setParentComment(parentComment);
+            comment=commentRepository.save(comment);
+        }
+        else {
+            ParentComment parentComment= parentCommentService.getParentCommentById(commentRequest.getParentId());
+            comment.setParentComment(parentComment);
+            comment=commentRepository.save(comment);
+        }
+        return comment;
     }
 
-    @Override
-    public Comment getCommentByParentId(Long parentId) {
-        return commentRepository.getCommentByParentId(parentId);
-    }
 }
