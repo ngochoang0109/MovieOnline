@@ -19,7 +19,7 @@ public class MovieRequest {
     private String cast;
     private String director;
     private MultipartFile image;
-    private MultipartFile videoTrailer;
+    private String videoTrailer;
     private MultipartFile videoMovie;
     private String country;
     private String genre;

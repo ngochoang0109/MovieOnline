@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -79,7 +80,7 @@ public class Movie {
     private ReleaseYear relYearId;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Comment> comments;
+    private List<Comment> comments;
 
     @OneToMany(mappedBy = "movie")
     private Set<UserMovie> userMovies;

@@ -1,10 +1,12 @@
 package com.tlcn.movieonline.controller.web;
 
+import com.tlcn.movieonline.dto.CommentRequest;
 import com.tlcn.movieonline.dto.CommentResponse;
 import com.tlcn.movieonline.dto.MovieDetailResponse;
 import com.tlcn.movieonline.model.*;
 import com.tlcn.movieonline.service.CommentService;
 import com.tlcn.movieonline.service.MovieService;
+import com.tlcn.movieonline.service.ParentCommentService;
 import com.tlcn.movieonline.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,13 +30,14 @@ public class MovieWebController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private ParentCommentService parentCommentService;
+
 
     @GetMapping("/home/movie")
     public String movieDetail(@RequestParam("id") Long id, Model model, Principal principal){
-        User user= userService.getUserByEmail(principal.getName());
-        System.out.println(user.getName());
 
-        Movie movie=movieService.getMovieById(id) ;
+        Movie movie=movieService.getMovieById(id);
         MovieDetailResponse movieDetail= new MovieDetailResponse();
         movieDetail.setId(movie.getId());
         movieDetail.setTitle(movie.getTitle());
@@ -66,17 +69,27 @@ public class MovieWebController {
         }
         movieDetail.setCountry(joinerCountry.toString());
 
-        Set<Comment> lstComment=movie.getComments();
-        List<CommentResponse> lstCommentResponse= new LinkedList<>();
-        for (Comment item: lstComment) {
-            CommentResponse commentResponse= new CommentResponse();
-            commentResponse.setContent(item.getContent());
-            commentResponse.setCreateDate(item.getCreateDate());
-            commentResponse.setUsername(user.getName());
-            lstCommentResponse.add(commentResponse);
-        }
 
-        movieDetail.setLstComment(lstCommentResponse);
+        String img="";
+        for (Image item: movie.getImages()) {
+            img=item.getSource();
+            break;
+        }
+        movieDetail.setImg(img);
+
+        String video="";
+        for (Video item: movie.getVideos()) {
+            video=item.getSource();
+            break;
+        }
+        movieDetail.setTrailer(video);
+
+        List<ParentComment> lstParentComment= parentCommentService.getParentCommentByMovieId(id);
+
+        CommentRequest commentRequest= new CommentRequest();
+
+        model.addAttribute("lstParentComment", lstParentComment);
+        model.addAttribute("commentRequest", commentRequest);
         model.addAttribute("movie", movieDetail);
 
         return "web/movie-details";

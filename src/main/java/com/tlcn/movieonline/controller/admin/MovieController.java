@@ -76,11 +76,9 @@ public class MovieController {
         Set<Image> images= new HashSet<>();
         images.add(image);
 
-        String urlVideoTrailer=doUpload(movieRequest.getVideoTrailer());
-        if (urlVideoTrailer!=""){
-            video.setSource(urlVideoTrailer);
-        }
         Set<Video> videos= new HashSet<>();
+        video.setSource(movieRequest.getVideoTrailer());
+        video.setType("trailer");
         videos.add(video);
 
         String[] strCasts= movieRequest.getCast().split(",");

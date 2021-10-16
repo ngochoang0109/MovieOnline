@@ -12,7 +12,7 @@
 <section class="container-movie">
     <div class="row">
         <div class="column left">
-            <img class="img-poster" src="https://static.247phim.com/163045/conversions/6152beaf4f503_a5wqWGe-435_627.jpg" alt="">
+            <img class="img-poster" th:src="${movie.img}" alt="">
         </div>
         <div class="column right">
             <div class="details-movie">
@@ -99,30 +99,53 @@
                 </p>
             </div>
             <div class="trailer-player">
-                <iframe frameborder="0" src="https://www.youtube.com/embed/dZJYS6gXqNU" title="YouTube video player"
+                <iframe  th:src="${movie.trailer}" frameborder="0" title="YouTube video player"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen></iframe>
             </div>
         </div>
     </div>
 
-    <th:block th:each="item, iStat: ${movie.lstComment}">
-        <div class="container-comment">
+    <th:block>
+        <div class="container-comment" id="root-comment">
             <div>
                 <div class="col-6">
                     <div class="comment">
-                        <p style="color:black;" th:text="${item.username}">
-                        </p>
-                        <p style="color:black;" th:text="${item.content}">
-                        </p>
-                        <p style="color:black;" th:text="${item.createDate}">
-                        </p>
                     </div>
                 </div>
             </div>
             <div>
                 <div class="col-6">
                     <textarea class="input-comment" placeholder="Write a comment" type="text"></textarea>
+                    <button th:id="${movie.id}"
+                            class='primaryContained float-right btn-add-comment' type=" submit">Bình luận</button>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    <th:block th:each="item, iStat: ${lstParentComment}">
+        <div class="container-comment">
+            <th:block th:each="comment: ${item.getComments()}">
+                <div>
+                    <div class="col-6" >
+                        <div class="comment">
+                            <p style="color:black;" th:text="${comment.user.name}">
+                            </p>
+                            <p style="color:black;" th:text="${comment.content}">
+                            </p>
+                            <i style="color:black;"  th:text="${comment.createDate}">
+                            </i>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+
+            <div>
+                <div class="col-6" th:id="${item.id}">
+                    <textarea class="input-comment"
+                              placeholder="Write a comment"
+                              type="text"></textarea>
                     <button th:id="${movie.id}"
                             class='primaryContained float-right btn-add-comment' type=" submit">Bình luận</button>
                 </div>
@@ -172,6 +195,10 @@
 <footer th:replace="web/layout::footer">
 
 </footer>
+<script type="application/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js">
+
+</script>
 <script th:src="@{/web/js/comment.js}" type="application/javascript"></script>
 </body>
 </html>

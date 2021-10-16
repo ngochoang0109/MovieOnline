@@ -36,15 +36,13 @@ public class CommentApiWebController {
     @PostMapping(value = "/add-comment")
     public @ResponseBody CommentResponse addComment(@RequestBody CommentRequest commentRequest, Principal principal){
         Comment comment=commentService.addComment(commentRequest, principal);
-        Movie movie= movieService.getMovieById(comment.getMovie().getId());
-        User user= userService.getUserByEmail(principal.getName());
-        UserMovie userMovie= userMovieService.getUserMovieByUserAndMovie(user, movie);
 
-        CommentResponse commentResponse = new CommentResponse();
-        commentResponse.setContent(comment.getContent());
-        commentResponse.setCreateDate(comment.getCreateDate());
-        commentResponse.setUsername(userMovie.getUser().getName());
-
+        CommentResponse commentResponse =
+                new CommentResponse(comment.getContent(),
+                                    comment.getUser().getName(),
+                                    comment.getCreateDate(),
+                                    comment.getParentComment().getId(),
+                                    comment.getMovie().getId());
         return commentResponse;
     }
 
