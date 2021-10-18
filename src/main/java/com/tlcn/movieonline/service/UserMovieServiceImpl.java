@@ -15,7 +15,7 @@ public class UserMovieServiceImpl implements UserMovieService{
 
     @Override
     public UserMovie add(User user, Movie movie) {
-        UserMovie userMovie= new UserMovie(user, movie, 0, false);
+        UserMovie userMovie= new UserMovie(user, movie, 0, true);
         userMovieRepository.save(userMovie);
         return userMovie;
     }

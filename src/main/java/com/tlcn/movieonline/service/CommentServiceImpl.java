@@ -33,8 +33,6 @@ public class CommentServiceImpl implements CommentService{
     public Comment addComment(CommentRequest commentRequest, Principal principal) {
         User user= userService.getUserByEmail(principal.getName());
         Movie movie= movieService.getMovieById(commentRequest.getMovieId());
-        UserMovie userMovie=userMovieService.add(user, movie);
-
 
         Comment comment= new Comment();
         comment.setContent(commentRequest.getContent());

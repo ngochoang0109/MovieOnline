@@ -12,10 +12,16 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MovieRespone {
+public class MovieResponse {
     private Long id;
     private String title;
     private Set<Genre> genres;
     private Set<Image> img;
-    private List<CommentResponse> commentRespones;
+
+    public MovieResponse(Long id, String title, Set<Genre> genres, Set<Image> img) {
+        this.id = id;
+        this.title = title;
+        this.genres = genres;
+        this.img = img;
+    }
 }

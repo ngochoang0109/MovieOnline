@@ -19,14 +19,14 @@
                 <div class="tilte-movie">
                     <h1 th:text="${movie.title}">Tên phim trình chiếu</h1>
                 </div>
-                <div class="actions d-flex flex-start flex-middle">
-                    <a href="#" class="link-item">
+                <div class="actions d-flex flex-start flex-middle" th:id="${movie.id}">
+                    <a href="#" id="add-to-favorite-list" class="link-item">
                         <i class="fa fa-plus"></i></br>
-                        Yêu thích
+                        <p style="color: yellow">Yêu thích</p>
                     </a>
                     <a href="#" class="link-item">
                         <i class="fa fa-eye"></i></br>
-                        Lượt xem
+                        <p style="color: yellow"  th:text="${'Lượt xem: ' +movie.view}"></p>
                     </a>
                     <a href="#" class="link-item">
                         <i class="fa fa-share"></i></br>
@@ -200,5 +200,6 @@
 
 </script>
 <script th:src="@{/web/js/comment.js}" type="application/javascript"></script>
+<script th:src="@{/web/js/movie-detail.js}" type="application/javascript"></script>
 </body>
 </html>

@@ -81,6 +81,7 @@ public class MovieController {
         video.setType("trailer");
         videos.add(video);
 
+        // clear space here
         String[] strCasts= movieRequest.getCast().split(",");
         Set<Cast> casts= new HashSet<>();
         for (String item: strCasts) {
@@ -94,6 +95,7 @@ public class MovieController {
             }
         }
 
+        // clear space here
         String[] strDirectors= movieRequest.getDirector().split(",");
         Set<Director> directors= new HashSet<>();
         for (String item: strDirectors) {
@@ -108,6 +110,7 @@ public class MovieController {
             }
         }
 
+        // clear space here
         String[] strCountries= movieRequest.getCountry().split(",");
         Set<Country> countries= new HashSet<>();
         for (String item: strCountries) {
@@ -122,6 +125,7 @@ public class MovieController {
             }
         }
 
+        // clear space here
         String[] strGenre= movieRequest.getGenre().split(",");
         Set<Genre> genres= new HashSet<>();
         for (String item: strGenre) {

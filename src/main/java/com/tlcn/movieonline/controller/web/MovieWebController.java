@@ -1,7 +1,6 @@
 package com.tlcn.movieonline.controller.web;
 
 import com.tlcn.movieonline.dto.CommentRequest;
-import com.tlcn.movieonline.dto.CommentResponse;
 import com.tlcn.movieonline.dto.MovieDetailResponse;
 import com.tlcn.movieonline.model.*;
 import com.tlcn.movieonline.service.CommentService;
@@ -44,6 +43,7 @@ public class MovieWebController {
         movieDetail.setDescription(movie.getDescription());
         movieDetail.setDuration(movie.getDuration());
         movieDetail.setReleaseYear(movie.getRelYearId());
+        movieDetail.setView(movie.getView());
 
         StringJoiner joinerDirector= new StringJoiner(", ");
         for (Director d:movie.getDirectors()) {
@@ -69,7 +69,7 @@ public class MovieWebController {
         }
         movieDetail.setCountry(joinerCountry.toString());
 
-
+        // Dung tam {*
         String img="";
         for (Image item: movie.getImages()) {
             img=item.getSource();
@@ -83,11 +83,10 @@ public class MovieWebController {
             break;
         }
         movieDetail.setTrailer(video);
+        //*}
 
         List<ParentComment> lstParentComment= parentCommentService.getParentCommentByMovieId(id);
-
         CommentRequest commentRequest= new CommentRequest();
-
         model.addAttribute("lstParentComment", lstParentComment);
         model.addAttribute("commentRequest", commentRequest);
         model.addAttribute("movie", movieDetail);
