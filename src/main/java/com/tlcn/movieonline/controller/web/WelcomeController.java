@@ -1,6 +1,6 @@
 package com.tlcn.movieonline.controller.web;
 
-import com.tlcn.movieonline.dto.MovieRespone;
+import com.tlcn.movieonline.dto.MovieResponse;
 import com.tlcn.movieonline.dto.RegisterRequest;
 import com.tlcn.movieonline.model.Genre;
 import com.tlcn.movieonline.model.Movie;
@@ -32,24 +32,16 @@ public class WelcomeController {
     @Autowired
     private GenreService genreService;
 
-    @Autowired
-    private ImageService imageService;
-
     @RequestMapping(value ={"/","/home"} , method = RequestMethod.GET)
     public String index(Model model){
-        List<Movie> lstMovie=movieService.getAll();
-        List<MovieRespone> newPosts= new ArrayList<>();
-        for (Movie item: lstMovie) {
-            MovieRespone movieRespone = new MovieRespone();
-            movieRespone.setId(item.getId());
-            movieRespone.setGenres(item.getGenres());
-            movieRespone.setTitle(item.getTitle());
-            movieRespone.setImg(item.getImages());
-            newPosts.add(movieRespone);
-        }
+        List<List<Movie>> lstMovie=movieService.findMoviesByGenreTenLimit();
+
         List<Genre> lstGenre= genreService.findAll();
+        model.addAttribute("theatersMovie",lstMovie.get(0));
+        model.addAttribute("tvSeriesMovie", lstMovie.get(1));
+        model.addAttribute("cartoonMovie", lstMovie.get(2));
+        model.addAttribute("newPosts", lstMovie.get(3));
         model.addAttribute("lstGenre", lstGenre);
-        model.addAttribute("newPosts", newPosts);
         return "/web/index";
     }
 

@@ -24,4 +24,5 @@ public class MovieDetailResponse {
     private String country;
     private String img;
     private String trailer;
+    private int view;
 }

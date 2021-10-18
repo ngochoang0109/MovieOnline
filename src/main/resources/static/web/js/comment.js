@@ -8,7 +8,6 @@ $(document).ready(function (){
          movieId:movieId,
          parentId:parentId
       }
-      console.log(parentId);
       $.ajax({
          type:"POST",
          url:"http://localhost:8080/home/api/add-comment",

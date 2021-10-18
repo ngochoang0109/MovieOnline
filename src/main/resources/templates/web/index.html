@@ -27,7 +27,7 @@
 <div class="black-background">
     <section class="container" id="mylist">
         <h4 class="mylist-heading">
-            My List
+            Phim yêu thích
         </h4>
         <div class="mylist-container d-flex flex-start flex-middle flex-no-wrap owl-carousel">
             <div class="video">
@@ -68,7 +68,7 @@
 
             <th:block th:each="item, state:${newPosts}">
                 <div class="video">
-                    <th:block th:each="img:${item.getImg()}">
+                    <th:block th:each="img:${item.getImages()}">
                         <img alt=""
                              class="mylist-img p-r-10 p-t-10 video-item"
                              th:src="${img.getSource()}">
@@ -88,7 +88,7 @@
                         <div class="info d-flex flex-middle flex-no-wrap">
 
                         </div>
-                        <div class="genere d-flex flex-no-wrap text-shadow">
+                        <div class="genere text-shadow">
                             <th:block th:each="genre:${item.getGenres()}">
                                 <p th:text="${genre.getName()}"></p>
                             </th:block>
@@ -103,35 +103,119 @@
     <!-- Get In On the Action -->
     <section class="container p-t-40">
         <h4 class="romantic-heading">
-            Get In On the Action
+            Phim Chiếu Rạp
         </h4>
-        <div class="romantic-container d-flex flex-start flex-middle flex-no-wrap owl-carousel">
-            <a href="#">
-                <img class="mylist-img p-r-10 p-t-10 video-item" th:src="@{/web/images/tv-show/poster/never-have-ever-short poster.jpg}"></a>
+        <div class="continue-watching-container d-flex flex-start flex-middle flex-no-wrap owl-carousel">
+
+            <th:block th:each="item, state:${theatersMovie}">
+                <div class="video">
+                    <th:block th:each="img:${item.getImages()}">
+                        <img alt=""
+                             class="mylist-img p-r-10 p-t-10 video-item"
+                             th:src="${img.getSource()}">
+                    </th:block>
+
+                    <div class="video-description d-flex flex-end direction-column">
+                        <div class="play-button" th:id="${item.id}">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M6 4l15 8-15 8z" fill="black"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="heading f-w-8 text-shadow" th:text="${item.getTitle()}">
+
+                            </h4>
+                        </div>
+                        <div class="info d-flex flex-middle flex-no-wrap">
+
+                        </div>
+                        <div class="genere text-shadow">
+                            <th:block th:each="genre:${item.getGenres()}">
+                                <p th:text="${genre.getName()}"></p>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+
         </div>
     </section>
 
     <!-- Bingeworthy TV Shows -->
     <section class="container p-t-40">
         <h4 class="romantic-heading">
-            Bingeworthy TV Shows
+            Phim truyền hình
         </h4>
-        <div class="romantic-container d-flex flex-start flex-middle flex-no-wrap owl-carousel">
-            <a href="#">
-                <img alt=""
-                     class="mylist-img p-r-10 p-t-10 video-item" th:src="@{/web/images/tv-show/poster/never-have-ever-short poster.jpg}"></a>
+        <div class="continue-watching-container d-flex flex-start flex-middle flex-no-wrap owl-carousel">
+            <th:block th:each="item, state:${tvSeriesMovie}">
+                <div class="video">
+                    <th:block th:each="img:${item.getImages()}">
+                        <img alt=""
+                             class="mylist-img p-r-10 p-t-10 video-item"
+                             th:src="${img.getSource()}">
+                    </th:block>
+
+                    <div class="video-description d-flex flex-end direction-column">
+                        <div class="play-button" th:id="${item.id}">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M6 4l15 8-15 8z" fill="black"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="heading f-w-8 text-shadow" th:text="${item.getTitle()}">
+
+                            </h4>
+                        </div>
+                        <div class="info d-flex flex-middle flex-no-wrap">
+
+                        </div>
+                        <div class="genere text-shadow">
+                            <th:block th:each="genre:${item.getGenres()}">
+                                <p th:text="${genre.getName()}"></p>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
         </div>
     </section>
 
     <!--  Hollywood Action movies -->
     <section class="container p-t-40">
         <h4 class="romantic-heading">
-            Hollywood Action Movies
+            Phim Hoạt Hình
         </h4>
-        <div class="romantic-container d-flex flex-start flex-middle flex-no-wrap owl-carousel">
-            <a href="#">
-                <img class="mylist-img p-r-10 p-t-10 video-item"
-                     th:src="@{/web/images/tv-show/poster/never-have-ever-short poster.jpg}" alt=""></a>
+        <div class="continue-watching-container d-flex flex-start flex-middle flex-no-wrap owl-carousel">
+            <th:block th:each="item, state:${cartoonMovie}">
+                <div class="video">
+                    <th:block th:each="img:${item.getImages()}">
+                        <img alt=""
+                             class="mylist-img p-r-10 p-t-10 video-item"
+                             th:src="${img.getSource()}">
+                    </th:block>
+
+                    <div class="video-description d-flex flex-end direction-column">
+                        <div class="play-button" th:id="${item.id}">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M6 4l15 8-15 8z" fill="black"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="heading f-w-8 text-shadow" th:text="${item.getTitle()}">
+
+                            </h4>
+                        </div>
+                        <div class="info d-flex flex-middle flex-no-wrap">
+
+                        </div>
+                        <div class="genere text-shadow">
+                            <th:block th:each="genre:${item.getGenres()}">
+                                <p th:text="${genre.getName()}"></p>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
         </div>
     </section>
 </div>

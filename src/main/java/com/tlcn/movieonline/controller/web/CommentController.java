@@ -12,6 +12,4 @@ import java.security.Principal;
 @Controller
 @RequestMapping(value = "/home/comment")
 public class CommentController {
-
-
 }
