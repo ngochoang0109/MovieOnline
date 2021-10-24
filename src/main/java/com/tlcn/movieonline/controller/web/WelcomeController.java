@@ -1,12 +1,11 @@
 package com.tlcn.movieonline.controller.web;
 
-import com.tlcn.movieonline.dto.MovieResponse;
 import com.tlcn.movieonline.dto.RegisterRequest;
 import com.tlcn.movieonline.model.Genre;
 import com.tlcn.movieonline.model.Movie;
 import com.tlcn.movieonline.model.User;
 import com.tlcn.movieonline.service.GenreService;
-import com.tlcn.movieonline.service.ImageService;
+
 import com.tlcn.movieonline.service.MovieService;
 import com.tlcn.movieonline.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

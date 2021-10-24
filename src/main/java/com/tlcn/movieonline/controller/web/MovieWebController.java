@@ -42,7 +42,7 @@ public class MovieWebController {
         movieDetail.setTitle(movie.getTitle());
         movieDetail.setDescription(movie.getDescription());
         movieDetail.setDuration(movie.getDuration());
-        movieDetail.setReleaseYear(movie.getRelYearId());
+//        movieDetail.setReleaseYear(movie.getRelYearId());
         movieDetail.setView(movie.getView());
 
         StringJoiner joinerDirector= new StringJoiner(", ");
@@ -71,17 +71,17 @@ public class MovieWebController {
 
         // Dung tam {*
         String img="";
-        for (Image item: movie.getImages()) {
-            img=item.getSource();
+        for (MovieImage item: movie.getImages()) {
+            img=item.getName();
             break;
         }
         movieDetail.setImg(img);
 
         String video="";
-        for (Video item: movie.getVideos()) {
-            video=item.getSource();
-            break;
-        }
+//        for (Video item: movie.getVideos()) {
+//            video=item.getSource();
+//            break;
+//        }
         movieDetail.setTrailer(video);
         //*}
 

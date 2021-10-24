@@ -20,6 +20,4 @@ public class ReleaseYear {
     @Column(name = "year")
     private int year;
 
-    @OneToMany(mappedBy = "relYearId")
-    private Set<Movie> movies;
 }

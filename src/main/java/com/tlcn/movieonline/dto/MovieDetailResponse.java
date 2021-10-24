@@ -1,6 +1,5 @@
 package com.tlcn.movieonline.dto;
 
-import com.tlcn.movieonline.model.Image;
 import com.tlcn.movieonline.model.ReleaseYear;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
