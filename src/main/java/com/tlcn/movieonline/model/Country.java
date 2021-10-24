@@ -20,6 +20,5 @@ public class Country {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "countries")
-    private Set<Movie> movies;
+
 }

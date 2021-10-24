@@ -1,11 +1,11 @@
-package com.tlcn.movieonline.service;
-
-import com.tlcn.movieonline.model.Image;
-
-import java.util.List;
-
-
-public interface ImageService {
-    List<Image> getAll();
-    void addImage(Image image);
-}
+//package com.tlcn.movieonline.service;
+//
+//import com.tlcn.movieonline.model.Image;
+//
+//import java.util.List;
+//
+//
+//public interface ImageService {
+//    List<Image> getAll();
+//    void addImage(Image image);
+//}

@@ -20,7 +20,6 @@ public class Cast {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "casts")
-    private Set<Movie> movies;
+
 
 }
