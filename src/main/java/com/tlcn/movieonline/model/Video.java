@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -27,11 +28,11 @@ public class Video {
     @Transient
     private MultipartFile file;
 
-    @ManyToMany(mappedBy = "videos")
-    private Set<Movie> movies;
+    @OneToMany(mappedBy = "video")
+    private Collection<MovieVideo> movieVideos;
 
-    public Video(String source, Set<Movie> movies) {
+    public Video(String source, String type) {
         this.source = source;
-        this.movies = movies;
+        this.type = type;
     }
 }

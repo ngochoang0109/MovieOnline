@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+>
+<head th:replace="web/layout/head :: head">
+
+</head>
+<body>
+<header th:replace="web/layout/header :: header">
+</header>
+
+
+<section class="container-movie">
+    <div class="row">
+        <div class="column left">
+            <img class="img-poster" th:src="${movie.img}" alt="">
+        </div>
+        <div class="column right">
+            <div class="details-movie">
+                <div class="tilte-movie">
+                    <h1 th:text="${movie.title}">Tên phim trình chiếu</h1>
+                </div>
+                <div class="actions d-flex flex-start flex-middle" th:id="${movie.id}">
+                    <a href="#" id="add-to-favorite-list" class="link-item">
+                        <i class="fa fa-plus"></i></br>
+                        <p style="color: yellow">Yêu thích</p>
+                    </a>
+                    <a href="#" class="link-item">
+                        <i class="fa fa-eye"></i></br>
+                        <p style="color: yellow"  th:text="${'Lượt xem: ' +movie.view}"></p>
+                    </a>
+                    <a href="#" class="link-item">
+                        <i class="fa fa-share"></i></br>
+                        Share
+                    </a>
+                </div>
+            </div>
+            <div class="row-detail">
+                <div class="column left-btn">
+                    <a class="button1" href="#trailer">
+                            <span class="btn1">
+                                Xem Trailer</span></a>
+                </div>
+                <div class="column right-btn">
+                    <a class="button1 btn-watch-movie" th:id="${movie.id}">
+                        <span class="btn1">Xem Phim</span></a>
+                </div>
+            </div>
+            <div class="desc-movie">
+                <p th:text="${movie.description}">
+                </p>
+            </div>
+            <div class="row-detail">
+                <div class="column left-btn">
+                    <ul class="detail">
+                        <li>
+                            <p th:text="${'Thời lượng: ' + movie.duration +' Phút'}"></p>
+                        </li>
+                        <li>
+                            <p th:text="${'Đạo diễn: ' + movie.director}"></p>
+                        </li>
+                        <li>
+                            <p th:text="${'Quốc gia: ' + movie.country}"></p>
+                        </li>
+                        <li>
+                            <p th:text="${'Thể loại: ' + movie.genre}"></p>
+                        </li>
+                        <li>
+                            <p th:text="${'Phát hành: ' + movie.releaseYear}"> </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column right-btn">
+                    <ul class="detail">
+                        <li>
+                            <p th:text="${'Diễn viên: ' + movie.cast}"></p>
+                        </li>
+                        <li>
+                            <div class="rate">
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <span id="trailer"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="block-trailer">
+            <div class="caption">
+                <p>
+                    <i class="fa fa-film"></i>
+                    trailer phim ne
+                </p>
+            </div>
+            <div class="trailer-player">
+                <iframe  th:src="${movie.trailer}" frameborder="0" title="YouTube video player"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <th:block>
+        <div class="container-comment" id="root-comment">
+            <div>
+                <div class="col-6">
+                    <div class="comment">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="col-6">
+                    <textarea class="input-comment" placeholder="Write a comment" type="text"></textarea>
+                    <button th:id="${movie.id}"
+                            class='primaryContained float-right btn-add-comment' type=" submit">Bình luận</button>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    <th:block th:each="item, iStat: ${lstParentComment}">
+        <div class="container-comment">
+            <th:block th:each="comment: ${item.getComments()}">
+                <div>
+                    <div class="col-6" >
+                        <div class="comment">
+                            <p style="color:black;" th:text="${comment.user.name}">
+                            </p>
+                            <p style="color:black;" th:text="${comment.content}">
+                            </p>
+                            <i style="color:black;"  th:text="${comment.createDate}">
+                            </i>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+
+            <div>
+                <div class="col-6" th:id="${item.id}">
+                    <textarea class="input-comment"
+                              placeholder="Write a comment"
+                              type="text"></textarea>
+                    <button th:id="${movie.id}"
+                            class='primaryContained float-right btn-add-comment' type=" submit">Bình luận</button>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    <div class="row">
+        <div class="more-like-this">
+            <div class="title-relate">
+                <h4 class="romantic-heading">
+                    More LIke This
+                </h4>
+            </div>
+            <div class="row-movie-relate">
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<footer th:replace="web/layout/footer ::footer">
+
+</footer>
+<script type="application/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js">
+
+</script>
+<script th:src="@{/web/js/comment.js}" type="application/javascript"></script>
+<script th:src="@{/web/js/movie-detail.js}" type="application/javascript"></script>
+</body>
+</html>

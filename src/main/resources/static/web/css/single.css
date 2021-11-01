@@ -2,13 +2,7 @@ header{
     position: relative;
     background-color: black;
 }
-.videocontainer{
-    max-width: 1280px;
-    margin: auto !important;
-}
-video{
-    object-fit: fill;
-}
+
 
 .movieinformation{
     max-width: 800px;
@@ -35,7 +29,7 @@ video{
 }
 
 .actions{
-    margin-top: 40px;
+    margin-top: 1.5rem;
 }
 .actions i{
     font-size: 30px;

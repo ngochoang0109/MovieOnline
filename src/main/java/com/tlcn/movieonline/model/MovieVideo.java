@@ -1,64 +1,41 @@
 package com.tlcn.movieonline.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+
 @Entity
+@Table(name = "movievideo")
+@Getter
+@Setter
+@NoArgsConstructor
 public class MovieVideo {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(nullable = false)
-    private String name;
+    @EmbeddedId
+    private MovieVideoKey id;
 
     @ManyToOne
+    @MapsId("movieId")
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    public MovieVideo() {
+    @ManyToOne
+    @MapsId("videoId")
+    @JoinColumn(name = "video_id")
+    private Video video;
 
-    }
+    @Column(name = "current")
+    private int current;
 
-    public MovieVideo(Integer id, String name, Movie movie) {
-        this.id = id;
-        this.name = name;
+
+
+    public MovieVideo(Movie movie, Video video, int current) {
+        this.id = new MovieVideoKey(movie.getId(), video.getId());
         this.movie = movie;
+        this.video = video;
+        this.current = current;
     }
-
-    public MovieVideo(String name, Movie movie) {
-        this.name = name;
-        this.movie = movie;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Movie getMovie() {
-        return movie;
-    }
-
-    public void setMovie(Movie movie) {
-        this.movie = movie;
-    }
-
-    @Transient
-    public String getImagePath() {
-        return "/movie-images/" + movie.getId() + "/extras/" + this.getName();
-    }
-
 
 }

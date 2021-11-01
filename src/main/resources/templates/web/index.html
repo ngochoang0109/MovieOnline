@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
 >
-<head th:replace="web/layout :: head">
-
+<head th:replace="web/layout/head :: head">
 </head>
 <body>
-<header th:replace="web/layout :: header">
+<header th:replace="web/layout/header :: header">
 </header>
 <!-- hero section -->
 <div class="">
@@ -25,36 +24,43 @@
 
 <!--paretn div with black bg after main hero section-->
 <div class="black-background">
-    <section class="container" id="mylist">
-        <h4 class="mylist-heading">
+    <section class="container" id="mylist" th:if="${myList.size()!=0}">
+        <h4 class="mylist-heading" >
             Phim yêu thích
         </h4>
+
+
         <div class="mylist-container d-flex flex-start flex-middle flex-no-wrap owl-carousel">
-            <div class="video">
-                <img alt=""
-                     class="mylist-img p-r-10 p-t-10 video-item" th:src="@{/web/images/tv-show/poster/1.jpg}">
-                <div class="video-description d-flex flex-end direction-column">
-                    <div class="play-button">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M6 4l15 8-15 8z" fill="black"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="heading f-w-8 text-shadow">
-                            Never Have I Ever
-                        </h4>
-                    </div>
-                    <div class="info d-flex flex-middle flex-no-wrap">
-                        <p class="rated text-shadow"><strong>18+</strong></p>
-                        <p class="season-count text-shadow"> 1 Season</p>
-                    </div>
-                    <div class="genere d-flex flex-no-wrap text-shadow">
-                        <p>#Nudeity</p>
-                        <p>#Romance</p>
-                        <p>#Love</p>
+            <th:block th:each="item, istat: ${myList}">
+                <div class="video">
+                    <th:block th:each="image:${item.images}">
+                        <img th:if="${image.type =='poster'}" alt=""
+                             class="mylist-img p-r-10 p-t-10 video-item"
+                             th:src="${image.source}">
+                    </th:block>
+                    <div class="video-description d-flex flex-end direction-column">
+                        <div class="play-button" th:id="${item.id}">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M6 4l15 8-15 8z" fill="black"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="heading f-w-8 text-shadow"
+                                th:text="${item.title}">
+                            </h4>
+                        </div>
+                        <div class="info d-flex flex-middle flex-no-wrap">
+                            <p class="rated text-shadow"><strong>18+</strong></p>
+                            <p class="season-count text-shadow"> 1 Season</p>
+                        </div>
+                        <div class="genere text-shadow">
+                            <th:block th:each="genre:${item.getGenres()}">
+                                <p th:text="${genre.getName()}"></p>
+                            </th:block>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </th:block>
         </div>
     </section>
 
@@ -68,12 +74,11 @@
 
             <th:block th:each="item, state:${newPosts}">
                 <div class="video">
-                    <th:block th:each="img:${item.getImages()}">
-                        <img alt=""
+                    <th:block th:each="image:${item.images}">
+                        <img th:if="${image.type =='poster'}" alt=""
                              class="mylist-img p-r-10 p-t-10 video-item"
-                             th:src="${img.getSource()}">
+                             th:src="${image.source}">
                     </th:block>
-
                     <div class="video-description d-flex flex-end direction-column">
                         <div class="play-button" th:id="${item.id}">
                             <svg viewBox="0 0 24 24">
@@ -82,7 +87,6 @@
                         </div>
                         <div>
                             <h4 class="heading f-w-8 text-shadow" th:text="${item.getTitle()}">
-
                             </h4>
                         </div>
                         <div class="info d-flex flex-middle flex-no-wrap">
@@ -109,10 +113,10 @@
 
             <th:block th:each="item, state:${theatersMovie}">
                 <div class="video">
-                    <th:block th:each="img:${item.getImages()}">
-                        <img alt=""
+                    <th:block th:each="image:${item.images}">
+                        <img th:if="${image.type =='poster'}" alt=""
                              class="mylist-img p-r-10 p-t-10 video-item"
-                             th:src="${img.getSource()}">
+                             th:src="${image.source}">
                     </th:block>
 
                     <div class="video-description d-flex flex-end direction-column">
@@ -149,11 +153,14 @@
         <div class="continue-watching-container d-flex flex-start flex-middle flex-no-wrap owl-carousel">
             <th:block th:each="item, state:${tvSeriesMovie}">
                 <div class="video">
-                    <th:block th:each="img:${item.getImages()}">
-                        <img alt=""
-                             class="mylist-img p-r-10 p-t-10 video-item"
-                             th:src="${img.getSource()}">
+
+                    <th:block th:each="image:${item.images}">
+                            <img th:if="${image.type =='poster'}" alt=""
+                                 class="mylist-img p-r-10 p-t-10 video-item"
+                                 th:src="${image.source}">
                     </th:block>
+
+
 
                     <div class="video-description d-flex flex-end direction-column">
                         <div class="play-button" th:id="${item.id}">
@@ -188,10 +195,11 @@
         <div class="continue-watching-container d-flex flex-start flex-middle flex-no-wrap owl-carousel">
             <th:block th:each="item, state:${cartoonMovie}">
                 <div class="video">
-                    <th:block th:each="img:${item.getImages()}">
-                        <img alt=""
+
+                    <th:block th:each="image:${item.images}">
+                        <img th:if="${image.type =='poster'}" alt=""
                              class="mylist-img p-r-10 p-t-10 video-item"
-                             th:src="${img.getSource()}">
+                             th:src="${image.source}">
                     </th:block>
 
                     <div class="video-description d-flex flex-end direction-column">
@@ -219,7 +227,7 @@
         </div>
     </section>
 </div>
-<footer th:replace="web/layout::footer">
+<footer th:replace="web/layout/footer ::footer">
 
 </footer>
 <script type="application/javascript">

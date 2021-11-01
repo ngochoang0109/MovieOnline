@@ -32,19 +32,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/resources/**").permitAll()
-                .antMatchers("/").permitAll();
-//                .antMatchers("/home/**").hasRole("CUS")
-//                .antMatchers("/login","/register").permitAll()
-//                .antMatchers("/admin/**").permitAll();
+                .antMatchers("/").permitAll()
+                .antMatchers("/home/**").hasRole("CUS")
+                .antMatchers("/login","/register").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN");
 
         http.csrf().disable().cors().disable();
-//        http.formLogin()
-//                .loginPage("/login")
-//                .usernameParameter("email")
-//                .passwordParameter("password")
-//                .defaultSuccessUrl("/home")
-//                .failureForwardUrl("/login?error");
-//
-//        http.logout().permitAll();
+        http.formLogin()
+                .loginPage("/login")
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/home")
+                .failureForwardUrl("/login?error");
+
+        http.logout().permitAll();
     }
 }

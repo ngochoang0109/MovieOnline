@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,74 +25,58 @@ public class Movie {
     private String description;
 
     private int duration;
-    private int view;
+    private long view;
     private boolean status;
     private int number;
 
+    private int releaseYear;
 
-    public Set<MovieImage> getImages() {
-        return images;
-    }
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name = "movies_images", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "image_id"))
+    private Collection<Image> images;
 
-    public void setImages(Set<MovieImage> images) {
-        this.images = images;
-    }
-
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
-    private Set<MovieImage> images = new HashSet<>();
-
-    public String getMainImage() {
-        return mainImage;
-    }
-
-    public void setMainImage(String mainImage) {
-        this.mainImage = mainImage;
-    }
-
-    private String mainImage;
-
-    public Set<MovieVideo> getVideos() {
-        return videos;
-    }
-
-    public void setVideos(Set<MovieVideo> videos) {
-        this.videos = videos;
-    }
-
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MovieVideo> videos = new HashSet<>();
-
-    private String trailerVideo;
-
-
-
-    @ManyToMany()
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name = "movies_genres", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "genres_id"))
-    private Set<Genre> genres = new HashSet<>();
+    private Collection<Genre> genres;
 
 
-    @ManyToMany()
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name = "movies_casts", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "cast_id"))
-    private Set<Cast> casts = new HashSet<>();
+    private Collection<Cast> casts;
 
-    @ManyToMany()
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name = "movies_countries", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "country_id"))
-    private Set<Country> countries = new HashSet<>();
+    private Collection<Country> countries;
 
-    @ManyToMany()
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name = "movies_directors", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "director_id"))
-    private Set<Director> directors = new HashSet<>();
-
-
-    private Integer yearRelease;
+    private Collection<Director> directors;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Comment> comments;
+    private Collection<Comment> comments;
 
     @OneToMany(mappedBy = "movie")
-    private Set<UserMovie> userMovies;
+    private Collection<UserMovie> userMovies;
+
+    @OneToMany(mappedBy = "movie")
+    private Collection<MovieVideo> movieVideos;
 
     public Movie(){
         this.view=0;
+    }
+
+    public Movie(String title, String description, int duration, long view, boolean status, int number, int releaseYear, Collection<Image> images, Collection<Genre> genres, Collection<Cast> casts, Collection<Country> countries, Collection<Director> directors) {
+        this.title = title;
+        this.description = description;
+        this.duration = duration;
+        this.view = view;
+        this.status = status;
+        this.number = number;
+        this.releaseYear = releaseYear;
+        this.images = images;
+        this.genres = genres;
+        this.casts = casts;
+        this.countries = countries;
+        this.directors = directors;
     }
 }

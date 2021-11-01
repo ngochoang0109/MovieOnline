@@ -6,34 +6,25 @@ import com.tlcn.movieonline.dto.MovieRequest;
 import com.tlcn.movieonline.model.*;
 import com.tlcn.movieonline.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/admin")
 public class MovieController {
 
     @Autowired
-    private MovieService movieService;
+    private MovieVideoService movieVideoService;
 
     @Autowired
     private Cloudinary cloudinary;
 
-    @Autowired
-    private YearReleaseService releaseService;
 
     @Autowired
     private CastService castService;
@@ -47,136 +38,129 @@ public class MovieController {
     @Autowired
     private GenreService genreService;
 
+    @Autowired
+    private AwsS3Service awsS3Service;
+
+    @Autowired
+    private MovieService movieService;
+
     @GetMapping(value = "/movies")
-    public String getAllMovie(Model model) {
-        List<Movie> lstMovie = movieService.getAll();
-        model.addAttribute("lstMovie", lstMovie);
-        return "admin/movie-manager";
+    public String getMovieIndex(Model model){
+        return getMoviePage(1, model);
+    }
+
+    @GetMapping(value = "/movies/{page}")
+    public String getMoviePage(@PathVariable("page") int numberPage, Model model) {
+        Page<Movie> page=movieService.findAll(numberPage);
+        List<Movie> movies= page.getContent();
+        long totalMovie= page.getTotalElements();
+        int totalPage=page.getTotalPages();
+
+        model.addAttribute("movies", movies);
+        model.addAttribute("currentPage", numberPage);
+        model.addAttribute("totalMovie", totalMovie);
+        model.addAttribute("totalPage", totalPage);
+        return "admin/movie/movie-manager";
     }
 
     @GetMapping(value = "/movies/add")
     public String add(Model model) {
-        Movie movie = new Movie();
-        model.addAttribute("movie", movie);
-//        List<ReleaseYear> lstRelease = releaseService.findAll();
-//        model.addAttribute("lstRelease", lstRelease);
         model.addAttribute("movieRequest", new MovieRequest());
-
-        List<Director> lstDirector= directorService.getAllDirector();
-        model.addAttribute("lstDirector", lstDirector);
-        List<Genre> lstGenre= genreService.findAll();
-        model.addAttribute("lstGenre", lstGenre);
-        List<Country> lstCountry= countryService.findAll();
-        model.addAttribute("lstCountry", lstCountry);
-        return "admin/movie-add";
+        return "admin/movie/movie-add";
     }
 
-//    @PostMapping(value = "/movies/add")
-//    public String add(@ModelAttribute("movieRequest") MovieRequest movieRequest){
-//        ReleaseYear releaseYear= new ReleaseYear();
-//        Movie movie= new Movie();
-////        Image image= new Image();
-//        Video video= new Video();
-//
-////        String urlImage=doUpload(movieRequest.getImage());
-////        if (urlImage!=""){
-////            image.setSource(urlImage);
-////        }
-////        Set<MovieImage> images= new HashSet<>();
-////        images.add(image);
-//
-//        Set<Video> videos= new HashSet<>();
-//        video.setSource(movieRequest.getVideoTrailer());
-//        video.setType("trailer");
-//        videos.add(video);
-//
-//        // clear space here
-//        String[] strCasts= movieRequest.getCast().split(",");
-//        Set<Cast> casts= new HashSet<>();
-//        for (String item: strCasts) {
-//            Cast cast = castService.getCastByName(item.trim());
-//            if (cast == null) {
-//                Cast c = new Cast();
-//                c.setName(item.trim());
-//                casts.add(c);
-//            } else {
-//                casts.add(cast);
-//            }
-//        }
-//
-//        // clear space here
-//        String[] strDirectors= movieRequest.getDirector().split(",");
-//        Set<Director> directors= new HashSet<>();
-//        for (String item: strDirectors) {
-//            Director director = directorService.getDirectorByName(item);
-//            if (director == null) {
-//                Director d= new Director();
-//                d.setName(item.trim());
-//                directors.add(d);
-//            }
-//            else {
-//                directors.add(director);
-//            }
-//        }
-//
-//        // clear space here
-//        String[] strCountries= movieRequest.getCountry().split(",");
-//        Set<Country> countries= new HashSet<>();
-//        for (String item: strCountries) {
-//            Country country = countryService.getCountryByName(item);
-//            if (country == null) {
-//                Country c= new Country();
-//                c.setName(item);
-//                countries.add(c);
-//            }
-//            else {
-//                countries.add(country);
-//            }
-//        }
-//
-//        // clear space here
-//        String[] strGenre= movieRequest.getGenre().split(",");
-//        Set<Genre> genres= new HashSet<>();
-//        for (String item: strGenre) {
-//            Genre genre = genreService.getGenreByName(item);
-//            if (genre == null) {
-//                Genre g= new Genre();
-//                g.setName(item);
-//                genres.add(g);
-//            }
-//            else {
-//                genres.add(genre);
-//            }
-//        }
-//
-//
-//        //do something
-//        releaseYear = releaseService.getYearReleaseById(movieRequest.getReleaseYear());
-//
-//        movie.setTitle(movieRequest.getTitle());
-//        movie.setDescription(movieRequest.getDescription());
-//        movie.setDuration(movieRequest.getDuration());
-//        movie.setNumber(movieRequest.getNumber());
-//        movie.setView(0);
-//        movie.setStatus(movieRequest.isStatus());
-//        movie.setRelYearId(releaseYear);
-////        movie.setImages(images);
-//        movie.setVideos(videos);
-//        movie.setCasts(casts);
-//        movie.setDirectors(directors);
-//        movie.setCountries(countries);
-//        movie.setGenres(genres);
-//
-//        movieService.addMove(movie);
-//
-//        return "admin/movie-manager";
-//    }
+    @PostMapping(value = "/movies/add")
+    public String add(@ModelAttribute("movieRequest") MovieRequest movieRequest){
+
+
+        List<Image> images= new LinkedList<>();
+        String sourcePoster=doUpload(movieRequest.getImagePoster());
+        Image imagePoster=new Image(sourcePoster,"poster");
+        images.add(imagePoster);
+        String sourceWatch= doUpload(movieRequest.getImageWatch());
+        Image imageWatch=new Image(sourceWatch,"watch");
+        images.add(imageWatch);
+
+        List<Video> videos= new ArrayList<>();
+        Video videoTrailer= new Video(movieRequest.getVideoTrailer(), "trailer");
+        String urlMovie= awsS3Service.uploadFile(movieRequest.getVideoMovie());
+        Video videoMovie= new Video(urlMovie, "movie");
+        videos.add(videoMovie);
+        videos.add(videoTrailer);
+
+        String[] strCasts= movieRequest.getCast().trim().split(",");
+        Set<Cast> casts= new HashSet<>();
+        for (String item: strCasts) {
+            Cast cast = castService.getCastByName(item.trim());
+            if (cast == null) {
+                Cast c = new Cast();
+                c.setName(item);
+                casts.add(c);
+            } else {
+                casts.add(cast);
+            }
+        }
+
+
+        String[] strDirectors= movieRequest.getDirector().split(",");
+        Set<Director> directors= new HashSet<>();
+        for (String item: strDirectors) {
+            Director director = directorService.getDirectorByName(item.trim());
+            if (director == null) {
+                Director d= new Director();
+                d.setName(item);
+                directors.add(d);
+            }
+            else {
+                directors.add(director);
+            }
+        }
+
+
+        String[] strCountries= movieRequest.getCountry().split(",");
+        Set<Country> countries= new HashSet<>();
+        for (String item: strCountries) {
+            Country country = countryService.getCountryByName(item.trim());
+            if (country == null) {
+                Country c= new Country();
+                c.setName(item);
+                countries.add(c);
+            }
+            else {
+                countries.add(country);
+            }
+        }
+
+
+        String[] strGenre= movieRequest.getGenre().split(",");
+        Set<Genre> genres= new HashSet<>();
+        for (String item: strGenre) {
+            Genre genre = genreService.getGenreByName(item.trim());
+            if (genre == null) {
+                Genre g= new Genre();
+                g.setName(item);
+                genres.add(g);
+            }
+            else {
+                genres.add(genre);
+            }
+        }
+
+        Movie movie= new Movie( movieRequest.getTitle(), movieRequest.getDescription(),
+                                movieRequest.getDuration(), 0, true, movieRequest.getNumber(),
+                                 movieRequest.getReleaseYear(), images, genres,
+                                casts, countries, directors);
+
+        movieVideoService.addOneMovieMultiVideo(movie, videos, movieRequest.getCurrent());
+
+        return "admin/movie/movie-manager";
+    }
 
     public String doUpload(MultipartFile params){
         String url="";
         try{
-            Map jsonResult= cloudinary.uploader().uploadLarge(params.getBytes(),
-                    ObjectUtils.asMap("resource_type","auto","chunk_size",100000000));
+            Map jsonResult= cloudinary.uploader().upload(params.getBytes(),
+                    ObjectUtils.asMap("resource_type","image"));
             url=(String) jsonResult.get("secure_url");
             return url;
         }
@@ -184,19 +168,4 @@ public class MovieController {
             return url;
         }
     }
-
-    public File convertMultipartFile(MultipartFile multipartFile){
-        File file= new File(multipartFile.getOriginalFilename());
-        try {
-            FileOutputStream fileOutputStream= new FileOutputStream(file);
-            fileOutputStream.write(multipartFile.getBytes());
-            fileOutputStream.close();
-            return file;
-        }
-        catch (Exception e){
-            return file;
-        }
-    }
-
-
 }

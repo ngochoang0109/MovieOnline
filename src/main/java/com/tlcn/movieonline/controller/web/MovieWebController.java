@@ -1,5 +1,6 @@
 package com.tlcn.movieonline.controller.web;
 
+
 import com.tlcn.movieonline.dto.CommentRequest;
 import com.tlcn.movieonline.dto.MovieDetailResponse;
 import com.tlcn.movieonline.model.*;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
@@ -39,11 +41,19 @@ public class MovieWebController {
         Movie movie=movieService.getMovieById(id);
         MovieDetailResponse movieDetail= new MovieDetailResponse();
         movieDetail.setId(movie.getId());
-        movieDetail.setTitle(movie.getTitle());
         movieDetail.setDescription(movie.getDescription());
         movieDetail.setDuration(movie.getDuration());
-//        movieDetail.setReleaseYear(movie.getRelYearId());
+        movieDetail.setReleaseYear(movie.getReleaseYear());
+        movieDetail.setTitle(movie.getTitle());
+
         movieDetail.setView(movie.getView());
+
+        for (Image item: movie.getImages()) {
+            if (item.getType().equals("poster")){
+                movieDetail.setImg(item.getSource());
+                break;
+            }
+        }
 
         StringJoiner joinerDirector= new StringJoiner(", ");
         for (Director d:movie.getDirectors()) {
@@ -69,21 +79,16 @@ public class MovieWebController {
         }
         movieDetail.setCountry(joinerCountry.toString());
 
-        // Dung tam {*
-        String img="";
-        for (MovieImage item: movie.getImages()) {
-            img=item.getName();
-            break;
-        }
-        movieDetail.setImg(img);
 
         String video="";
-//        for (Video item: movie.getVideos()) {
-//            video=item.getSource();
-//            break;
-//        }
+        for (MovieVideo movieVideo: movie.getMovieVideos()) {
+            if (movieVideo.getVideo().getType().equals("trailer")){
+                video=movieVideo.getVideo().getSource();
+                break;
+            }
+        }
         movieDetail.setTrailer(video);
-        //*}
+
 
         List<ParentComment> lstParentComment= parentCommentService.getParentCommentByMovieId(id);
         CommentRequest commentRequest= new CommentRequest();
@@ -91,12 +96,23 @@ public class MovieWebController {
         model.addAttribute("commentRequest", commentRequest);
         model.addAttribute("movie", movieDetail);
 
-        return "web/movie-details";
+        return "web/movie/movie-details";
     }
 
     @GetMapping("/home/movie/watch")
-    public String movieWatch(){
-        return "web/movie-watch";
+    public String movieWatch(@RequestParam("id") long id, Model model){
+        Movie movie= movieService.getMovieById(id);
+        model.addAttribute("movie", movie);
+        return "web/movie/movie-watch";
     }
+
+    @GetMapping("/movies/{genre}")
+    public String searchByGenre(@PathVariable("genre") String genre, Model model){
+        List<Movie> movies= movieService.getMovieByGenre(genre);
+        model.addAttribute("movies", movies);
+        return "/web/movie/search-movie";
+    }
+
+
 
 }

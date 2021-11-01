@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/admin-layout.html::head">
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="admin/admin-layout.html::header"></nav>
+<div id="layoutSidenav">
+    <div th:replace="admin/admin-layout.html::menu">
+    </div>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <a class="btn btn-primary mb-4 mt-4"
+                   type="button" th:href="@{/admin/movies/add}">
+                    Thêm phim mới
+                </a>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Danh sách thể loại
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-dark mb-3">
+                            <thead>
+                            <tr>
+                                <th>Mã</th>
+                                <th>Tên</th>
+                                <th>Số tập</th>
+                                <th>Năm phát hành</th>
+                                <th>Lượt xem</th>
+                                <th>Trạng trái</th>
+                                <th>Hành động</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="movie, istat:${movies}">
+                                <td id="id" th:text="${movie.id}"></td>
+                                <td id="name" th:text="${movie.title}"></td>
+                                <td id="number" th:text="${movie.number}"></td>
+                                <td id="releaseYear" th:text="${movie.releaseYear}"></td>
+                                <td id="viewMovie" th:text="${movie.view}"></td>
+                                <td id="status" >
+                                    <span class="badge badge-danger" th:if="${movie.status==true}"> Còn phát</span>
+                                    <span class="badge badge-danger" th:unless="${movie.status==true}"> Hết phát</span>
+                                </td>
+                                <td class="w-25">
+                                    <button class="btn btn-info mx-3"
+                                            type="button">Chi tiết</button>
+                                    <button class="btn btn-danger"type="button">Xóa</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link"
+                                       th:if="${currentPage>1}"
+                                       th:href="@{/admin/movies/{page}(page=${currentPage}-1)}">Previous</a>
+                                </li>
+                                <th:block th:each="item:${#numbers.sequence(1,totalPage)}">
+                                    <li class="page-item">
+                                        <a class="page-link bg-info"
+                                           th:if="${item==currentPage}"
+                                           th:href="@{/admin/movies/{page}(page=${item})}"
+                                           th:text="${item}"></a>
+                                        <a class="page-link"
+                                           th:unless="${item==currentPage}"
+                                           th:href="@{/admin/movies/{page}(page=${item})}"
+                                           th:text="${item}"></a>
+                                    </li>
+                                </th:block>
+
+                                <li class="page-item">
+                                    <a class="page-link" th:if="${currentPage<totalPage}"
+                                       th:href="@{/admin/movies/{page}(page=${currentPage}+1)}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

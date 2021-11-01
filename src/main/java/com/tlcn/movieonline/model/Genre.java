@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -20,6 +21,8 @@ public class Genre {
     @Column(name = "name")
     private String name;
 
+    @ManyToMany(mappedBy = "genres")
+    private Collection<Movie> movies;
 
 
     public Genre(String name) {

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html th:lang="vi"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="header"
+        class="d-flex space-between flex-center flex-middle">
+    <ul class="nav-links d-flex flex-center flex-middle" id="header-ul-li">
+        <li>
+            <a href="/">
+                <h2 class="logo logo-text logo-color f-s-28 m-r-25">MovieOline</h2>
+            </a>
+        </li>
+        <li>
+            <a class="nav-item home" href="browse.html">Trang Chủ</a>
+        </li>
+        <li>
+            <a class="nav-item" href="tvshow.html">Phim Mới</a>
+        </li>
+        <li>
+            <a class="nav-item" href="tvshow.html">Phim Bộ</a>
+        </li>
+        <li>
+            <a class="nav-item" href="movies.html">Phim Lẻ</a>
+        </li>
+        <li id="header-genre" class="dropdown">
+            <a class="nav-item latest" href="latest.html">Thể Loại</a>
+            <ul class="sub-nav">
+                <th:block>
+                    <li th:each="item:${genres}">
+                        <a th:href="@{/movies/{genre}(genre=${item})}" th:text="${item.name}"></a>
+                    </li>
+                </th:block>
+            </ul>
+        </li>
+        <li>
+            <a class="nav-item" href="mylist.html">Quốc Gia</a>
+        </li>
+    </ul>
+
+    <div class="righticons d-flex flex-end flex-middle">
+        <a href="search.html">
+            <i aria-hidden="true" class="fa fa-search icon-search"></i>
+        </a>
+        <div class="dropdown notification">
+            <i aria-hidden="true" class="fa fa-heart icon-heart"></i>
+            <div class="dropdown-content">
+                <a class="profile-item d-flex flex-middle" href="#">
+                    <span>You have new notification from <span>User 123</span></span>
+                </a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <i class="fa fa-info-circle icon-info" aria-hidden="true" ></i>
+            <span class="profile-arrow"></span>
+            <div class="dropdown-content">
+                <div class="links d-flex direction-column">
+                    <a th:href="@{/login}">Đăng nhập</a>
+                    <a href="#">Yêu thích</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+</body>
+</html>
