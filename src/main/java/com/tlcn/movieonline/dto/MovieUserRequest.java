@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MovieUserRequest {
     private long id;
-
+    private float rate;
     public MovieUserRequest(long id) {
         this.id = id;
     }

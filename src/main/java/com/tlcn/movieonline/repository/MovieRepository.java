@@ -17,7 +17,7 @@ public interface MovieRepository extends PagingAndSortingRepository<Movie, Long>
     Movie getMovieById(Long id);
 
     @Query(
-            "select movie  from Movie movie inner join movie.genres g " +
+            "select movie from Movie movie inner join movie.genres g " +
                     "where g.name like %:genre%"
     )
     List<Movie> findMoviesByGenre(@Param("genre") String genre);

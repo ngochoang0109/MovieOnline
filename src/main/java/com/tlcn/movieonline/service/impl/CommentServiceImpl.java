@@ -23,9 +23,6 @@ public class CommentServiceImpl implements CommentService {
     private MovieService movieService;
 
     @Autowired
-    private UserMovieService userMovieService;
-
-    @Autowired
     private ParentCommentService parentCommentService;
 
     @Override

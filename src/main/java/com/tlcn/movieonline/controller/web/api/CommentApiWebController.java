@@ -24,26 +24,11 @@ public class CommentApiWebController {
     @Autowired
     private CommentService commentService;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private MovieService movieService;
-
-    @Autowired
-    private UserMovieService userMovieService;
-
     @PostMapping(value = "/add-comment")
-    public @ResponseBody CommentResponse addComment(@RequestBody CommentRequest commentRequest, Principal principal){
-        Comment comment=commentService.addComment(commentRequest, principal);
-
-        CommentResponse commentResponse =
-                new CommentResponse(comment.getContent(),
-                                    comment.getUser().getName(),
-                                    comment.getCreateDate(),
-                                    comment.getParentComment().getId(),
-                                    comment.getMovie().getId());
-        return commentResponse;
+    public @ResponseBody void addComment(@RequestBody CommentRequest commentRequest, Principal principal){
+        if (commentRequest.getContent()!=""){
+            commentService.addComment(commentRequest, principal);
+        }
     }
 
 }

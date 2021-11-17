@@ -75,13 +75,10 @@
                             <p th:text="${'Diễn viên: ' + movie.cast}"></p>
                         </li>
                         <li>
-                            <div class="rate">
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                            </div>
+                            <p th:text="${'Số lượt đánh giá: ' + movie.totalRating}"></p>
+                        </li>
+                        <li>
+                            <p th:text="${'Đánh giá: ' + movie.rating}"></p>
                         </li>
                     </ul>
                 </div>
@@ -95,7 +92,7 @@
             <div class="caption">
                 <p>
                     <i class="fa fa-film"></i>
-                    trailer phim ne
+                    TRAILER
                 </p>
             </div>
             <div class="trailer-player">
@@ -106,42 +103,35 @@
         </div>
     </div>
 
+
     <th:block>
         <div class="container-comment" id="root-comment">
-            <div>
                 <div class="col-6">
                     <div class="comment">
                     </div>
                 </div>
-            </div>
-            <div>
                 <div class="col-6">
                     <textarea class="input-comment" placeholder="Write a comment" type="text"></textarea>
                     <button th:id="${movie.id}"
-                            class='primaryContained float-right btn-add-comment' type=" submit">Bình luận</button>
+                            class='primaryContained float-right btn-add-comment' type="submit">Bình luận</button>
                 </div>
-            </div>
         </div>
     </th:block>
 
     <th:block th:each="item, iStat: ${lstParentComment}">
         <div class="container-comment">
             <th:block th:each="comment: ${item.getComments()}">
-                <div>
                     <div class="col-6" >
                         <div class="comment">
-                            <p style="color:black;" th:text="${comment.user.name}">
-                            </p>
+                            <h6 style="color:black;" th:text="${comment.user.name}">
+                            </h6>
                             <p style="color:black;" th:text="${comment.content}">
                             </p>
-                            <i style="color:black;"  th:text="${comment.createDate}">
+                            <i style="color:black;"  th:text="${comment.createDate}" class="create-date">
                             </i>
                         </div>
                     </div>
-                </div>
             </th:block>
-
-            <div>
                 <div class="col-6" th:id="${item.id}">
                     <textarea class="input-comment"
                               placeholder="Write a comment"
@@ -149,15 +139,36 @@
                     <button th:id="${movie.id}"
                             class='primaryContained float-right btn-add-comment' type=" submit">Bình luận</button>
                 </div>
-            </div>
         </div>
     </th:block>
+
+    <div class="container-pagination">
+        <div class="pagination p1">
+            <ul>
+                <a th:if="${currentPage>1}"
+                   th:href="@{/home/movie/{page}(page=${currentPage}-1,id=${movie.id})}"><li><</li></a>
+                <th:block th:each="item:${#numbers.sequence(1,totalPage)}">
+                    <a class="is-active"
+                       th:if="${item==currentPage}"
+                       th:href="@{/home/movie/{page}(page=${item},id=movie.id)}"
+                       th:text="${item}">1</a>
+                    <a
+                       th:unless="${item==currentPage}"
+                       th:href="@{/home/movie/{page}(page=${item},id=${movie.id})}"
+                       th:text="${item}">1</a>
+                </th:block>
+                <a th:if="${currentPage<totalPage}"
+                   th:href="@{/home/movie/{page}(page=${currentPage+1},id=${movie.id})}"><li>></li></a>
+            </ul>
+        </div>
+    </div>
+
 
     <div class="row">
         <div class="more-like-this">
             <div class="title-relate">
                 <h4 class="romantic-heading">
-                    More LIke This
+                    PHIM LIÊN QUAN
                 </h4>
             </div>
             <div class="row-movie-relate">
@@ -166,27 +177,6 @@
                         <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
                     </a>
                 </div>
-                <div class="column-movie-relate">
-                    <a href="#">
-                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
-                    </a>
-                </div>
-                <div class="column-movie-relate">
-                    <a href="#">
-                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
-                    </a>
-                </div>
-                <div class="column-movie-relate">
-                    <a href="#">
-                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
-                    </a>
-                </div>
-                <div class="column-movie-relate">
-                    <a href="#">
-                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
-                    </a>
-                </div>
-
             </div>
         </div>
     </div>
@@ -196,11 +186,17 @@
 <footer th:replace="web/layout/footer ::footer">
 
 </footer>
-<script type="application/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" type="application/javascript">
 </script>
-<script th:src="@{/web/js/comment.js}" type="application/javascript"></script>
 <script th:src="@{/web/js/movie-detail.js}" type="application/javascript"></script>
+<script>
+    window.onload=function (){
+        let createTime=document.getElementsByClassName("create-date");
+        for (let i=0;i<createTime.length;i++){
+            createTime[i].innerText= "đã bình luận "+moment(createTime[i].innerText).fromNow();
+        }
+    }
+</script>
 </body>
 </html>

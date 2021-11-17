@@ -51,6 +51,7 @@ public class MovieController {
 
     @GetMapping(value = "/movies/{page}")
     public String getMoviePage(@PathVariable("page") int numberPage, Model model) {
+
         Page<Movie> page=movieService.findAll(numberPage);
         List<Movie> movies= page.getContent();
         long totalMovie= page.getTotalElements();

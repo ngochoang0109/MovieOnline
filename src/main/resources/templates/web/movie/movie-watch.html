@@ -10,47 +10,175 @@
 
 
 <section class="container-movie">
-    <div class="videocontainer">
-        <video controls crossorigin playsinline id="player" >
-            <!-- Video files -->
-            <source src="http://localhost:8080/api/stream/video" type="video/mp4">
-        </video>
+    <div class="row">
+        <div class="video-container">
+            <video controls crossorigin playsinline id="player"
+                th:poster="${movie.banner}">
+                <!-- Video files -->
+                <source th:src="@{/api/stream/video/{id}(id=${movie.id})}"
+                        type="video/mp4">
+            </video>
+        </div>
+        <div class="movie-description">
+            <h3 class="video-title" th:text="${movie.title}"></h3>
+            <th:block th:each="item:${movie.getGenres()}">
+                <h3 class="video-genre"><a th:text="${item}"></a></h3>
+            </th:block>
+        </div>
+        <div class="actions d-flex flex-start flex-middle" th:id="${movie.id}">
+            <a href="#" id="add-to-favorite-list" class="link-item">
+                <i class="fa fa-plus"></i></br>
+                <p style="color: yellow">Yêu thích</p>
+            </a>
+            <a href="#" class="link-item">
+                <i class="fa fa-eye"></i></br>
+                <p style="color: yellow"  th:text="${'Lượt xem: ' +movie.view}"></p>
+            </a>
+            <a href="#" class="link-item">
+                <i class="fa fa-share"></i></br>
+                <p style="color: yellow">Share</p>
+            </a>
+        </div>
+
+        <div class="movie-description">
+            <hr>
+            <h4 class="video-title" th:text="${movie.title}"></h4>
+            <p th:text="${movie.description}"></p>
+            <hr>
+        </div>
+        <div class="movie-description">
+            <h4 class="video-title">Vui lòng đánh giá phim</h4>
+        </div>
+        <div id="rating">
+            <input type="radio" id="star5" name="rating" value="5" class="rate-movie"/>
+            <label class = "full" for="star5" title="Awesome - 5 stars"></label>
+
+            <input type="radio" id="star4half" name="rating" value="4 and a half" class="rate-movie"/>
+            <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+
+            <input type="radio" id="star4" name="rating" value="4" class="rate-movie"/>
+            <label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+
+            <input type="radio" id="star3half" name="rating" value="3 and a half" class="rate-movie"/>
+            <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+
+            <input type="radio" id="star3" name="rating" value="3" class="rate-movie"/>
+            <label class = "full" for="star3" title="Meh - 3 stars"></label>
+
+            <input type="radio" id="star2half" name="rating" value="2 and a half" class="rate-movie"/>
+            <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+
+            <input type="radio" id="star2" name="rating" value="2" class="rate-movie"/>
+            <label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+
+            <input type="radio" id="star1half" name="rating" value="1 and a half" class="rate-movie"/>
+            <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+
+            <input type="radio" id="star1" name="rating" value="1" class="rate-movie"/>
+            <label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+
+            <input type="radio" id="starhalf" name="rating" value="half" class="rate-movie"/>
+            <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+        </div>
+
     </div>
-    <div class="container-comment">
-        <div>
+
+    <th:block>
+        <div class="container-comment" id="root-comment">
             <div class="col-6">
                 <div class="comment">
-                    <p>
-                        alo
-                    </p>
                 </div>
             </div>
-        </div>
-        <div>
             <div class="col-6">
-                <textarea type="text" class="input" placeholder="Write a comment" v-model="newItem"></textarea>
-                <button class='primaryContained float-right' type=" submit">Add Comment</button>
+                <textarea class="input-comment" placeholder="Write a comment" type="text"></textarea>
+                <button th:id="${movie.id}"
+                        class='primaryContained float-right btn-add-comment' type="submit">Bình luận</button>
+            </div>
+        </div>
+    </th:block>
+
+    <th:block th:each="item, iStat: ${lstParentComment}">
+        <div class="container-comment">
+            <th:block th:each="comment: ${item.getComments()}">
+                <div class="col-6" >
+                    <div class="comment">
+                        <h6 style="color:black;" th:text="${comment.user.name}">
+                        </h6>
+                        <p style="color:black;" th:text="${comment.content}">
+                        </p>
+                        <i style="color:black;"  th:text="${comment.createDate}" class="create-date">
+                        </i>
+                    </div>
+                </div>
+            </th:block>
+            <div class="col-6" th:id="${item.id}">
+                    <textarea class="input-comment"
+                              placeholder="Write a comment"
+                              type="text"></textarea>
+                <button th:id="${movie.id}"
+                        class='primaryContained float-right btn-add-comment' type=" submit">Bình luận</button>
+            </div>
+        </div>
+    </th:block>
+    <div class="container-pagination">
+        <div class="pagination p1">
+            <ul>
+                <a th:if="${currentPage>1}"
+                   th:href="@{/home/movie/watch/{page}(page=${currentPage}-1,id=${movie.id})}"><li><</li></a>
+                <th:block th:each="item:${#numbers.sequence(1,totalPage)}">
+                    <a class="is-active"
+                       th:if="${item==currentPage}"
+                       th:href="@{/home/movie/watch/{page}(page=${item},id=movie.id)}"
+                       th:text="${item}">1</a>
+                    <a
+                            th:unless="${item==currentPage}"
+                            th:href="@{/home/movie/watch/{page}(page=${item},id=${movie.id})}"
+                            th:text="${item}">1</a>
+                </th:block>
+                <a th:if="${currentPage<totalPage}"
+                   th:href="@{/home/movie/watch/{page}(page=${currentPage+1},id=${movie.id})}"><li>></li></a>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="more-like-this">
+            <div class="title-relate">
+                <h4 class="romantic-heading">
+                    More LIke This
+                </h4>
+            </div>
+            <div class="row-movie-relate">
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+                <div class="column-movie-relate">
+                    <a href="#">
+                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>
-
 </section>
 
-
-<!--Hollywood Action movies-->
-<section id="similar" class="container p-t-40">
-    <h4 class="romantic-heading">
-        More LIke This
-    </h4>
-    <div class="romantic-container d-flex flex-start flex-middle">
-        <a href="#">
-            <img src="https://static.247phim.com/163045/conversions/6152beaf4f503_a5wqWGe-435_627.jpg" alt=""
-                 class="mylist-img p-r-10 p-t-10 image-size item"></a>
-        <a href="#">
-            <img src="https://static.247phim.com/163045/conversions/6152beaf4f503_a5wqWGe-435_627.jpg" alt=""
-                 class="mylist-img p-r-10 p-t-10 image-size item"></a>
-    </div>
-</section>
 <footer th:replace="web/layout/footer ::footer">
 
 </footer>
@@ -60,6 +188,17 @@
         const player = new Plyr('#player');
     });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" type="application/javascript">
+</script>
 <script th:src="@{/web/js/movie-detail.js}" type="application/javascript"></script>
+<script>
+    window.onload=function (){
+        let createTime=document.getElementsByClassName("create-date");
+        for (let i=0;i<createTime.length;i++){
+            createTime[i].innerText= "đã bình luận "+moment(createTime[i].innerText).fromNow();
+        }
+    }
+
+</script>
 </body>
 </html>

@@ -1,12 +1,11 @@
 package com.tlcn.movieonline.service.impl;
 
-import com.tlcn.movieonline.model.Movie;
+import com.tlcn.movieonline.dto.MovieUserResponse;
+import com.tlcn.movieonline.model.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.tlcn.movieonline.model.User;
-import com.tlcn.movieonline.model.UserMovie;
 import com.tlcn.movieonline.repository.MovieRepository;
 import com.tlcn.movieonline.service.MovieService;
 import com.tlcn.movieonline.service.UserService;
@@ -16,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.transaction.Transactional;
 
@@ -90,4 +90,27 @@ public class MovieServiceImpl implements MovieService {
         List<Movie> movies= movieRepository.findMoviesByGenre(genre);
         return movies;
     }
+
+    @Override
+    @Transactional
+    @ExceptionHandler(Exception.class)
+    public Movie countView(long id) {
+        Movie movie= this.getMovieById(id);
+        movie.setView(movie.getView()+1);
+        return movieRepository.save(movie);
+    }
+
+    @Override
+    public String getSourceVideoByMovieId(long id) {
+        Movie movie= this.getMovieById(id);
+        List<MovieVideo> movieVideos= (List<MovieVideo>) movie.getMovieVideos();
+        String video="";
+        for (MovieVideo item: movieVideos) {
+            if (item.getVideo().getType().equals("movie")){
+                video=item.getVideo().getSource();
+            }
+        }
+        return video;
+    }
+
 }

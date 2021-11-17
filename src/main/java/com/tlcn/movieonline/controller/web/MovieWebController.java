@@ -1,12 +1,12 @@
 package com.tlcn.movieonline.controller.web;
 
 
-import com.tlcn.movieonline.dto.CommentRequest;
 import com.tlcn.movieonline.dto.MovieDetailResponse;
+import com.tlcn.movieonline.dto.MovieResponse;
 import com.tlcn.movieonline.model.*;
-import com.tlcn.movieonline.service.CommentService;
 import com.tlcn.movieonline.service.MovieService;
 import com.tlcn.movieonline.service.ParentCommentService;
+import com.tlcn.movieonline.service.UserMovieService;
 import com.tlcn.movieonline.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,17 +26,22 @@ public class MovieWebController {
     private MovieService movieService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CommentService commentService;
-
-    @Autowired
     private ParentCommentService parentCommentService;
 
+    @Autowired
+    private UserMovieService userMovieService;
 
-    @GetMapping("/home/movie")
-    public String movieDetail(@RequestParam("id") Long id, Model model, Principal principal){
+    @Autowired
+    private UserService userService;
+
+    @GetMapping(value = "/home/movie")
+    public String movieDetailDefault(@RequestParam(value = "id") Long id, Model model, Principal principal){
+        return movieDetail(1,id, model, principal);
+    }
+
+
+    @GetMapping("/home/movie/{page}")
+    public String movieDetail(@PathVariable("page") int page, @RequestParam(value = "id") Long id, Model model, Principal principal){
 
         Movie movie=movieService.getMovieById(id);
         MovieDetailResponse movieDetail= new MovieDetailResponse();
@@ -45,7 +50,6 @@ public class MovieWebController {
         movieDetail.setDuration(movie.getDuration());
         movieDetail.setReleaseYear(movie.getReleaseYear());
         movieDetail.setTitle(movie.getTitle());
-
         movieDetail.setView(movie.getView());
 
         for (Image item: movie.getImages()) {
@@ -89,20 +93,51 @@ public class MovieWebController {
         }
         movieDetail.setTrailer(video);
 
+        Page<ParentComment> parentCommentPage= parentCommentService.getParentCommentByMovieId(id, page);
+        List<ParentComment> lstParentComment= parentCommentPage.getLstData();
 
-        List<ParentComment> lstParentComment= parentCommentService.getParentCommentByMovieId(id);
-        CommentRequest commentRequest= new CommentRequest();
+        List<Float> rating= userMovieService.calculatorRating(movie);
+        movieDetail.setRating(rating.get(0));
+        movieDetail.setTotalRating(Math.round(rating.get(1)));
+
         model.addAttribute("lstParentComment", lstParentComment);
-        model.addAttribute("commentRequest", commentRequest);
         model.addAttribute("movie", movieDetail);
-
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", parentCommentPage.getTotalPage());
         return "web/movie/movie-details";
     }
 
     @GetMapping("/home/movie/watch")
-    public String movieWatch(@RequestParam("id") long id, Model model){
-        Movie movie= movieService.getMovieById(id);
-        model.addAttribute("movie", movie);
+    public String getMovieWatch(@RequestParam("id") long id, Model model, Principal principal){
+        return movieWatch(1,id, model, principal);
+    }
+
+    @GetMapping("/home/movie/watch/{page}")
+    public String movieWatch(@PathVariable("page") int page,@RequestParam("id") long id, Model model, Principal principal){
+        Movie movie= movieService.countView(id);
+        User user= userService.getUserByEmail(principal.getName());
+        UserMovie userMovie= userMovieService.getUserMovieByUserAndMovie(user,movie);
+        List<String> genre= new LinkedList<>();
+        String banner="";
+
+        movie.getGenres().stream().forEach(item->genre.add(item.getName()));
+        for (Image item: movie.getImages()) {
+            if (item.getType().equals("watch")){
+                banner=item.getSource();
+            }
+        }
+
+        MovieResponse movieResponse=
+                new MovieResponse(genre, movie.getDescription(),
+                        movie.getTitle(), movie.getId(), movie.getView(),banner, userMovie.getRate());
+
+        Page<ParentComment> parentCommentPage= parentCommentService.getParentCommentByMovieId(id, page);
+        List<ParentComment> lstParentComment= parentCommentPage.getLstData();
+
+        model.addAttribute("movie", movieResponse);
+        model.addAttribute("lstParentComment", lstParentComment);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", parentCommentPage.getTotalPage());
         return "web/movie/movie-watch";
     }
 
