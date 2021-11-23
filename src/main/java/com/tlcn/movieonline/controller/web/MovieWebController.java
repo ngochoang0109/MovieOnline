@@ -44,6 +44,7 @@ public class MovieWebController {
     public String movieDetail(@PathVariable("page") int page, @RequestParam(value = "id") Long id, Model model, Principal principal){
 
         Movie movie=movieService.getMovieById(id);
+
         MovieDetailResponse movieDetail= new MovieDetailResponse();
         movieDetail.setId(movie.getId());
         movieDetail.setDescription(movie.getDescription());

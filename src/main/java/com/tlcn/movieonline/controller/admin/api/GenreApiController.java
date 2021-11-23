@@ -20,15 +20,17 @@ public class GenreApiController {
         return genre;
     }
 
-    @PutMapping(value = "/genre/edit")
-    public @ResponseBody Genre editGenre(@RequestBody Genre g){
-        Genre genre=genreService.addGenre(g);
-        return genre;
-    }
+
 
     @GetMapping(value = "/genre/edit")
     public @ResponseBody Genre editGenre(@RequestParam("id") Long id){
         Genre genre= genreService.getGenreById(id);
+        return genre;
+    }
+
+    @PutMapping(value = "/genre/edit")
+    public @ResponseBody Genre editGenre(@RequestBody Genre g){
+        Genre genre=genreService.edit(g);
         return genre;
     }
 

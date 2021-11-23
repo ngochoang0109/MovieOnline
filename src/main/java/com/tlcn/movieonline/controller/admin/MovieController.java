@@ -1,18 +1,19 @@
 package com.tlcn.movieonline.controller.admin;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-import com.tlcn.movieonline.dto.MovieRequest;
+import com.tlcn.movieonline.dto.admin.MovieDTO;
 import com.tlcn.movieonline.model.*;
 import com.tlcn.movieonline.service.*;
+import com.tlcn.movieonline.validator.AddMovieForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.validation.Valid;
 import java.util.*;
 
 @Controller
@@ -21,10 +22,6 @@ public class MovieController {
 
     @Autowired
     private MovieVideoService movieVideoService;
-
-    @Autowired
-    private Cloudinary cloudinary;
-
 
     @Autowired
     private CastService castService;
@@ -43,6 +40,15 @@ public class MovieController {
 
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private AddMovieForm addMovieForm;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.setValidator(addMovieForm);
+    }
+
 
     @GetMapping(value = "/movies")
     public String getMovieIndex(Model model){
@@ -66,107 +72,31 @@ public class MovieController {
 
     @GetMapping(value = "/movies/add")
     public String add(Model model) {
-        model.addAttribute("movieRequest", new MovieRequest());
+        model.addAttribute("movieRequest", new MovieDTO());
+        model.addAttribute("casts", castService.getAllCast());
+        model.addAttribute("directors",directorService.getAllDirector());
+        model.addAttribute("genres", genreService.findAll());
+        model.addAttribute("countries", countryService.findAll());
         return "admin/movie/movie-add";
     }
 
     @PostMapping(value = "/movies/add")
-    public String add(@ModelAttribute("movieRequest") MovieRequest movieRequest){
+    public String add( @Valid @ModelAttribute("movieRequest") MovieDTO movieDTO,
+                       BindingResult bindingResult){
+        Movie movie=movieService.convertMovieDTOToMovie(movieDTO);
+        if (!bindingResult.hasErrors()){
+            List<Video> videos= new ArrayList<>();
+            Video videoTrailer= new Video(movieDTO.getVideoTrailer(), "trailer");
+            String urlMovie= awsS3Service.uploadFile(movieDTO.getVideoMovie());
+            Video videoMovie= new Video(urlMovie, "movie");
+            videos.add(videoMovie);
+            videos.add(videoTrailer);
 
+            movieVideoService.addOneMovieMultiVideo(movie, videos, movieDTO.getCurrent());
+            return "redirect:/admin/movies";
 
-        List<Image> images= new LinkedList<>();
-        String sourcePoster=doUpload(movieRequest.getImagePoster());
-        Image imagePoster=new Image(sourcePoster,"poster");
-        images.add(imagePoster);
-        String sourceWatch= doUpload(movieRequest.getImageWatch());
-        Image imageWatch=new Image(sourceWatch,"watch");
-        images.add(imageWatch);
-
-        List<Video> videos= new ArrayList<>();
-        Video videoTrailer= new Video(movieRequest.getVideoTrailer(), "trailer");
-        String urlMovie= awsS3Service.uploadFile(movieRequest.getVideoMovie());
-        Video videoMovie= new Video(urlMovie, "movie");
-        videos.add(videoMovie);
-        videos.add(videoTrailer);
-
-        String[] strCasts= movieRequest.getCast().trim().split(",");
-        Set<Cast> casts= new HashSet<>();
-        for (String item: strCasts) {
-            Cast cast = castService.getCastByName(item.trim());
-            if (cast == null) {
-                Cast c = new Cast();
-                c.setName(item);
-                casts.add(c);
-            } else {
-                casts.add(cast);
-            }
         }
-
-
-        String[] strDirectors= movieRequest.getDirector().split(",");
-        Set<Director> directors= new HashSet<>();
-        for (String item: strDirectors) {
-            Director director = directorService.getDirectorByName(item.trim());
-            if (director == null) {
-                Director d= new Director();
-                d.setName(item);
-                directors.add(d);
-            }
-            else {
-                directors.add(director);
-            }
-        }
-
-
-        String[] strCountries= movieRequest.getCountry().split(",");
-        Set<Country> countries= new HashSet<>();
-        for (String item: strCountries) {
-            Country country = countryService.getCountryByName(item.trim());
-            if (country == null) {
-                Country c= new Country();
-                c.setName(item);
-                countries.add(c);
-            }
-            else {
-                countries.add(country);
-            }
-        }
-
-
-        String[] strGenre= movieRequest.getGenre().split(",");
-        Set<Genre> genres= new HashSet<>();
-        for (String item: strGenre) {
-            Genre genre = genreService.getGenreByName(item.trim());
-            if (genre == null) {
-                Genre g= new Genre();
-                g.setName(item);
-                genres.add(g);
-            }
-            else {
-                genres.add(genre);
-            }
-        }
-
-        Movie movie= new Movie( movieRequest.getTitle(), movieRequest.getDescription(),
-                                movieRequest.getDuration(), 0, true, movieRequest.getNumber(),
-                                 movieRequest.getReleaseYear(), images, genres,
-                                casts, countries, directors);
-
-        movieVideoService.addOneMovieMultiVideo(movie, videos, movieRequest.getCurrent());
-
-        return "admin/movie/movie-manager";
+        return "redirect:/admin/movies/add";
     }
 
-    public String doUpload(MultipartFile params){
-        String url="";
-        try{
-            Map jsonResult= cloudinary.uploader().upload(params.getBytes(),
-                    ObjectUtils.asMap("resource_type","image"));
-            url=(String) jsonResult.get("secure_url");
-            return url;
-        }
-        catch (Exception e){
-            return url;
-        }
-    }
 }

@@ -46,12 +46,13 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Năm phát hành</label>
-                                <select class="form-control" id="releaseYear" th:field="*{releaseYear}">
+                                <select class="form-control mb-3" id="releaseYear" th:field="*{releaseYear}">
                                     <option th:each="item : ${#numbers.sequence(1990, 2021)}"
                                             th:value="${item.valueOf(item)}"
                                             th:text="${item.valueOf(item)}">
                                     </option>
                                 </select>
+
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="imagePoster">Tải ảnh poster</label>
@@ -59,6 +60,7 @@
                                        accept="image/png, image/jpeg"
                                        id="imagePoster"
                                        type="file" th:field="*{imagePoster}">
+
                             </div>
 
                             <div class="mb-3">
@@ -83,32 +85,61 @@
 
                             <div class="mb-3">
                                 <label class="form-label" for="cast">Diễn viên</label>
-                                <input type="text" id="cast"
-                                       class="form-control"
-                                       th:field="*{cast}"
-                                       placeholder="Yeu cau cac ten dien vien cach nhau bang dau phay">
+                                <select class="form-control mb-3" id="select-cast" onchange="selectCast()">
+                                    <option th:each="item : ${casts}"
+                                            th:value="${item.name}"
+                                            th:text="${item.name}">
+                                    </option>
+                                </select>
+                                <input id="cast"
+                                     th:field="*{cast}"
+                                     class="alert alert-info form-control"
+                                       placeholder="Mỗi đối tượng cách nhau bằng dấu phẩy"
+                                     role="alert">
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label" for="director">Đạo diễn</label>
-                                <input class="form-control" id="director"
+                                <select class="form-control mb-3" id="select-director" onchange="selectDirector()">
+                                    <option th:each="item : ${directors}"
+                                            th:value="${item.name}"
+                                            th:text="${item.name}">
+                                    </option>
+                                </select>
+                                <input id="director"
                                        th:field="*{director}"
-                                       placeholder="Yeu cau cac ten dao dien cach nhau bang dau phay"
-                                       type="text">
+                                       class="alert alert-info form-control"
+                                       role="alert"
+                                       placeholder="Mỗi đối tượng cách nhau bằng dấu phẩy">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="genre">Thể loại</label>
-                                <input class="form-control" id="genre"
+                                <select class="form-control mb-3" id="select-genre" onchange="selectGenre()">
+                                    <option th:each="item : ${genres}"
+                                            th:value="${item.name}"
+                                            th:text="${item.name}">
+                                    </option>
+                                </select>
+                                <input id="genre"
                                        th:field="*{genre}"
-                                       placeholder="Yeu cau cac the loai cach nhau bang dau phay"
-                                       type="text">
+                                       class="alert alert-info form-control"
+                                       role="alert"
+                                       placeholder="Mỗi đối tượng cách nhau bằng dấu phẩy">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="country">Quốc gia</label>
-                                <input class="form-control" id="country"
+                                <select class="form-control mb-3" id="select-country" onchange="selectCountry()">
+                                    <option th:each="item : ${countries}"
+                                            th:value="${item.name}"
+                                            th:text="${item.name}">
+                                    </option>
+                                </select>
+                                <input
+                                        id="country"
                                        th:field="*{country}"
-                                       placeholder="Yeu cau cac quoc gia cach nhau bang dau phay"
-                                       type="text">
+                                       class="alert alert-info form-control"
+                                       role="alert"
+                                        placeholder="Mỗi đối tượng cách nhau bằng dấu phẩy">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="description">Tóm tắt nội dung phim</label>
@@ -126,30 +157,6 @@
         </main>
     </div>
 </div>
-<script type="text/javascript">
-
-    $(document).ready(function(){
-        alert("nhan");
-        dropdownGenres = $("#genres");
-        divChosenGenres = $("#chosenGenres");
-
-        dropdownGenres.change(function(){
-            divChosenGenres.empty();
-            showChosenGenres();
-        });
-        showChosenGenres();
-    });
-
-    function showChosenGenres(){
-        dropdownGenres.children("option:selected").each(function(){
-            selectedGenres = $(this);
-            alert(selectedGenres.text());
-            genResId = selectedGenres.val();
-            genresName = selectedGenres.text();
-
-            divChosenGenres.append("<span >" + genresName + "</span>")
-        })
-    }
-
+<script type="application/javascript" th:src="@{/admin/js/movie.js}">
 </script>
 </body>

@@ -40,7 +40,7 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public Country getCountryByName(String name) {
-        return countryRepository.getCountryByName(name);
+    public Country[] getCountriesByName(String name) {
+        return countryRepository.getCountriesByName(name);
     }
 }

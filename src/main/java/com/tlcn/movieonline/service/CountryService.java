@@ -9,5 +9,5 @@ public interface CountryService {
     List<Country> findAll();
     Country getCountryById(Long id);
     void deleteCountryById(Long id);
-    Country getCountryByName(String name);
+    Country[] getCountriesByName(String name);
 }

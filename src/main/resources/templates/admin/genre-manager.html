@@ -62,7 +62,8 @@
                                 <form>
                                     <div class="mb-3">
                                         <label class="col-form-label">Tên thể loại</label>
-                                        <input id="a" class="form-control" type="text">
+                                        <input id="txtIdGenreEdit" class="form-control" type="hidden">
+                                        <input id="txtNameGenreEdit" class="form-control" type="text">
                                     </div>
                                     <button id="btnEdit" type="button"
                                             class="btn btn-primary" data-bs-dismiss="modal">Send message</button>
@@ -95,7 +96,7 @@
                                     <button class="btn btn-info mx-3 btnEditGenre"
                                             th:id="${item.id}"
                                             type="button"
-                                            data-bs-target="#addGenre" data-bs-toggle="modal">Sửa</button>
+                                            data-bs-target="#editGenre" data-bs-toggle="modal">Sửa</button>
                                     <button class="btn btn-danger btnDeleteGenre" th:id="${item.id}" type="button">Xóa</button>
                                 </td>
                             </tr>

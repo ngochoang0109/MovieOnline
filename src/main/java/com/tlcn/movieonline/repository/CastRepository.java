@@ -9,5 +9,5 @@ import java.util.Set;
 
 @Repository
 public interface CastRepository extends JpaRepository<Cast, Long> {
-    Cast getCastByName(String name);
+    Cast[] getCastsByName(String name);
 }

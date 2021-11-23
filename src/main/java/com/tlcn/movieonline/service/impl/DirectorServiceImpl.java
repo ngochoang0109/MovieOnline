@@ -23,7 +23,7 @@ public class DirectorServiceImpl implements DirectorService {
     }
 
     @Override
-    public Director getDirectorByName(String name) {
-        return directorRepository.getDirectorByName(name);
+    public Director[] getDirectorsByName(String name) {
+        return directorRepository.getDirectorsByName(name);
     }
 }
