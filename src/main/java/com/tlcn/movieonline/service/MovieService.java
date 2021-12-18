@@ -1,7 +1,6 @@
 package com.tlcn.movieonline.service;
 
-import com.tlcn.movieonline.dto.MovieRelate;
-import com.tlcn.movieonline.dto.MovieUserResponse;
+import com.tlcn.movieonline.dto.MovieDetailResponse;
 import com.tlcn.movieonline.dto.admin.MovieDTO;
 import com.tlcn.movieonline.model.Movie;
 import org.springframework.data.domain.Page;
@@ -18,4 +17,6 @@ public interface MovieService {
     List<Movie> getMovieByGenre(String genre);
     Movie countView(long id);
     String getSourceVideoByMovieId(long id);
+    MovieDetailResponse getMovieDetails(long id);
+    List<Movie> getMovieRelate(long id);
 }

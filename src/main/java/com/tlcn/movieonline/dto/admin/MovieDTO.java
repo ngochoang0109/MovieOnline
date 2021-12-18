@@ -1,17 +1,17 @@
 package com.tlcn.movieonline.dto.admin;
 
-import com.tlcn.movieonline.constant.MovieConstant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.exception.DataException;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import java.util.Calendar;
+import java.util.Date;
 
 @Getter
 @Setter
-@NoArgsConstructor
+
 public class MovieDTO {
     private String title;
     private String description;
@@ -28,4 +28,10 @@ public class MovieDTO {
     private String country;
     private String genre;
     private int releaseYear;
+    private Date createDate;
+    public MovieDTO() {
+        this.createDate=Calendar.getInstance().getTime();
+    }
+
+
 }

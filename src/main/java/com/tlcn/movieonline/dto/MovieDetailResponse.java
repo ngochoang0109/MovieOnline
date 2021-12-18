@@ -22,4 +22,6 @@ public class MovieDetailResponse {
     private long view;
     private float rating;
     private int totalRating;
+    private int number;
+    private int currentEpisode;
 }

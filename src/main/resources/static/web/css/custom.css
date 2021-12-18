@@ -27,6 +27,39 @@
     height: 100%;
 }
 
+.number-movie h6{
+    color: #febb00;
+    font-size: 32px;
+    transform: scale(1, 1);
+}
+
+.number-movie .justify-content-center {
+    display: flex;
+    justify-content: center;
+}
+
+.number-movie .list-number-movie{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+.list-number-movie {
+    padding-inline-start: unset;
+}
+.number-movie .list-number-movie li{
+    margin-left: 5rem;
+    width: 6rem;
+    height: 2rem;
+    border: 2px solid white;
+    color: white;
+    transform: scale(1, 1);
+    margin-bottom: 2rem;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 2rem;
+}
 
 
 

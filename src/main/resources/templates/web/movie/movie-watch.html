@@ -12,7 +12,7 @@
 <section class="container-movie">
     <div class="row">
         <div class="video-container">
-            <video controls crossorigin playsinline id="player"
+            <video controls  id="player"
                 th:poster="${movie.banner}">
                 <!-- Video files -->
                 <source th:src="@{/api/stream/video/{id}(id=${movie.id})}"

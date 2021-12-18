@@ -29,4 +29,5 @@ public interface MovieRepository extends PagingAndSortingRepository<Movie, Long>
 //            "order by movie.id desc ")
 //    List<Movie> getMoviesByGenresAndSortByIdDesc(String genre01, String genre02);
 
+
 }

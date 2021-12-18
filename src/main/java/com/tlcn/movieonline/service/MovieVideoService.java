@@ -9,5 +9,5 @@ import java.util.List;
 public interface MovieVideoService {
     MovieVideo addMovieVideo(Movie movie, Video video, int current);
     List<MovieVideo> addOneMovieMultiVideo(Movie movie, List<Video> video, int current);
-
+    int getMaxCurrentEpisode(long movieId);
 }

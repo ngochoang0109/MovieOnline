@@ -53,6 +53,9 @@
                 <div class="column left-btn">
                     <ul class="detail">
                         <li>
+                            <p th:text="${'Trạng thái: ' + movie.currentEpisode +'/'+movie.number}"></p>
+                        </li>
+                        <li>
                             <p th:text="${'Thời lượng: ' + movie.duration +' Phút'}"></p>
                         </li>
                         <li>
@@ -86,7 +89,15 @@
             <span id="trailer"></span>
         </div>
     </div>
-
+    <div class="number-movie">
+        <div class="justify-content-center">
+            <h6>Tập phim</h6>
+        </div>
+        <ul class="list-number-movie">
+            <li th:each="star:${#numbers.sequence(1,movie.currentEpisode)}"
+                th:text="${star}"></li>
+        </ul>
+    </div>
     <div class="row">
         <div class="block-trailer">
             <div class="caption">

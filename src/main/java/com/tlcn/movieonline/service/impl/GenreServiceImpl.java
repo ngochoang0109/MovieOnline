@@ -40,11 +40,6 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getGenreByName(String name) {
-        return genreRepository.getGenreByName(name);
-    }
-
-    @Override
     public Genre edit(Genre genre) {
         Genre g= genreRepository.getGenreById(genre.getId());
         g.setName(genre.getName());

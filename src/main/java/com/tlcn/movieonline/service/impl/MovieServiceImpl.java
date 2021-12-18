@@ -1,5 +1,7 @@
 package com.tlcn.movieonline.service.impl;
 
+import com.tlcn.movieonline.constant.MovieConstant;
+import com.tlcn.movieonline.dto.MovieDetailResponse;
 import com.tlcn.movieonline.dto.admin.MovieDTO;
 import com.tlcn.movieonline.model.*;
 
@@ -33,9 +35,6 @@ public class MovieServiceImpl implements MovieService {
     private CloudinaryService cloudinaryService;
 
     @Autowired
-    private AwsS3Service awsS3Service;
-
-    @Autowired
     private CastService castService;
 
     @Autowired
@@ -47,6 +46,12 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private GenreService genreService;
 
+    @Autowired
+    private MovieVideoService movieVideoService;
+
+    @Autowired
+    private UserMovieService userMovieService;
+
     @Override
     public Page<Movie> findAll(int currentPage) {
         Sort sort= Sort.by("title").ascending();
@@ -56,7 +61,8 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<List<Movie>> findMoviesByGenreTenLimit() {
-        List<String> lstGenre= Arrays.asList("Chiếu rạp","Truyền hình","Hoạt hình");
+        List<String> lstGenre= Arrays.asList(MovieConstant.THEATERS_MOVIE,
+                MovieConstant.TV_SERIES_MOVIE,MovieConstant.CARTOON_MOVIE);
         List<List<Movie>> lstMovie= new ArrayList<>();
         List<Movie> lstNewMovie= movieRepository.getAll(PageRequest.of(0,sizePage));
         for (String item: lstGenre) {
@@ -206,4 +212,86 @@ public class MovieServiceImpl implements MovieService {
     }
 
 
+    @Override
+    public MovieDetailResponse getMovieDetails(long id) {
+        Movie movie=this.getMovieById(id);
+
+        MovieDetailResponse movieDetail= new MovieDetailResponse();
+        movieDetail.setId(movie.getId());
+        movieDetail.setDescription(movie.getDescription());
+        movieDetail.setDuration(movie.getDuration());
+        movieDetail.setReleaseYear(movie.getReleaseYear());
+        movieDetail.setTitle(movie.getTitle());
+        movieDetail.setView(movie.getView());
+
+        for (Image item: movie.getImages()) {
+            if (item.getType().equals("poster")){
+                movieDetail.setImg(item.getSource());
+                break;
+            }
+        }
+
+        StringJoiner joinerDirector= new StringJoiner(", ");
+        for (Director d:movie.getDirectors()) {
+            joinerDirector.add(d.getName());
+        }
+        movieDetail.setDirector(joinerDirector.toString());
+
+        StringJoiner joinerCast= new StringJoiner(", ");
+        for (Cast c:movie.getCasts()) {
+            joinerCast.add(c.getName());
+        }
+        movieDetail.setCast(joinerCast.toString());
+
+        StringJoiner joinerGenre= new StringJoiner(", ");
+        for (Genre g:movie.getGenres()) {
+            joinerGenre.add(g.getName());
+        }
+        movieDetail.setGenre(joinerGenre.toString());
+
+        StringJoiner joinerCountry= new StringJoiner(", ");
+        for (Country c:movie.getCountries()) {
+            joinerCountry.add(c.getName());
+        }
+        movieDetail.setCountry(joinerCountry.toString());
+
+
+        String video="";
+        for (MovieVideo movieVideo: movie.getMovieVideos()) {
+            if (movieVideo.getVideo().getType().equals("trailer")){
+                video=movieVideo.getVideo().getSource();
+                break;
+            }
+        }
+        movieDetail.setTrailer(video);
+        List<Float> rating= userMovieService.calculatorRating(movie);
+        movieDetail.setRating(rating.get(0));
+        movieDetail.setTotalRating(Math.round(rating.get(1)));
+
+        movieDetail.setNumber(movie.getNumber());
+        movieDetail.setCurrentEpisode(movieVideoService.getMaxCurrentEpisode(movie.getId()));
+        return movieDetail;
+    }
+
+    @Override
+    public List<Movie> getMovieRelate(long id) {
+        Movie movie=this.getMovieById(id);
+        int randomGenre= (int) (Math.random()*(movie.getGenres().size()-0));
+        List<Genre> lstGenre= (List<Genre>) movie.getGenres();
+        List<Movie> lstMovie=movieRepository.findMoviesByGenre(lstGenre.get(5).getName());
+
+        if (lstMovie!=null){
+            Collections.sort(lstMovie, new Comparator<Movie>() {
+                @Override
+                public int compare(Movie o1, Movie o2) {
+                    return o1.getCreateDate().compareTo(o2.getCreateDate());
+                }
+            });
+            Collections.reverse(lstMovie);
+            lstGenre.stream().limit(20);
+
+        }
+
+        return null;
+    }
 }

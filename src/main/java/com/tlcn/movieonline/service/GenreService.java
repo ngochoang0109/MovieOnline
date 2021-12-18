@@ -10,7 +10,6 @@ public interface GenreService {
     List<Genre> findAll();
     Genre getGenreById(Long id);
     void deleteGenreById(Long id);
-    Genre getGenreByName(String name);
     Genre edit(Genre genre);
     Genre[] getGenresByName(String genre);
 }
