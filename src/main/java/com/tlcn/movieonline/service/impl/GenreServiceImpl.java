@@ -50,4 +50,9 @@ public class GenreServiceImpl implements GenreService {
     public Genre[] getGenresByName(String genre) {
         return genreRepository.getGenresByName(genre);
     }
+
+    @Override
+    public Genre getGenreByName(String genre) {
+        return genreRepository.getGenreByName(genre);
+    }
 }

@@ -2,6 +2,7 @@ package com.tlcn.movieonline.service.impl;
 
 import com.tlcn.movieonline.constant.MovieConstant;
 import com.tlcn.movieonline.dto.MovieDetailResponse;
+import com.tlcn.movieonline.dto.MovieResponse;
 import com.tlcn.movieonline.dto.admin.MovieDTO;
 import com.tlcn.movieonline.model.*;
 
@@ -278,20 +279,46 @@ public class MovieServiceImpl implements MovieService {
         Movie movie=this.getMovieById(id);
         int randomGenre= (int) (Math.random()*(movie.getGenres().size()-0));
         List<Genre> lstGenre= (List<Genre>) movie.getGenres();
-        List<Movie> lstMovie=movieRepository.findMoviesByGenre(lstGenre.get(5).getName());
-
-        if (lstMovie!=null){
-            Collections.sort(lstMovie, new Comparator<Movie>() {
-                @Override
-                public int compare(Movie o1, Movie o2) {
-                    return o1.getCreateDate().compareTo(o2.getCreateDate());
-                }
-            });
-            Collections.reverse(lstMovie);
-            lstGenre.stream().limit(20);
+        List<Movie> lstMovie= new LinkedList<>();
+        try {
+            lstMovie=movieRepository.findMoviesByGenre(lstGenre.get(randomGenre).getName());
+        }
+        catch (Exception e){
 
         }
+        finally {
 
-        return null;
+                Collections.sort(lstMovie, new Comparator<Movie>() {
+                    @Override
+                    public int compare(Movie o1, Movie o2) {
+                        return o1.getCreateDate().compareTo(o2.getCreateDate());
+                    }
+                });
+                Collections.reverse(lstMovie);
+                lstMovie.stream().limit(20);
+        }
+        return lstMovie;
+    }
+
+    @Override
+    public List<Movie> getMoviesByName(String name) {
+        return movieRepository.searchByTitleLike(name);
+    }
+
+    @Override
+    public List<Movie> searchByGenreCountryAndYear(String genre, String country, int year) {
+        Genre g= genreService.getGenreByName(genre);
+        List<Movie> movies= (List<Movie>) g.getMovies();
+        List<Movie> result=new LinkedList<>();
+        for (Movie m: movies){
+            for (Country c:m.getCountries()) {
+                if (c.getName().equals(country)) {
+                    result.add(m);
+                }
+            }
+        }
+        result=result.stream()
+                .filter(movie->movie.getReleaseYear()==year).collect(Collectors.toList());
+        return result;
     }
 }

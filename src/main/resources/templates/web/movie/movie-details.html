@@ -182,12 +182,15 @@
                     PHIM LIÊN QUAN
                 </h4>
             </div>
-            <div class="row-movie-relate">
-                <div class="column-movie-relate">
-                    <a href="#">
-                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
-                    </a>
-                </div>
+            <div class="row-movie-relate" th:each="item:${moviesRelate}">
+                <th:block th:each="img:${item.images}">
+                    <div class="column-movie-relate">
+                        <a href="#" th:if="${img.type=='poster'}">
+                            <img class="img-relate"
+                                 th:src="${img.source}">
+                        </a>
+                    </div>
+                </th:block>
             </div>
         </div>
     </div>

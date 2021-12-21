@@ -3,14 +3,13 @@ package com.tlcn.movieonline.controller.web;
 
 import com.tlcn.movieonline.dto.MovieDetailResponse;
 import com.tlcn.movieonline.dto.MovieResponse;
+import com.tlcn.movieonline.dto.SearchRequest;
 import com.tlcn.movieonline.model.*;
 import com.tlcn.movieonline.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.*;
@@ -30,6 +29,12 @@ public class MovieWebController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GenreService genreService;
+
+    @Autowired
+    private CountryService countryService;
 
 
 
@@ -51,7 +56,10 @@ public class MovieWebController {
 
         MovieDetailResponse movieDetail= movieService.getMovieDetails(id);
 
-        movieService.getMovieRelate(id);
+        List<Movie> moviesRelate=movieService.getMovieRelate(id);
+        if (moviesRelate.size()!=0){
+            model.addAttribute("moviesRelate", moviesRelate);
+        }
         model.addAttribute("lstParentComment", lstParentComment);
         model.addAttribute("movie", movieDetail);
         model.addAttribute("currentPage", page);
@@ -111,6 +119,39 @@ public class MovieWebController {
         return "/web/movie/search-movie";
     }
 
+    @GetMapping("/movies/search")
+    public String searchMovie(Model model){
+        List<Movie> lstMovie= movieService.findAll(1).getContent();
+        List<Genre> lstGenre=genreService.findAll();
+        List<Country> lstCountry=countryService.findAll();
 
+        model.addAttribute("searchRequest",new SearchRequest());
+        model.addAttribute("lstMovie", lstMovie);
+        model.addAttribute("lstGenre", lstGenre);
+        model.addAttribute("lstCountry", lstCountry);
+        return "/web/movie/search-movie";
+    }
+
+    @PostMapping("movies/search")
+    public String searchMovie(@ModelAttribute("searchRequest") SearchRequest searchRequest, Model model){
+        if (searchRequest.getName()!=""){
+            List<Movie> movies=movieService.getMoviesByName(searchRequest.getName());
+            model.addAttribute("movies", movies);
+
+        }else {
+            List<Movie> movies= movieService.searchByGenreCountryAndYear(searchRequest.getGenre(),
+                    searchRequest.getCountry(), searchRequest.getYear());
+            model.addAttribute("movies", movies);
+        }
+        List<Movie> lstMovie= movieService.findAll(1).getContent();
+        List<Genre> lstGenre=genreService.findAll();
+        List<Country> lstCountry=countryService.findAll();
+
+        model.addAttribute("searchRequest",new SearchRequest());
+        model.addAttribute("lstMovie", lstMovie);
+        model.addAttribute("lstGenre", lstGenre);
+        model.addAttribute("lstCountry", lstCountry);
+        return "/web/movie/search-movie";
+    }
 
 }
