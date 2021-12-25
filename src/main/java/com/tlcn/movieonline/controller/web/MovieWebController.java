@@ -1,19 +1,15 @@
 package com.tlcn.movieonline.controller.web;
 
 
-import com.tlcn.movieonline.dto.CommentRequest;
 import com.tlcn.movieonline.dto.MovieDetailResponse;
+import com.tlcn.movieonline.dto.MovieResponse;
+import com.tlcn.movieonline.dto.SearchRequest;
 import com.tlcn.movieonline.model.*;
-import com.tlcn.movieonline.service.CommentService;
-import com.tlcn.movieonline.service.MovieService;
-import com.tlcn.movieonline.service.ParentCommentService;
-import com.tlcn.movieonline.service.UserService;
+import com.tlcn.movieonline.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.*;
@@ -26,83 +22,93 @@ public class MovieWebController {
     private MovieService movieService;
 
     @Autowired
+    private ParentCommentService parentCommentService;
+
+    @Autowired
+    private UserMovieService userMovieService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
-    private CommentService commentService;
+    private GenreService genreService;
 
     @Autowired
-    private ParentCommentService parentCommentService;
+    private CountryService countryService;
 
 
-    @GetMapping("/home/movie")
-    public String movieDetail(@RequestParam("id") Long id, Model model, Principal principal){
 
-        Movie movie=movieService.getMovieById(id);
-        MovieDetailResponse movieDetail= new MovieDetailResponse();
-        movieDetail.setId(movie.getId());
-        movieDetail.setDescription(movie.getDescription());
-        movieDetail.setDuration(movie.getDuration());
-        movieDetail.setReleaseYear(movie.getReleaseYear());
-        movieDetail.setTitle(movie.getTitle());
+    @GetMapping(value = "/home/movie")
+    public String movieDetailDefault(@RequestParam(value = "id") Long id, Model model, Principal principal){
+        return movieDetail(1,id, model, principal);
+    }
 
-        movieDetail.setView(movie.getView());
 
-        for (Image item: movie.getImages()) {
-            if (item.getType().equals("poster")){
-                movieDetail.setImg(item.getSource());
-                break;
-            }
+    @GetMapping("/home/movie/{page}")
+    public String movieDetail(@PathVariable("page") int page,
+                              @RequestParam(value = "id") Long id,
+                              Model model, Principal principal){
+
+
+
+        Page<ParentComment> parentCommentPage= parentCommentService.getParentCommentByMovieId(id, page);
+        List<ParentComment> lstParentComment= parentCommentPage.getLstData();
+
+        MovieDetailResponse movieDetail= movieService.getMovieDetails(id);
+
+        List<Movie> moviesRelate=movieService.getMovieRelate(id);
+        if (moviesRelate.size()!=0){
+            model.addAttribute("moviesRelate", moviesRelate);
         }
-
-        StringJoiner joinerDirector= new StringJoiner(", ");
-        for (Director d:movie.getDirectors()) {
-            joinerDirector.add(d.getName());
-        }
-        movieDetail.setDirector(joinerDirector.toString());
-
-        StringJoiner joinerCast= new StringJoiner(", ");
-        for (Cast c:movie.getCasts()) {
-            joinerCast.add(c.getName());
-        }
-        movieDetail.setCast(joinerCast.toString());
-
-        StringJoiner joinerGenre= new StringJoiner(", ");
-        for (Genre g:movie.getGenres()) {
-            joinerGenre.add(g.getName());
-        }
-        movieDetail.setGenre(joinerGenre.toString());
-
-        StringJoiner joinerCountry= new StringJoiner(", ");
-        for (Country c:movie.getCountries()) {
-            joinerCountry.add(c.getName());
-        }
-        movieDetail.setCountry(joinerCountry.toString());
-
-
-        String video="";
-        for (MovieVideo movieVideo: movie.getMovieVideos()) {
-            if (movieVideo.getVideo().getType().equals("trailer")){
-                video=movieVideo.getVideo().getSource();
-                break;
-            }
-        }
-        movieDetail.setTrailer(video);
-
-
-        List<ParentComment> lstParentComment= parentCommentService.getParentCommentByMovieId(id);
-        CommentRequest commentRequest= new CommentRequest();
         model.addAttribute("lstParentComment", lstParentComment);
-        model.addAttribute("commentRequest", commentRequest);
         model.addAttribute("movie", movieDetail);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", parentCommentPage.getTotalPage());
+
 
         return "web/movie/movie-details";
     }
 
     @GetMapping("/home/movie/watch")
-    public String movieWatch(@RequestParam("id") long id, Model model){
-        Movie movie= movieService.getMovieById(id);
-        model.addAttribute("movie", movie);
+    public String getMovieWatch(@RequestParam("id") long id, Model model, Principal principal){
+        return movieWatch(1,id, model, principal);
+    }
+
+    @GetMapping("/home/movie/watch/{page}")
+    public String movieWatch(@PathVariable("page") int page,
+                             @RequestParam("id") long id,
+                             Model model, Principal principal){
+        Movie movie= movieService.countView(id);
+        User user= userService.getUserByEmail(principal.getName());
+
+        List<String> genre= new LinkedList<>();
+        String banner="";
+
+        movie.getGenres().stream().forEach(item->genre.add(item.getName()));
+        for (Image item: movie.getImages()) {
+            if (item.getType().equals("banner")){
+                banner=item.getSource();
+            }
+        }
+
+        UserMovie userMovie= userMovieService.getUserMovieByUserAndMovie(user,movie);
+        if (userMovie==null){
+            userMovie=userMovieService.add(user,movie);
+        }
+
+        MovieResponse movieResponse=
+                new MovieResponse(genre, movie.getDescription(),
+                        movie.getTitle(), movie.getId(), movie.getView(),banner, userMovie.getRate());
+
+
+
+        Page<ParentComment> parentCommentPage= parentCommentService.getParentCommentByMovieId(id, page);
+        List<ParentComment> lstParentComment= parentCommentPage.getLstData();
+
+        model.addAttribute("movie", movieResponse);
+        model.addAttribute("lstParentComment", lstParentComment);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", parentCommentPage.getTotalPage());
         return "web/movie/movie-watch";
     }
 
@@ -113,6 +119,39 @@ public class MovieWebController {
         return "/web/movie/search-movie";
     }
 
+    @GetMapping("/movies/search")
+    public String searchMovie(Model model){
+        List<Movie> lstMovie= movieService.findAll(1).getContent();
+        List<Genre> lstGenre=genreService.findAll();
+        List<Country> lstCountry=countryService.findAll();
 
+        model.addAttribute("searchRequest",new SearchRequest());
+        model.addAttribute("lstMovie", lstMovie);
+        model.addAttribute("lstGenre", lstGenre);
+        model.addAttribute("lstCountry", lstCountry);
+        return "/web/movie/search-movie";
+    }
+
+    @PostMapping("movies/search")
+    public String searchMovie(@ModelAttribute("searchRequest") SearchRequest searchRequest, Model model){
+        if (searchRequest.getName()!=""){
+            List<Movie> movies=movieService.getMoviesByName(searchRequest.getName());
+            model.addAttribute("movies", movies);
+
+        }else {
+            List<Movie> movies= movieService.searchByGenreCountryAndYear(searchRequest.getGenre(),
+                    searchRequest.getCountry(), searchRequest.getYear());
+            model.addAttribute("movies", movies);
+        }
+        List<Movie> lstMovie= movieService.findAll(1).getContent();
+        List<Genre> lstGenre=genreService.findAll();
+        List<Country> lstCountry=countryService.findAll();
+
+        model.addAttribute("searchRequest",new SearchRequest());
+        model.addAttribute("lstMovie", lstMovie);
+        model.addAttribute("lstGenre", lstGenre);
+        model.addAttribute("lstCountry", lstCountry);
+        return "/web/movie/search-movie";
+    }
 
 }

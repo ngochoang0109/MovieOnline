@@ -3,13 +3,60 @@
 <head th:replace="web/layout/head :: head">
 </head>
 <body>
-<header th:replace="web/layout/header :: header">
-</header>
+<headxer th:replace="web/layout/header :: header">
+</headxer>
 <section class="container-movie">
-    <h1>
-        Day la page tim kiem
-    </h1>
+    <div class="container-search">
+        <div class="form-search">
+            <form th:action="@{/movies/search}"
+                  th:object="${searchRequest}"
+                  method="post">
+                <input type="text" th:field="*{name}">
+                <select id="genre" th:field="*{genre}">
+                    <option value="none" selected disabled hidden>Thể loại</option>
+                    <th:block th:each="genre:${lstGenre}">
+                        <option th:text="${genre.name}" th:value="${genre.name}"></option>
+                    </th:block>
+                </select>
+                <select id="country" th:field="*{country}">
+                    <option value="none" selected disabled hidden>Quốc gia</option>
+                    <th:block th:each="country:${lstCountry}">
+                        <option th:value="${country.name}" th:text="${country.name}"></option>
+                    </th:block>
+                </select>
+                <select id="year" th:field="*{year}">
+                    <option th:each="item : ${#numbers.sequence(2021, 1990)}"
+                            th:value="${item.valueOf(item)}"
+                            th:text="${item.valueOf(item)}">
+                    </option>
+                </select>
+                <input type="submit" value="Send" id="btn-submit">
+            </form>
+        </div>
+        <div class="data-search">
+            <div class="movie-search"  th:each="movie:${movies}">
+                <a th:href="@{/home/movie/(id=${movie.id})}">
+                    <th:block th:each="image:${movie.images}">
+                        <img th:if="${image.type =='poster'}"
+                             th:src="${image.source}">
+                    </th:block>
+                </a>
+                <div class="infor-movie">
+                    <p th:text="${movie.title}">Ten phim</p>
+                    <th:block th:each="genre:${movie.genres}">
+                        <p th:text="${genre.name}"></p>
+                    </th:block>
+
+                    <p th:text="${movie.view}"></p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
 </section>
+
 <footer th:replace="web/layout/footer ::footer">
 </footer>
 <script th:src="@{/web/css/search.css}"></script>

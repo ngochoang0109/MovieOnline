@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface CountryRepository extends JpaRepository<Country, Long > {
     Country getCountryById(Long id);
     void deleteById(Long id);
-    Country getCountryByName(String name);
+    Country[] getCountriesByName(String name);
 }

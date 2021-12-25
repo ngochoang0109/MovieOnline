@@ -1,21 +1,23 @@
 package com.tlcn.movieonline.service.impl;
 
-import com.tlcn.movieonline.model.Movie;
+import com.tlcn.movieonline.constant.MovieConstant;
+import com.tlcn.movieonline.dto.MovieDetailResponse;
+import com.tlcn.movieonline.dto.MovieResponse;
+import com.tlcn.movieonline.dto.admin.MovieDTO;
+import com.tlcn.movieonline.model.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.tlcn.movieonline.model.User;
-import com.tlcn.movieonline.model.UserMovie;
 import com.tlcn.movieonline.repository.MovieRepository;
-import com.tlcn.movieonline.service.MovieService;
-import com.tlcn.movieonline.service.UserService;
+import com.tlcn.movieonline.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.transaction.Transactional;
 
@@ -30,6 +32,26 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
+    @Autowired
+    private CastService castService;
+
+    @Autowired
+    private DirectorService directorService;
+
+    @Autowired
+    private CountryService countryService;
+
+    @Autowired
+    private GenreService genreService;
+
+    @Autowired
+    private MovieVideoService movieVideoService;
+
+    @Autowired
+    private UserMovieService userMovieService;
 
     @Override
     public Page<Movie> findAll(int currentPage) {
@@ -40,7 +62,8 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<List<Movie>> findMoviesByGenreTenLimit() {
-        List<String> lstGenre= Arrays.asList("Chiếu rạp","Truyền hình","Hoạt hình");
+        List<String> lstGenre= Arrays.asList(MovieConstant.THEATERS_MOVIE,
+                MovieConstant.TV_SERIES_MOVIE,MovieConstant.CARTOON_MOVIE);
         List<List<Movie>> lstMovie= new ArrayList<>();
         List<Movie> lstNewMovie= movieRepository.getAll(PageRequest.of(0,sizePage));
         for (String item: lstGenre) {
@@ -89,5 +112,213 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> getMovieByGenre(String genre) {
         List<Movie> movies= movieRepository.findMoviesByGenre(genre);
         return movies;
+    }
+
+    @Override
+    @Transactional
+    @ExceptionHandler(Exception.class)
+    public Movie countView(long id) {
+        Movie movie= this.getMovieById(id);
+        movie.setView(movie.getView()+1);
+        return movieRepository.save(movie);
+    }
+
+    @Override
+    public String getSourceVideoByMovieId(long id) {
+        Movie movie= this.getMovieById(id);
+        List<MovieVideo> movieVideos= (List<MovieVideo>) movie.getMovieVideos();
+        String video="";
+        for (MovieVideo item: movieVideos) {
+            if (item.getVideo().getType().equals("movie")){
+                video=item.getVideo().getSource();
+            }
+        }
+        return video;
+    }
+
+    @Override
+    public Movie convertMovieDTOToMovie(MovieDTO movieDTO) {
+
+        List<Image> images= new LinkedList<>();
+        String sourcePoster=cloudinaryService.doUpload(movieDTO.getImagePoster());
+        Image imagePoster=new Image(sourcePoster,"poster");
+        images.add(imagePoster);
+        String sourceWatch= cloudinaryService.doUpload(movieDTO.getImageWatch());
+        Image imageBanner=new Image(sourceWatch,"banner");
+        images.add(imageBanner);
+
+        String[] strCasts= movieDTO.getCast().trim().split(",");
+        Set<Cast> casts= new HashSet<>();
+        for (String item: strCasts) {
+            Cast[] arrCast = castService.getCastsByName(item.trim());
+            if (arrCast.length==0){
+                Cast c = new Cast();
+                c.setName(item.trim());
+                casts.add(c);
+            }
+            else {
+                casts.add(arrCast[0]);
+            }
+        }
+
+
+        String[] strDirectors= movieDTO.getDirector().split(",");
+        Set<Director> directors= new HashSet<>();
+        for (String item: strDirectors) {
+            Director[] arrDirector = directorService.getDirectorsByName(item.trim());
+            if (arrDirector.length==0){
+                Director d= new Director();
+                d.setName(item.trim());
+                directors.add(d);
+            }else {
+                directors.add(arrDirector[0]);
+            }
+        }
+
+
+        String[] strCountries= movieDTO.getCountry().split(",");
+        Set<Country> countries= new HashSet<>();
+        for (String item: strCountries) {
+            Country[] arrCountry = countryService.getCountriesByName(item.trim());
+            if (arrCountry.length==0){
+                Country c= new Country();
+                c.setName(item.trim());
+                countries.add(c);
+            }
+            else {
+                countries.add(arrCountry[0]);
+            }
+        }
+
+
+        String[] strGenre= movieDTO.getGenre().trim().split(",");
+        Set<Genre> genres= new HashSet<>();
+        for (String item: strGenre) {
+            Genre[] arrGenre = genreService.getGenresByName(item.trim());
+            if (arrGenre.length==0){
+                Genre g= new Genre();
+                g.setName(item.trim());
+                genres.add(g);
+            }
+            else {
+                genres.add(arrGenre[0]);
+            }
+        }
+
+        Movie movie= new Movie( movieDTO.getTitle(), movieDTO.getDescription(),
+                movieDTO.getDuration(), 0, true, movieDTO.getNumber(),
+                movieDTO.getReleaseYear(), images, genres, casts, countries, directors);
+
+        return movie;
+    }
+
+
+    @Override
+    public MovieDetailResponse getMovieDetails(long id) {
+        Movie movie=this.getMovieById(id);
+
+        MovieDetailResponse movieDetail= new MovieDetailResponse();
+        movieDetail.setId(movie.getId());
+        movieDetail.setDescription(movie.getDescription());
+        movieDetail.setDuration(movie.getDuration());
+        movieDetail.setReleaseYear(movie.getReleaseYear());
+        movieDetail.setTitle(movie.getTitle());
+        movieDetail.setView(movie.getView());
+
+        for (Image item: movie.getImages()) {
+            if (item.getType().equals("poster")){
+                movieDetail.setImg(item.getSource());
+                break;
+            }
+        }
+
+        StringJoiner joinerDirector= new StringJoiner(", ");
+        for (Director d:movie.getDirectors()) {
+            joinerDirector.add(d.getName());
+        }
+        movieDetail.setDirector(joinerDirector.toString());
+
+        StringJoiner joinerCast= new StringJoiner(", ");
+        for (Cast c:movie.getCasts()) {
+            joinerCast.add(c.getName());
+        }
+        movieDetail.setCast(joinerCast.toString());
+
+        StringJoiner joinerGenre= new StringJoiner(", ");
+        for (Genre g:movie.getGenres()) {
+            joinerGenre.add(g.getName());
+        }
+        movieDetail.setGenre(joinerGenre.toString());
+
+        StringJoiner joinerCountry= new StringJoiner(", ");
+        for (Country c:movie.getCountries()) {
+            joinerCountry.add(c.getName());
+        }
+        movieDetail.setCountry(joinerCountry.toString());
+
+
+        String video="";
+        for (MovieVideo movieVideo: movie.getMovieVideos()) {
+            if (movieVideo.getVideo().getType().equals("trailer")){
+                video=movieVideo.getVideo().getSource();
+                break;
+            }
+        }
+        movieDetail.setTrailer(video);
+        List<Float> rating= userMovieService.calculatorRating(movie);
+        movieDetail.setRating(rating.get(0));
+        movieDetail.setTotalRating(Math.round(rating.get(1)));
+
+        movieDetail.setNumber(movie.getNumber());
+        movieDetail.setCurrentEpisode(movieVideoService.getMaxCurrentEpisode(movie.getId()));
+        return movieDetail;
+    }
+
+    @Override
+    public List<Movie> getMovieRelate(long id) {
+        Movie movie=this.getMovieById(id);
+        int randomGenre= (int) (Math.random()*(movie.getGenres().size()-0));
+        List<Genre> lstGenre= (List<Genre>) movie.getGenres();
+        List<Movie> lstMovie= new LinkedList<>();
+        try {
+            lstMovie=movieRepository.findMoviesByGenre(lstGenre.get(randomGenre).getName());
+        }
+        catch (Exception e){
+
+        }
+        finally {
+
+                Collections.sort(lstMovie, new Comparator<Movie>() {
+                    @Override
+                    public int compare(Movie o1, Movie o2) {
+                        return o1.getCreateDate().compareTo(o2.getCreateDate());
+                    }
+                });
+                Collections.reverse(lstMovie);
+                lstMovie.stream().limit(20);
+        }
+        return lstMovie;
+    }
+
+    @Override
+    public List<Movie> getMoviesByName(String name) {
+        return movieRepository.searchByTitleLike(name);
+    }
+
+    @Override
+    public List<Movie> searchByGenreCountryAndYear(String genre, String country, int year) {
+        Genre g= genreService.getGenreByName(genre);
+        List<Movie> movies= (List<Movie>) g.getMovies();
+        List<Movie> result=new LinkedList<>();
+        for (Movie m: movies){
+            for (Country c:m.getCountries()) {
+                if (c.getName().equals(country)) {
+                    result.add(m);
+                }
+            }
+        }
+        result=result.stream()
+                .filter(movie->movie.getReleaseYear()==year).collect(Collectors.toList());
+        return result;
     }
 }

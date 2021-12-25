@@ -26,11 +26,12 @@ public class UserMovie {
     private Movie movie;
 
     @Column(name = "rate")
-    private int rate;
+    private float rate;
+
     @Column(name = "favorite")
     private boolean favorite;
 
-    public UserMovie(User user, Movie movie, int rate, boolean favorite) {
+    public UserMovie(User user, Movie movie, float rate, boolean favorite) {
         this.id= new UserMovieKey(user.getId(), movie.getId());
         this.user = user;
         this.movie = movie;

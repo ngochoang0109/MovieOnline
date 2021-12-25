@@ -1,28 +1,28 @@
 package com.tlcn.movieonline.controller.web.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tlcn.movieonline.model.Movie;
 import com.tlcn.movieonline.service.AwsS3Service;
+import com.tlcn.movieonline.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 
 @RestController
-@RequestMapping("/api/stream")
+@RequestMapping("/api")
 public class MovieApiWebController {
 
     @Autowired
     private AwsS3Service awsS3Service;
 
-    @RequestMapping(value = "/video", method = RequestMethod.GET)
-    public Mono<ResponseEntity<byte[]>> streamVideo(@RequestHeader("Range") HttpHeaders header) {
-        return Mono.just(awsS3Service.getVideoBytes("zone447.mp4_2021-10-29T13:49:52.361"));
+    @Autowired
+    private MovieService movieService;
+
+    @RequestMapping(value = "/stream/video/{id}", method = RequestMethod.GET)
+    public Mono<ResponseEntity<byte[]>> streamVideo(@RequestHeader("Range") HttpHeaders header, @PathVariable("id") long id) {
+        String source= movieService.getSourceVideoByMovieId(id);
+        return Mono.just(awsS3Service.getVideoBytes(source));
     }
+
 }

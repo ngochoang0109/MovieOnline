@@ -29,8 +29,6 @@ public class MovieVideo {
     @Column(name = "current")
     private int current;
 
-
-
     public MovieVideo(Movie movie, Video video, int current) {
         this.id = new MovieVideoKey(movie.getId(), video.getId());
         this.movie = movie;

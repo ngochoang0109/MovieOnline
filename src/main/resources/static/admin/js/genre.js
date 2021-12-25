@@ -13,6 +13,7 @@ $(document).ready(function () {
             data: JSON.stringify(jsonData),
             contentType: "application/json",
             success: function (data) {
+
                 $("#txtNameGenre").val("");
                 $("#datatablesSimple > tbody:last-child")
                     .append(`<tr class="text-center">
@@ -30,21 +31,23 @@ $(document).ready(function () {
 
     var element=null;
     $(".btnEditGenre").click(function (event){
+        console.log("ok")
         var id= $(this).attr("id");
         element=$(this).parent().parent();
         $.ajax({
             type: "GET",
             url: "http://localhost:8080/admin/api/genre/edit?id="+id,
             success:function(data){
-                $("#txtIdGenre").val(data.id);
-                $("#txtNameGenre").val(data.name);
+                $("#txtIdGenreEdit").val(data.id);
+                $("#txtNameGenreEdit").val(data.name);
             }
         })
     })
 
     $("#btnEdit").click(function() {
-        var id = $("#txtIdGenre").val();
-        var name = $("#txtNameGenre").val();
+
+        var id = $("#txtIdGenreEdit").val();
+        var name = $("#txtNameGenreEdit").val();
         jsonData = {
             id: id,
             name: name
@@ -55,6 +58,7 @@ $(document).ready(function () {
             data: JSON.stringify(jsonData),
             contentType: "application/json",
             success: function (data) {
+                $("#txtNameGenreEdit").val("");
                 element.children("td:nth-child(2)").text(data.name);
             }
         })

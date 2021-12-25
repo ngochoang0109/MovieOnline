@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "movie")
@@ -28,6 +25,7 @@ public class Movie {
     private long view;
     private boolean status;
     private int number;
+    private Date createDate;
 
     private int releaseYear;
 
@@ -63,6 +61,7 @@ public class Movie {
 
     public Movie(){
         this.view=0;
+        this.createDate=Calendar.getInstance().getTime();
     }
 
     public Movie(String title, String description, int duration, long view, boolean status, int number, int releaseYear, Collection<Image> images, Collection<Genre> genres, Collection<Cast> casts, Collection<Country> countries, Collection<Director> directors) {
@@ -78,5 +77,6 @@ public class Movie {
         this.casts = casts;
         this.countries = countries;
         this.directors = directors;
+        this.createDate=Calendar.getInstance().getTime();
     }
 }

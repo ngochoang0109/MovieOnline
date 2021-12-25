@@ -25,7 +25,7 @@ public class CastServiceImpl implements CastService {
     }
 
     @Override
-    public Cast getCastByName(String name) {
-        return castRepository.getCastByName(name);
+    public Cast[] getCastsByName(String name) {
+        return castRepository.getCastsByName(name);
     }
 }

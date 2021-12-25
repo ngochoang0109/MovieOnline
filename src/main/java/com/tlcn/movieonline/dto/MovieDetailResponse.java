@@ -20,4 +20,8 @@ public class MovieDetailResponse {
     private String img;
     private String trailer;
     private long view;
+    private float rating;
+    private int totalRating;
+    private int number;
+    private int currentEpisode;
 }

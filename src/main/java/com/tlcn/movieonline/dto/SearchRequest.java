@@ -7,10 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MovieUserRequest {
-    private long id;
-    private float rate;
-    public MovieUserRequest(long id) {
-        this.id = id;
-    }
+public class SearchRequest {
+    private String name;
+    private String genre;
+    private String country;
+    private int year;
 }

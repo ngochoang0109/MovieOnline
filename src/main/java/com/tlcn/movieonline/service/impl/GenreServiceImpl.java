@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -18,8 +19,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional
     public Genre addGenre(Genre g) {
-        Genre genre= genreRepository.save(g);
-        return genre;
+        return genreRepository.save(g);
     }
 
     @Override
@@ -40,7 +40,19 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getGenreByName(String name) {
-        return genreRepository.getGenreByName(name);
+    public Genre edit(Genre genre) {
+        Genre g= genreRepository.getGenreById(genre.getId());
+        g.setName(genre.getName());
+        return genreRepository.save(g);
+    }
+
+    @Override
+    public Genre[] getGenresByName(String genre) {
+        return genreRepository.getGenresByName(genre);
+    }
+
+    @Override
+    public Genre getGenreByName(String genre) {
+        return genreRepository.getGenreByName(genre);
     }
 }

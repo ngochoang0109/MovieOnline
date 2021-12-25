@@ -1,5 +1,6 @@
 package com.tlcn.movieonline.controller.web.api;
 
+import com.tlcn.movieonline.dto.MovieResponse;
 import com.tlcn.movieonline.dto.MovieUserRequest;
 import com.tlcn.movieonline.dto.MovieUserResponse;
 import com.tlcn.movieonline.model.Movie;
@@ -19,7 +20,7 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping(value = "/home/api")
-public class ListFavoriteApiWebController {
+public class UserActionApiWebController {
     @Autowired
     private UserMovieService userMovieService;
 
@@ -35,5 +36,11 @@ public class ListFavoriteApiWebController {
         User user= userService.getUserByEmail(principal.getName());
         UserMovie userMovie=userMovieService.add(user, movie);
         return new MovieUserResponse(movie.getTitle(),userMovie.getUser().getName());
+    }
+
+    @PostMapping(value = "/rating-movie")
+    public @ResponseBody MovieResponse ratingMovie(@RequestBody MovieUserRequest movieUserRequest, Principal principal){
+        MovieResponse movieResponse= userMovieService.rating(movieUserRequest.getId(), principal.getName(), movieUserRequest.getRate());
+        return movieResponse;
     }
 }

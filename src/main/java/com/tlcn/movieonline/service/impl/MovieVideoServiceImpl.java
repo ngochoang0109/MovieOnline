@@ -41,4 +41,16 @@ public class MovieVideoServiceImpl implements MovieVideoService {
         }
         return lstMovievideo;
     }
+
+    @Override
+    public int getMaxCurrentEpisode(long movieId) {
+        List<MovieVideo> movieVideos= movieVideoRepository.getMovieVideosByMovieId(movieId);
+        int maxCurrentEpisode=0;
+        for (MovieVideo m:movieVideos) {
+            if (maxCurrentEpisode<m.getCurrent()){
+                maxCurrentEpisode=m.getCurrent();
+            }
+        }
+        return maxCurrentEpisode;
+    }
 }
