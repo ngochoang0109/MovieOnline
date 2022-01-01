@@ -1,5 +1,6 @@
 package com.tlcn.movieonline.service.impl;
 
+import com.tlcn.movieonline.dto.admin.MovieDTO;
 import com.tlcn.movieonline.model.Movie;
 import com.tlcn.movieonline.model.MovieVideo;
 import com.tlcn.movieonline.model.Video;
@@ -33,10 +34,10 @@ public class MovieVideoServiceImpl implements MovieVideoService {
     @Override
     public List<MovieVideo> addOneMovieMultiVideo(Movie movie, List<Video> videos, int current) {
         Movie m=movieService.addMove(movie);
-        List<Video> lstVideo= videoService.addMultiVideo(videos);
-        List<MovieVideo> lstMovievideo= new ArrayList<>();
-        for (Video video: lstVideo){
-            MovieVideo movieVideo= addMovieVideo(m, video, current);
+        List<Video> lstVideo = videoService.addMultiVideo(videos);
+        List<MovieVideo> lstMovievideo = new ArrayList<>();
+        for (Video video : lstVideo) {
+            MovieVideo movieVideo = addMovieVideo(m, video, current);
             lstMovievideo.add(movieVideo);
         }
         return lstMovievideo;
@@ -44,13 +45,22 @@ public class MovieVideoServiceImpl implements MovieVideoService {
 
     @Override
     public int getMaxCurrentEpisode(long movieId) {
-        List<MovieVideo> movieVideos= movieVideoRepository.getMovieVideosByMovieId(movieId);
-        int maxCurrentEpisode=0;
-        for (MovieVideo m:movieVideos) {
-            if (maxCurrentEpisode<m.getCurrent()){
-                maxCurrentEpisode=m.getCurrent();
+        List<MovieVideo> movieVideos = movieVideoRepository.getMovieVideosByMovieId(movieId);
+        int maxCurrentEpisode = 0;
+        for (MovieVideo m : movieVideos) {
+            if (maxCurrentEpisode < m.getCurrent()) {
+                maxCurrentEpisode = m.getCurrent();
             }
         }
         return maxCurrentEpisode;
+    }
+
+    @Override
+    public MovieVideo addOneMovieOneVideo(MovieDTO movieDTO, long id) {
+        Movie movie= movieService.getMovieById(id);
+
+        Video video= new Video();
+
+        return null;
     }
 }

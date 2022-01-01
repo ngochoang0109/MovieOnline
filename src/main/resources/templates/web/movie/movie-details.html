@@ -28,10 +28,6 @@
                         <i class="fa fa-eye"></i></br>
                         <p style="color: yellow"  th:text="${'Lượt xem: ' +movie.view}"></p>
                     </a>
-                    <a href="#" class="link-item">
-                        <i class="fa fa-share"></i></br>
-                        Share
-                    </a>
                 </div>
             </div>
             <div class="row-detail">
@@ -89,13 +85,14 @@
             <span id="trailer"></span>
         </div>
     </div>
-    <div class="number-movie">
+    <div class="number-movie"  th:if="${movie.currentEpisode>1}" >
         <div class="justify-content-center">
             <h6>Tập phim</h6>
         </div>
         <ul class="list-number-movie">
-            <li th:each="star:${#numbers.sequence(1,movie.currentEpisode)}"
-                th:text="${star}"></li>
+            <a href="https://www.facebook.com/watch/?v=498416724889362" th:each="star:${#numbers.sequence(1,movie.currentEpisode)}">
+                <li th:text="${star}"></li>
+            </a>
         </ul>
     </div>
     <div class="row">
@@ -182,14 +179,21 @@
                     PHIM LIÊN QUAN
                 </h4>
             </div>
-            <div class="row-movie-relate" th:each="item:${moviesRelate}">
-                <th:block th:each="img:${item.images}">
-                    <div class="column-movie-relate">
-                        <a href="#" th:if="${img.type=='poster'}">
-                            <img class="img-relate"
-                                 th:src="${img.source}">
-                        </a>
-                    </div>
+            <div class="grid-container-relate" >
+                <th:block th:each="item:${moviesRelate}">
+                    <th:block th:each="img:${item.getImages()}">
+                        <div class="grid-item-relate" th:if="${img.type=='poster'}">
+                            <a th:href="@{/home/movie/(id=${item.id})}" class="grid-item-relate-img">
+                                <img alt="" th:src="${img.source}">
+                                <div class="infor-movie-relate">
+                                    <h4 th:text="${item.title}">}</h4>
+                                    <th:block th:each="genre:${item.genres}">
+                                        <p th:text="${genre.name}"></p>
+                                    </th:block>
+                                </div>
+                            </a>
+                        </div>
+                    </th:block>
                 </th:block>
             </div>
         </div>

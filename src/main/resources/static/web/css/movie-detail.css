@@ -2,7 +2,7 @@
     margin-left: auto;
     margin-right: auto;
     width: 1170px;
-    height: 1170px;
+    height: 110%;
 }
 .column {
     float: left;
@@ -358,4 +358,46 @@ hr{
 #rating>label:hover~input:checked~label,
 #rating>input:checked~label:hover~label{
     color:#FFED85;
+}
+
+.grid-container-relate {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: black;
+    width: 1070.970px;
+}
+
+.grid-item-relate {
+    font-size: 30px;
+    text-align: center;
+    width: 100%;
+    height: 400px;
+    margin-top: 2rem;
+
+}
+
+.grid-item-relate img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    overflow: hidden;
+}
+.grid-item-relate-img{
+    position: relative;
+}
+.infor-movie-relate h4{
+    font-size: 1rem;
+}
+.infor-movie-relate p{
+    font-size: 0.8rem;
+}
+.grid-item-relate .infor-movie-relate {
+    position: absolute;
+    bottom: 6rem;
+    left: 9rem;
+    text-align: left;
+    display: block;
+    color: yellow;
+
+    font-family: sans-serif;
 }

@@ -22,4 +22,7 @@ public interface MovieService {
     List<Movie> getMovieRelate(long id);
     List<Movie> getMoviesByName(String name);
     List<Movie> searchByGenreCountryAndYear(String genre, String country, int year);
+    List<Movie> getMovieSeries();
+    Movie convertMovieToMovieAnother(MovieDTO movieDTO, long id);
+    List<Movie> getMovieMaxEpisodeAndUniqueTitle(List<Movie> movie);
 }

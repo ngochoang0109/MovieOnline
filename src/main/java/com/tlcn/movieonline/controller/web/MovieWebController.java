@@ -48,9 +48,6 @@ public class MovieWebController {
     public String movieDetail(@PathVariable("page") int page,
                               @RequestParam(value = "id") Long id,
                               Model model, Principal principal){
-
-
-
         Page<ParentComment> parentCommentPage= parentCommentService.getParentCommentByMovieId(id, page);
         List<ParentComment> lstParentComment= parentCommentPage.getLstData();
 
@@ -104,6 +101,11 @@ public class MovieWebController {
 
         Page<ParentComment> parentCommentPage= parentCommentService.getParentCommentByMovieId(id, page);
         List<ParentComment> lstParentComment= parentCommentPage.getLstData();
+
+        List<Movie> moviesRelate=movieService.getMovieRelate(id);
+        if (moviesRelate.size()!=0){
+            model.addAttribute("moviesRelate", moviesRelate);
+        }
 
         model.addAttribute("movie", movieResponse);
         model.addAttribute("lstParentComment", lstParentComment);

@@ -1,5 +1,6 @@
 package com.tlcn.movieonline.service;
 
+import com.tlcn.movieonline.dto.admin.MovieDTO;
 import com.tlcn.movieonline.model.Movie;
 import com.tlcn.movieonline.model.MovieVideo;
 import com.tlcn.movieonline.model.Video;
@@ -10,4 +11,5 @@ public interface MovieVideoService {
     MovieVideo addMovieVideo(Movie movie, Video video, int current);
     List<MovieVideo> addOneMovieMultiVideo(Movie movie, List<Video> video, int current);
     int getMaxCurrentEpisode(long movieId);
+    MovieVideo addOneMovieOneVideo(MovieDTO movieDTO, long id);
 }

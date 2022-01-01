@@ -10,7 +10,7 @@ import java.util.*;
 @Table(name = "movie")
 @Getter
 @Setter
-public class Movie {
+public class Movie{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -79,4 +79,6 @@ public class Movie {
         this.directors = directors;
         this.createDate=Calendar.getInstance().getTime();
     }
+
+
 }

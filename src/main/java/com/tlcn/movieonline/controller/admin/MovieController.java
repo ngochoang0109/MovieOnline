@@ -44,10 +44,10 @@ public class MovieController {
     @Autowired
     private AddMovieForm addMovieForm;
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.setValidator(addMovieForm);
-    }
+//    @InitBinder
+//    public void initBinder(WebDataBinder binder) {
+//        binder.setValidator(addMovieForm);
+//    }
 
 
     @GetMapping(value = "/movies")
@@ -97,6 +97,52 @@ public class MovieController {
 
         }
         return "redirect:/admin/movies/add";
+    }
+
+
+    @GetMapping("/movies/series")
+    public String getMovieSeries(Model model){
+        List<Movie> movies= movieService.getMovieSeries();
+        model.addAttribute("movies", movies);
+        return "admin/movie/movie-series";
+    }
+
+    @GetMapping("movies/series/add/{id}")
+    public String addMovieSeries(@PathVariable("id") int id,Model model){
+        model.addAttribute("movieRequest", new MovieDTO());
+        Movie movie= movieService.getMovieById((long)id);
+        model.addAttribute("movie", movie);
+        return "admin/movie/movie-series-add";
+    }
+    @PostMapping("movies/series/add/{id}")
+    public String addMovieSeries(Model model,
+                                 @ModelAttribute("movieRequest") MovieDTO movieDTO,
+                                 @PathVariable("id") long id,
+                                 BindingResult bindingResult) throws CloneNotSupportedException {
+
+
+        Movie m= movieService.convertMovieToMovieAnother(movieDTO,id);
+        Movie movie= movieService.getMovieById(id);
+        if (!bindingResult.hasErrors()){
+            List<MovieVideo> movieVideo= (List<MovieVideo>) movie.getMovieVideos();
+            String trailer="";
+            for (MovieVideo mv: movieVideo) {
+                if (mv.getVideo().getType().equals("trailer")){
+                    trailer=mv.getVideo().getSource();
+                    break;
+                }
+            }
+            List<Video> videos= new ArrayList<>();
+            Video videoTrailer= new Video(trailer, "trailer");
+            String urlMovie= awsS3Service.uploadFile(movieDTO.getVideoMovie());
+            Video videoMovie= new Video(urlMovie, "movie");
+            videos.add(videoMovie);
+            videos.add(videoTrailer);
+            movieVideoService.addOneMovieMultiVideo(m, videos, movieDTO.getCurrent());
+            return "redirect:/admin/movies/series";
+
+        }
+        return "redirect:movies/series/add/"+id;
     }
 
 }

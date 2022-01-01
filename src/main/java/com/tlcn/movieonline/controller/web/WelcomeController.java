@@ -47,10 +47,13 @@ public class WelcomeController {
         catch (Exception e){
         }
         finally {
+            List<Movie> tvSeriesMovie=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(1));
+            List<Movie> cartoonMovie=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(2));
+            List<Movie> newPosts=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(3));
             model.addAttribute("theatersMovie",lstMovie.get(0));
-            model.addAttribute("tvSeriesMovie", lstMovie.get(1));
-            model.addAttribute("cartoonMovie", lstMovie.get(2));
-            model.addAttribute("newPosts", lstMovie.get(3));
+            model.addAttribute("tvSeriesMovie", tvSeriesMovie);
+            model.addAttribute("cartoonMovie", cartoonMovie);
+            model.addAttribute("newPosts", newPosts);
             model.addAttribute("myList", movies);
         }
         return "/web/index";
