@@ -48,9 +48,6 @@ public class MovieWebController {
     public String movieDetail(@PathVariable("page") int page,
                               @RequestParam(value = "id") Long id,
                               Model model, Principal principal){
-
-
-
         Page<ParentComment> parentCommentPage= parentCommentService.getParentCommentByMovieId(id, page);
         List<ParentComment> lstParentComment= parentCommentPage.getLstData();
 

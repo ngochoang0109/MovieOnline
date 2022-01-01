@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.transaction.Transactional;
 
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
+
 @Service
 public class MovieServiceImpl implements MovieService {
 
@@ -320,5 +323,130 @@ public class MovieServiceImpl implements MovieService {
         result=result.stream()
                 .filter(movie->movie.getReleaseYear()==year).collect(Collectors.toList());
         return result;
+    }
+
+    @Override
+    public List<Movie> getMovieSeries() {
+        List<Movie> movies=movieRepository.getMovieSeries();
+        List<Movie> unique= this.getMovieMaxEpisodeAndUniqueTitle(movies);
+        Collections.sort(unique,new Comparator<Movie>(){
+            @Override
+            public int compare(Movie obj1, Movie obj2){
+                return  obj1.getCreateDate().compareTo(obj2.getCreateDate());
+            }
+        });
+        return unique;
+    }
+
+    @Override
+    public Movie convertMovieToMovieAnother(MovieDTO movieDTO, long id) {
+        Movie movie=this.getMovieById(id);
+        Movie m= new Movie();
+        m.setView(0);
+
+        List<Cast> casts= (List<Cast>) movie.getCasts();
+        Set<Cast> lstCast=new HashSet<Cast>();
+        for (Cast cast: casts) {
+            Cast[] arrCast = castService.getCastsByName(cast.getName());
+            if (arrCast.length==0){
+                Cast c = new Cast();
+                c.setName(cast.getName().trim());
+                lstCast.add(c);
+            }
+            else {
+                lstCast.add(arrCast[0]);
+            }
+        }
+        List<Director> directors= (List<Director>) movie.getDirectors();
+        Set<Director> lstDirector= new HashSet<Director>();
+        for (Director item: directors) {
+            Director[] arrDirector = directorService.getDirectorsByName(item.getName());
+            if (arrDirector.length==0){
+                Director d= new Director();
+                d.setName(item.getName());
+                lstDirector.add(d);
+            }else {
+                lstDirector.add(arrDirector[0]);
+            }
+        }
+        List<Country> countries= (List<Country>) movie.getCountries();
+        Set<Country> lstCountries= new HashSet<>();
+        for (Country item: countries) {
+            Country[] arrCountry = countryService.getCountriesByName(item.getName().trim());
+            if (arrCountry.length==0){
+                Country c= new Country();
+                c.setName(item.getName());
+                lstCountries.add(c);
+            }
+            else {
+                lstCountries.add(arrCountry[0]);
+            }
+        }
+        List<Genre> genres= (List<Genre>) movie.getGenres();
+        Set<Genre> lstGenre= new HashSet<>();
+        for (Genre item: genres) {
+            Genre[] arrGenre = genreService.getGenresByName(item.getName().trim());
+            if (arrGenre.length==0){
+                Genre g= new Genre();
+                g.setName(item.getName().trim());
+                lstGenre.add(g);
+            }
+            else {
+                lstGenre.add(arrGenre[0]);
+            }
+        }
+        m.setCasts(lstCast);
+        m.setCountries(lstCountries);
+        m.setCreateDate(movieDTO.getCreateDate());
+        m.setDescription(movie.getDescription());
+        m.setDuration(movieDTO.getDuration());
+        m.setDirectors(lstDirector);
+        m.setGenres(lstGenre);
+        Image imgPoster= new Image();
+        Image imgBanner= new Image();
+        List<Image> lstImage= new LinkedList<>();
+        for (Image image:movie.getImages()) {
+            if (image.getType().equals("poster")){
+                imgPoster.setSource(image.getSource());
+                imgPoster.setType(image.getType());
+                lstImage.add(imgPoster);
+            }
+            if (image.getType().equals("banner")){
+                imgBanner.setSource(image.getSource());
+                imgBanner.setType(image.getSource());
+                lstImage.add(imgBanner);
+            }
+        }
+        m.setImages(lstImage);
+        m.setNumber(movie.getNumber());
+        m.setReleaseYear(movie.getReleaseYear());
+        m.setStatus(movie.isStatus());
+        m.setTitle(movie.getTitle());
+        return m;
+    }
+
+    @Override
+    public List<Movie> getMovieMaxEpisodeAndUniqueTitle(List<Movie> movies) {
+        List<MovieVideo> movieVideos=new LinkedList<>();
+        for (Movie m:movies) {
+            List<MovieVideo> mv= (List<MovieVideo>) m.getMovieVideos();
+            movieVideos.add(mv.get(0));
+        }
+        // sort
+        Collections.sort(movieVideos,new Comparator<MovieVideo>(){
+            @Override
+            public int compare(MovieVideo obj1, MovieVideo obj2){
+                return (int) obj1.getCurrent()- (int) obj2.getCurrent();
+            }
+        });
+        Collections.reverse(movieVideos);
+        List<Movie> lstMovie= new LinkedList<>();
+        for (MovieVideo m :movieVideos) {
+            lstMovie.add(m.getMovie());
+        }
+        List<Movie> unique = lstMovie.stream()
+                .collect(collectingAndThen(toCollection(() ->
+                        new TreeSet<>(Comparator.comparing(Movie::getTitle))), ArrayList::new));
+        return unique;
     }
 }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/admin-layout.html::head">
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="admin/admin-layout.html::header">
+
+</nav>
+<div id="layoutSidenav">
+    <div th:replace="admin/admin-layout.html::menu">
+    </div>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <div class="row mt-5 d-flex justify-content-center">
+                    <a class="btn btn-primary mb-4 mt-4"
+                       type="button" th:href="@{/admin/movies/add}">
+                        Thêm phim mới
+                    </a>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Danh sách Quốc gia
+                        </div>
+                        <div class="card-body">
+                            <table id="datatablesSimple">
+                                <thead>
+                                <tr>
+                                    <th>Mã</th>
+                                    <th>Tên</th>
+                                    <th>Số tập</th>
+                                    <th>Năm phát hành</th>
+                                    <th>Lượt xem</th>
+                                    <th>Trạng trái</th>
+                                    <th>Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="movie, istat:${movies}">
+                                    <td id="id" th:text="${movie.id}"></td>
+                                    <td id="name" th:text="${movie.title}"></td>
+                                    <td id="number" th:text="${movie.number}"></td>
+                                    <td id="releaseYear" th:text="${movie.releaseYear}"></td>
+                                    <td id="viewMovie" th:text="${movie.view}"></td>
+                                    <td id="status" >
+                                        <span class="badge badge-default" th:if="${movie.status==true}"> Còn phát</span>
+                                        <span class="badge badge-default" th:unless="${movie.status==true}"> Hết phát</span>
+                                    </td>
+                                    <td class="w-25">
+                                        <a class="btn btn-info mx-3"
+                                                th:href="@{/admin/movies/series/add/{id}(id=${movie.id})}">
+                                                    Thêm tập</a>
+                                        <a class="btn btn-danger"type="button">Chi tiết</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+        <footer th:replace="admin/admin-layout.html::footer">
+        </footer>
+    </div>
+</div>
+<section th:replace="admin/admin-layout.html::js">
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script th:src="@{/admin/js/cast.js}" type="application/javascript">
+
+</script>
+</body>
+</html>

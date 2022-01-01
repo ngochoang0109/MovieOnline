@@ -28,6 +28,11 @@ public interface MovieRepository extends PagingAndSortingRepository<Movie, Long>
                     "where movie.title like %:title%")
     List<Movie> searchByTitleLike(@Param("title") String title);
 
+    @Query(
+            "select movie from Movie movie where movie.number>1"
+    )
+    List<Movie> getMovieSeries();
+
 //    @Query("select movie " +
 //            "from Movie movie inner join movie.genres g " +
 //            "where g.name like %:genre01% and g.name like %:genre02%" +
