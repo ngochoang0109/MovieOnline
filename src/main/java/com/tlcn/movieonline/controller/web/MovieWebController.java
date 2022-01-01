@@ -102,6 +102,11 @@ public class MovieWebController {
         Page<ParentComment> parentCommentPage= parentCommentService.getParentCommentByMovieId(id, page);
         List<ParentComment> lstParentComment= parentCommentPage.getLstData();
 
+        List<Movie> moviesRelate=movieService.getMovieRelate(id);
+        if (moviesRelate.size()!=0){
+            model.addAttribute("moviesRelate", moviesRelate);
+        }
+
         model.addAttribute("movie", movieResponse);
         model.addAttribute("lstParentComment", lstParentComment);
         model.addAttribute("currentPage", page);

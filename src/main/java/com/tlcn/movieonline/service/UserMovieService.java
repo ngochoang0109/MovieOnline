@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface UserMovieService {
     UserMovie add(User user, Movie movie);
+    UserMovie addToFavorite(User user, Movie movie);
     UserMovie getUserMovieByUserAndMovie(User user, Movie movie);
     MovieResponse rating(long id, String email, float rate);
     List<Float> calculatorRating(Movie movie);

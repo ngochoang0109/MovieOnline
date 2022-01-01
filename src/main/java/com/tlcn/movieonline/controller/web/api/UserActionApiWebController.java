@@ -34,7 +34,7 @@ public class UserActionApiWebController {
     public @ResponseBody MovieUserResponse addToFavoriteList(@RequestBody MovieUserRequest movieUserRequest, Principal principal){
         Movie movie= movieService.getMovieById(movieUserRequest.getId());
         User user= userService.getUserByEmail(principal.getName());
-        UserMovie userMovie=userMovieService.add(user, movie);
+        UserMovie userMovie=userMovieService.addToFavorite(user, movie);
         return new MovieUserResponse(movie.getTitle(),userMovie.getUser().getName());
     }
 

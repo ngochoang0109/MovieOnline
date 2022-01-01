@@ -34,10 +34,6 @@
                 <i class="fa fa-eye"></i></br>
                 <p style="color: yellow"  th:text="${'Lượt xem: ' +movie.view}"></p>
             </a>
-            <a href="#" class="link-item">
-                <i class="fa fa-share"></i></br>
-                <p style="color: yellow">Share</p>
-            </a>
         </div>
 
         <div class="movie-description">
@@ -144,36 +140,25 @@
         <div class="more-like-this">
             <div class="title-relate">
                 <h4 class="romantic-heading">
-                    MORE LIKE THIS
+                    PHIM LIÊN QUAN
                 </h4>
             </div>
-            <div class="row-movie-relate">
-                <div class="column-movie-relate">
-                    <a href="#">
-                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
-                    </a>
-                </div>
-                <div class="column-movie-relate">
-                    <a href="#">
-                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
-                    </a>
-                </div>
-                <div class="column-movie-relate">
-                    <a href="#">
-                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
-                    </a>
-                </div>
-                <div class="column-movie-relate">
-                    <a href="#">
-                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
-                    </a>
-                </div>
-                <div class="column-movie-relate">
-                    <a href="#">
-                        <img class="img-relate" src="https://static.247phim.com/162725/conversions/611dbc94677da_nga-435_627.jpg">
-                    </a>
-                </div>
-
+            <div class="grid-container-relate" >
+                <th:block th:each="item:${moviesRelate}">
+                    <th:block th:each="img:${item.getImages()}">
+                        <div class="grid-item-relate" th:if="${img.type=='poster'}">
+                            <a th:href="@{/home/movie/(id=${item.id})}" class="grid-item-relate-img">
+                                <img alt="" th:src="${img.source}">
+                                <div class="infor-movie-relate">
+                                    <h4 th:text="${item.title}">}</h4>
+                                    <th:block th:each="genre:${item.genres}">
+                                        <p th:text="${genre.name}"></p>
+                                    </th:block>
+                                </div>
+                            </a>
+                        </div>
+                    </th:block>
+                </th:block>
             </div>
         </div>
     </div>

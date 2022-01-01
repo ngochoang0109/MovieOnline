@@ -39,6 +39,14 @@ public class UserMovieServiceImpl implements UserMovieService {
     @Transactional
     @ExceptionHandler(Exception.class)
     public UserMovie add(User user, Movie movie) {
+        UserMovie userMovie= new UserMovie(user, movie, 0, false);
+        userMovieRepository.save(userMovie);
+        return userMovie;
+    }
+    @Transactional
+    @ExceptionHandler(Exception.class)
+    @Override
+    public UserMovie addToFavorite(User user, Movie movie) {
         UserMovie userMovie= new UserMovie(user, movie, 0, true);
         userMovieRepository.save(userMovie);
         return userMovie;

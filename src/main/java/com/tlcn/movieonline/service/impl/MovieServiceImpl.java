@@ -104,7 +104,7 @@ public class MovieServiceImpl implements MovieService {
         User user= userService.getUserByEmail(email);
         List<Movie> movies= new LinkedList<>();
         for (UserMovie userMovie: user.getUserMovies()){
-            if(userMovie.getMovie().isStatus()==true){
+            if(userMovie.isFavorite()==true){
                 movies.add(userMovie.getMovie());
             }
         }
@@ -283,24 +283,31 @@ public class MovieServiceImpl implements MovieService {
         int randomGenre= (int) (Math.random()*(movie.getGenres().size()-0));
         List<Genre> lstGenre= (List<Genre>) movie.getGenres();
         List<Movie> lstMovie= new LinkedList<>();
+        List<Movie> unique= new LinkedList<>();
         try {
             lstMovie=movieRepository.findMoviesByGenre(lstGenre.get(randomGenre).getName());
+            unique= this.getMovieMaxEpisodeAndUniqueTitle(lstMovie);
         }
         catch (Exception e){
 
         }
         finally {
-
-                Collections.sort(lstMovie, new Comparator<Movie>() {
+                Collections.sort(unique, new Comparator<Movie>() {
                     @Override
                     public int compare(Movie o1, Movie o2) {
                         return o1.getCreateDate().compareTo(o2.getCreateDate());
                     }
                 });
-                Collections.reverse(lstMovie);
-                lstMovie.stream().limit(20);
+                Collections.reverse(unique);
+                unique.stream().limit(20);
         }
-        return lstMovie;
+        for (Movie m :unique) {
+            if (m.getTitle().equals(movie.getTitle())){
+                unique.remove(m);
+                break;
+            }
+        }
+        return unique;
     }
 
     @Override
