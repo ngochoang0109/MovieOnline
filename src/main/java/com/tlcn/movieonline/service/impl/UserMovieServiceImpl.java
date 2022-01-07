@@ -20,6 +20,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -98,7 +99,16 @@ public class UserMovieServiceImpl implements UserMovieService {
     @Override
     public List<Float> calculatorRating(Movie movie) {
         // calculator rating
-        List<UserMovie> lstUserMovie=userMovieRepository.getUserMoviesByMovie(movie);
+        List<Movie> movies=movieService.getMoviesByTitle(movie.getTitle());
+        List<UserMovie> lstUserMovie=new LinkedList<>();
+        for (Movie m:movies) {
+            lstUserMovie.addAll(userMovieRepository.getUserMoviesByMovie(m));
+        }
+        for (UserMovie um:lstUserMovie) {
+            if (um.getRate()==0){
+                lstUserMovie.remove(um);
+            }
+        }
         if (lstUserMovie.size()==0){
             return new ArrayList<Float>(Arrays.asList((float)0,(float)0));
         }

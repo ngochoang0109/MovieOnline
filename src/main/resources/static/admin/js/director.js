@@ -12,7 +12,7 @@ $(document).ready(function(){
             contentType:"application/json",
             success:function (data){
                 $("#txtNameDirector").val("");
-                $("#directorTable > tbody:last-child")
+                $(".directorTable > tbody:last-child")
                     .append(`<tr>
                                 <td>${data.id}</td>
                                 <td>${data.name}</td>

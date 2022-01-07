@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="vi"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="admin/admin-layout.html::head">
+<head th:replace="admin/layout/admin-layout.html::head">
 </head>
 <body class="sb-nav-fixed">
-<nav th:replace="admin/admin-layout.html::header">
+<nav th:replace="admin/layout/admin-layout.html::header">
 
 </nav>
 <div id="layoutSidenav">
-    <div th:replace="admin/admin-layout.html::menu">
+    <div th:replace="admin/layout/admin-layout.html::menu">
     </div>
 
     <div id="layoutSidenav_content">
@@ -90,7 +90,7 @@
                                 <td id="nameCountry" th:text="${item.name}"></td>
 
                                 <td>
-
+                                    <a class="btn btn-danger" th:href="@{'/country/delete/' + ${item.id}}">Chỉnh sửa</a>
                                     <a class="btn btn-danger" th:href="@{'/country/delete/' + ${item.id}}">Xóa</a>
                                 </td>
                             </tr>
@@ -100,11 +100,11 @@
                 </div>
             </div>
         </main>
-        <footer th:replace="admin/admin-layout.html::footer">
+        <footer th:replace="admin/layout/admin-layout.html::footer">
         </footer>
     </div>
 </div>
-<section th:replace="admin/admin-layout.html::js">
+<section th:replace="admin/layout/admin-layout.html::js">
 </section>
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
 <!--<script type="application/javascript" th:src="@{/admin/js/Country.js}">-->

@@ -90,9 +90,9 @@
             <h6>Tập phim</h6>
         </div>
         <ul class="list-number-movie">
-            <a href="https://www.facebook.com/watch/?v=498416724889362" th:each="star:${#numbers.sequence(1,movie.currentEpisode)}">
-                <li th:text="${star}"></li>
-            </a>
+                 <a th:href="@{/home/movie/watch/(id=${movie.id},current=${star})}" th:each="star:${#numbers.sequence(1,movie.currentEpisode)}">
+                    <li th:text="${star}"></li>
+                </a>
         </ul>
     </div>
     <div class="row">
@@ -158,7 +158,7 @@
                 <th:block th:each="item:${#numbers.sequence(1,totalPage)}">
                     <a class="is-active"
                        th:if="${item==currentPage}"
-                       th:href="@{/home/movie/{page}(page=${item},id=movie.id)}"
+                       th:href="@{/home/movie/{page}(page=${item},id=${movie.id})}"
                        th:text="${item}">1</a>
                     <a
                        th:unless="${item==currentPage}"

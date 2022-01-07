@@ -12,7 +12,7 @@ $(document).ready(function(){
             contentType:"application/json",
             success:function (data){
                 $("#txtNameGenre").val("");
-                $("#castTable > tbody:last-child")
+                $(".castTable > tbody:last-child")
                     .append(`<tr>
                                 <td>${data.id}</td>
                                 <td>${data.name}</td>

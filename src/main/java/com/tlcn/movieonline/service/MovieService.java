@@ -25,4 +25,8 @@ public interface MovieService {
     List<Movie> getMovieSeries();
     Movie convertMovieToMovieAnother(MovieDTO movieDTO, long id);
     List<Movie> getMovieMaxEpisodeAndUniqueTitle(List<Movie> movie);
+    List<Movie> getMoviesByTitle(String title);
+    long getMovieIdByMovieId(long id, long current);
+    List<Movie> getMoviesByCountry(String country);
+    long getMaxCurrent(String title);
 }

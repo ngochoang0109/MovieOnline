@@ -60,8 +60,10 @@ public class MovieServiceImpl implements MovieService {
     public Page<Movie> findAll(int currentPage) {
         Sort sort= Sort.by("title").ascending();
         Pageable pageable= PageRequest.of(currentPage-1,sizePage-2, sort);
-        return movieRepository.findAll(pageable);
+        return movieRepository.getMovieFeature(pageable);
     }
+
+
 
     @Override
     public List<List<Movie>> findMoviesByGenreTenLimit() {
@@ -113,7 +115,13 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> getMovieByGenre(String genre) {
-        List<Movie> movies= movieRepository.findMoviesByGenre(genre);
+        List<Movie> movies= this.getMovieMaxEpisodeAndUniqueTitle(movieRepository.findMoviesByGenre(genre));
+        return movies;
+    }
+
+    @Override
+    public List<Movie> getMoviesByCountry(String country) {
+        List<Movie> movies= this.getMovieMaxEpisodeAndUniqueTitle(movieRepository.findMoviesByCountry(country));
         return movies;
     }
 
@@ -226,7 +234,13 @@ public class MovieServiceImpl implements MovieService {
         movieDetail.setDuration(movie.getDuration());
         movieDetail.setReleaseYear(movie.getReleaseYear());
         movieDetail.setTitle(movie.getTitle());
-        movieDetail.setView(movie.getView());
+
+        List<Movie> movies= this.getMoviesByTitle(movie.getTitle());
+        long view=0;
+        for (Movie m:movies) {
+            view=m.getView()+view;
+        }
+        movieDetail.setView(view);
 
         for (Image item: movie.getImages()) {
             if (item.getType().equals("poster")){
@@ -270,11 +284,24 @@ public class MovieServiceImpl implements MovieService {
         movieDetail.setTrailer(video);
         List<Float> rating= userMovieService.calculatorRating(movie);
         movieDetail.setRating(rating.get(0));
-        movieDetail.setTotalRating(Math.round(rating.get(1)));
+        movieDetail.setTotalRating(Math.round(rating.get(rating.size()-1)));
 
         movieDetail.setNumber(movie.getNumber());
-        movieDetail.setCurrentEpisode(movieVideoService.getMaxCurrentEpisode(movie.getId()));
+        movieDetail.setCurrentEpisode((int) this.getMaxCurrent(movie.getTitle()));
         return movieDetail;
+    }
+
+    @Override
+    public long getMaxCurrent(String title) {
+        List<Movie> movies=movieRepository.getMoviesByTitle(title);
+        List<Movie> unique=this.getMovieMaxEpisodeAndUniqueTitle(movies);
+        long currentMax=0;
+        for (Movie m:unique) {
+            for (MovieVideo mv:m.getMovieVideos()) {
+                currentMax=mv.getCurrent();
+            }
+        }
+        return currentMax;
     }
 
     @Override
@@ -312,7 +339,8 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> getMoviesByName(String name) {
-        return movieRepository.searchByTitleLike(name);
+        List<Movie> movies= this.getMovieMaxEpisodeAndUniqueTitle(movieRepository.searchByTitleLike(name));
+        return movies;
     }
 
     @Override
@@ -455,5 +483,26 @@ public class MovieServiceImpl implements MovieService {
                 .collect(collectingAndThen(toCollection(() ->
                         new TreeSet<>(Comparator.comparing(Movie::getTitle))), ArrayList::new));
         return unique;
+    }
+
+    @Override
+    public List<Movie> getMoviesByTitle(String title) {
+        return movieRepository.getMoviesByTitle(title);
+    }
+
+    @Override
+    public long getMovieIdByMovieId(long id, long current) {
+        Movie m=this.getMovieById(id);
+        List<Movie> lstMovie=this.getMoviesByTitle(m.getTitle());
+        long movieId=0;
+        for (Movie movie: lstMovie) {
+            for (MovieVideo mv:movie.getMovieVideos()) {
+                if (mv.getCurrent()==current){
+                    movieId=movie.getId();
+                    break;
+                }
+            }
+        }
+        return movieId;
     }
 }
