@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -57,7 +58,8 @@ public class MovieWebController {
 
         List<Movie> moviesRelate=movieService.getMovieRelate(id);
         if (moviesRelate.size()!=0){
-            model.addAttribute("moviesRelate", moviesRelate);
+            List<Movie> renderMovie= moviesRelate.stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
+            model.addAttribute("moviesRelate", renderMovie);
         }
         model.addAttribute("lstParentComment", lstParentComment);
         model.addAttribute("movie", movieDetail);
@@ -117,7 +119,8 @@ public class MovieWebController {
 
         List<Movie> moviesRelate=movieService.getMovieRelate(movieService.getMovieIdByMovieId(id, current));
         if (moviesRelate.size()!=0){
-            model.addAttribute("moviesRelate", moviesRelate);
+            List<Movie> renderMovie= moviesRelate.stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
+            model.addAttribute("moviesRelate", renderMovie);
         }
 
         model.addAttribute("movie", movieResponse);
@@ -137,12 +140,14 @@ public class MovieWebController {
     @GetMapping("/movies/search-genre/{genre}")
     public String searchByGenre(@PathVariable("genre") String genre, Model model){
         List<Movie> movies= movieService.getMovieByGenre(genre);
+        List<Movie> renderMovie= movies.stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
         List<Movie> lstMovie= movieService.findAll(1).getContent();
+        List<Movie> listMovie= lstMovie.stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
         List<Genre> lstGenre=genreService.findAll();
         List<Country> lstCountry=countryService.findAll();
-        model.addAttribute("movies", movies);
+        model.addAttribute("movies", renderMovie);
         model.addAttribute("searchRequest",new SearchRequest());
-        model.addAttribute("lstMovie", lstMovie);
+        model.addAttribute("lstMovie", listMovie);
         model.addAttribute("lstGenre", lstGenre);
         model.addAttribute("lstCountry", lstCountry);
         return "/web/movie/search-movie";
@@ -151,12 +156,14 @@ public class MovieWebController {
     @GetMapping("/movies/search-contry/{country}")
     public String searchByCountry(@PathVariable("country") String country, Model model){
         List<Movie> movies= movieService.getMoviesByCountry(country);
+        List<Movie> renderMovie= movies.stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
         List<Movie> lstMovie= movieService.findAll(1).getContent();
+        List<Movie> listMovie= lstMovie.stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
         List<Genre> lstGenre=genreService.findAll();
         List<Country> lstCountry=countryService.findAll();
-        model.addAttribute("movies", movies);
+        model.addAttribute("movies", renderMovie);
         model.addAttribute("searchRequest",new SearchRequest());
-        model.addAttribute("lstMovie", lstMovie);
+        model.addAttribute("lstMovie", listMovie);
         model.addAttribute("lstGenre", lstGenre);
         model.addAttribute("lstCountry", lstCountry);
         return "/web/movie/search-movie";
@@ -165,11 +172,12 @@ public class MovieWebController {
     @GetMapping("/movies/search")
     public String searchMovie(Model model){
         List<Movie> lstMovie= movieService.findAll(1).getContent();
+        List<Movie> listMovie= lstMovie.stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
         List<Genre> lstGenre=genreService.findAll();
         List<Country> lstCountry=countryService.findAll();
 
         model.addAttribute("searchRequest",new SearchRequest());
-        model.addAttribute("lstMovie", lstMovie);
+        model.addAttribute("lstMovie", listMovie);
         model.addAttribute("lstGenre", lstGenre);
         model.addAttribute("lstCountry", lstCountry);
         return "/web/movie/search-movie";
@@ -179,19 +187,21 @@ public class MovieWebController {
     public String searchMovie(@ModelAttribute("searchRequest") SearchRequest searchRequest, Model model){
         if (searchRequest.getName()!=""){
             List<Movie> movies=movieService.getMoviesByName(searchRequest.getName());
-            model.addAttribute("movies", movies);
-
+            List<Movie> renderMovie= movies.stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
+            model.addAttribute("movies", renderMovie);
         }else {
             List<Movie> movies= movieService.searchByGenreCountryAndYear(searchRequest.getGenre(),
                     searchRequest.getCountry(), searchRequest.getYear());
-            model.addAttribute("movies", movies);
+            List<Movie> renderMovie= movies.stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
+            model.addAttribute("movies", renderMovie);
         }
         List<Movie> lstMovie= movieService.findAll(1).getContent();
+        List<Movie> listMovie= lstMovie.stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
         List<Genre> lstGenre=genreService.findAll();
         List<Country> lstCountry=countryService.findAll();
 
         model.addAttribute("searchRequest",new SearchRequest());
-        model.addAttribute("lstMovie", lstMovie);
+        model.addAttribute("lstMovie", listMovie);
         model.addAttribute("lstGenre", lstGenre);
         model.addAttribute("lstCountry", lstCountry);
         return "/web/movie/search-movie";

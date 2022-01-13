@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -143,6 +142,15 @@ public class MovieController {
 
         }
         return "redirect:movies/series/add/"+id;
+    }
+
+    @RequestMapping(value = "movies/disable/{id}")
+    public String disableMovie(@PathVariable("id") long id){
+        int number=movieService.disableMovie(id);
+        if (number==1){
+            return "redirect:/admin/movies";
+        }
+        return "redirect:/admin/movies/series";
     }
 
 }

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserMovieServiceImpl implements UserMovieService {
@@ -104,25 +105,24 @@ public class UserMovieServiceImpl implements UserMovieService {
         for (Movie m:movies) {
             lstUserMovie.addAll(userMovieRepository.getUserMoviesByMovie(m));
         }
-        for (UserMovie um:lstUserMovie) {
-            if (um.getRate()==0){
-                lstUserMovie.remove(um);
-            }
-        }
-        if (lstUserMovie.size()==0){
+
+        List<UserMovie> userMovies=lstUserMovie.stream().filter(um->um.getRate()!=0).collect(Collectors.toList());
+
+        if (userMovies.size()==0){
             return new ArrayList<Float>(Arrays.asList((float)0,(float)0));
         }
         float totalRating=0;
-        for (UserMovie item:lstUserMovie) {
+        for (UserMovie item:userMovies) {
             totalRating=totalRating+ item.getRate();
         }
-        float rating=totalRating/lstUserMovie.size();
+        float rating=totalRating/userMovies.size();
+
         BigDecimal bd = new BigDecimal(rating).setScale(2, RoundingMode.HALF_UP);
 
         List<Float> result= new ArrayList<>();
         result.add(bd.floatValue());
         result.add(rating);
-        result.add((float)lstUserMovie.size());
+        result.add((float)userMovies.size());
         return result;
     }
 }

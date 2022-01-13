@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 
@@ -110,7 +111,7 @@ public class MovieServiceImpl implements MovieService {
                 movies.add(userMovie.getMovie());
             }
         }
-        return movies;
+        return this.getMovieMaxEpisodeAndUniqueTitle(movies);
     }
 
     @Override
@@ -504,5 +505,58 @@ public class MovieServiceImpl implements MovieService {
             }
         }
         return movieId;
+    }
+
+    @Override
+    public int disableMovie(long id) {
+        Movie movie= movieRepository.getMovieById(id);
+        boolean condition=movie.isStatus();
+        List<Movie> movies= movieRepository.getMoviesByTitle(movie.getTitle());
+        for (Movie m: movies) {
+            if (condition==true) {
+                m.setStatus(false);
+            }else {
+                m.setStatus(true);
+            }
+        }
+        movieRepository.saveAll(movies);
+        if (movie.getNumber()==1){
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public MovieDTO convertMovieTOMovieDTO(Movie movie) {
+        MovieDTO movieDTO= new MovieDTO(movie.getTitle());
+        movieDTO.setDuration(movie.getDuration());
+        movieDTO.setStatus(movie.isStatus());
+        movieDTO.setNumber(movie.getNumber());
+        movieDTO.setDescription(movie.getDescription());
+        movieDTO.setReleaseYear(movie.getReleaseYear());
+        String casts="";
+        for (Cast c:movie.getCasts()){
+            casts=casts+c.getName();
+        }
+        movieDTO.setCast(casts);
+
+        String directors="";
+        for (Director d:movie.getDirectors()){
+            directors=directors+d.getName();
+        }
+        movieDTO.setDirector(directors);
+
+        String genre="";
+        for (Genre g:movie.getGenres()){
+            genre=genre+g.getName();
+        }
+        movieDTO.setGenre(genre);
+        String country="";
+        for (Country c:movie.getCountries()){
+            country=country+c.getName();
+        }
+        movieDTO.setCountry(country);
+
+        return movieDTO;
     }
 }

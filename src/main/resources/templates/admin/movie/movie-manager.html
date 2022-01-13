@@ -42,13 +42,18 @@
                                 <td id="releaseYear" th:text="${movie.releaseYear}"></td>
                                 <td id="viewMovie" th:text="${movie.view}"></td>
                                 <td id="status" >
-                                    <span class="badge badge-danger" th:if="${movie.status==true}"> Còn phát</span>
-                                    <span class="badge badge-danger" th:unless="${movie.status==true}"> Hết phát</span>
+                                    <span class="badge badge-danger"
+                                          th:if="${movie.status==true}"> Còn phát</span>
+                                    <span class="badge badge-danger"
+                                          th:unless="${movie.status==true}"> Hết phát</span>
                                 </td>
                                 <td class="w-25">
                                     <button class="btn btn-info mx-3"
-                                            type="button">Chi tiết</button>
-                                    <button class="btn btn-danger"type="button">Vô hiệu hóa</button>
+                                            type="button"
+                                            id="detail-movie">Chi tiết</button>
+                                    <a class="btn btn-danger" type="button"
+                                            id="btn-disable"
+                                            th:href="@{/admin/movies/disable/{id}(id=${movie.id})}">Disable/Enable</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -86,3 +91,7 @@
         </main>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="application/javascript" th:src="@{/admin/js/custom.js}">
+</script>
+</body>

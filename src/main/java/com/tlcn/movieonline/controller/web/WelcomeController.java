@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @ControllerAdvice
@@ -53,14 +54,14 @@ public class WelcomeController {
         catch (Exception e){
         }
         finally {
-            List<Movie> tvSeriesMovie=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(1));
-            List<Movie> cartoonMovie=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(2));
-            List<Movie> newPosts=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(3));
+            List<Movie> tvSeriesMovie=(movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(1))).stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
+            List<Movie> cartoonMovie=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(2)).stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
+            List<Movie> newPosts=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(3)).stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
             model.addAttribute("theatersMovie",lstMovie.get(0));
             model.addAttribute("tvSeriesMovie", tvSeriesMovie);
             model.addAttribute("cartoonMovie", cartoonMovie);
             model.addAttribute("newPosts", newPosts);
-            model.addAttribute("myList", movies);
+            model.addAttribute("myList", movies.stream().filter(m->m.isStatus()==true).collect(Collectors.toList()));
         }
         return "/web/index";
     }

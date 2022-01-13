@@ -12,6 +12,7 @@ public interface MovieService {
     Page<Movie> findAll(int currentPage);
     List<List<Movie>> findMoviesByGenreTenLimit();
     Movie convertMovieDTOToMovie(MovieDTO movieDTO);
+    MovieDTO convertMovieTOMovieDTO(Movie movie);
     Movie addMove(Movie movie);
     Movie getMovieById(Long id);
     List<Movie> getMyList(String email);
@@ -29,4 +30,5 @@ public interface MovieService {
     long getMovieIdByMovieId(long id, long current);
     List<Movie> getMoviesByCountry(String country);
     long getMaxCurrent(String title);
+    int disableMovie(long id);
 }
