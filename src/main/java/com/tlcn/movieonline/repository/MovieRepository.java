@@ -1,6 +1,7 @@
 package com.tlcn.movieonline.repository;
 
 import com.tlcn.movieonline.model.Movie;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -20,6 +21,11 @@ public interface MovieRepository extends PagingAndSortingRepository<Movie, Long>
     List<Movie> findMoviesByGenre(@Param("genre") String genre);
 
     @Query(
+            "select movie from Movie movie inner join movie.countries c " +
+                    "where c.name like %:country%")
+    List<Movie> findMoviesByCountry(@Param("country") String country);
+
+    @Query(
             "select movie from Movie movie order by movie.id desc")
     List<Movie> getAll(Pageable pageable);
 
@@ -32,6 +38,13 @@ public interface MovieRepository extends PagingAndSortingRepository<Movie, Long>
             "select movie from Movie movie where movie.number>1"
     )
     List<Movie> getMovieSeries();
+
+    @Query(
+            "select movie from Movie movie where movie.number=1"
+    )
+    Page<Movie> getMovieFeature(Pageable pageable);
+
+    List<Movie> getMoviesByTitle(String title);
 
 //    @Query("select movie " +
 //            "from Movie movie inner join movie.genres g " +

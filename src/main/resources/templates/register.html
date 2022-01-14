@@ -41,23 +41,14 @@
                                    th:field="*{password}">
                         </div>
                         <div class="form-floating mb-3">
-                            <label for="floatingPasswordConfirm">Nhập lại mật khẩu</label>
-                            <input type="password"
-                                   oninput="checkPasswordMatch(this);"
-                                   class="form-control"
-                                   id="floatingPasswordConfirm"
-                                   placeholder="Nhập lại mật khẩu"
-                                   th:field="*{matchingPassword}">
-                        </div>
-
-                        <div class="form-floating mb-3">
 
                         </div>
 
                         <div class="d-grid mb-2">
                             <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Đăng ký</button>
                         </div>
-                        <a class="d-block text-center mt-2 small" th:href="@{/login}">Have an account? Sign In</a>
+                        <a class="d-block text-center mt-2 small" th:href="@{/login}">Đã có tài khoản, đi đến đăng nhập</a>
+                        <a class="d-block text-center mt-2 small" th:href="@{/}">Chưa muốn đăng ký, đi đến trang chủ</a>
                     </form>
                 </div>
             </div>

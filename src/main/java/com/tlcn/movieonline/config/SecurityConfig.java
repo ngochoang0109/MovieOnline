@@ -38,12 +38,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN");
 
         http.csrf().disable().cors().disable();
+
         http.formLogin()
                 .loginPage("/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/home")
-                .failureForwardUrl("/login?error");
+                .defaultSuccessUrl("/")
+                .failureUrl("/login?error")
+                .and()
+                .exceptionHandling().accessDeniedPage("/403");
 
         http.logout().permitAll();
     }

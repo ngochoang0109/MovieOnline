@@ -120,19 +120,19 @@
         <div class="pagination p1">
             <ul>
                 <a th:if="${currentPage>1}"
-                   th:href="@{/home/movie/watch/{page}(page=${currentPage}-1,id=${movie.id})}"><li><</li></a>
+                   th:href="@{/home/movie/{page}(page=${currentPage}-1,id=${movie.id})}"><li><</li></a>
                 <th:block th:each="item:${#numbers.sequence(1,totalPage)}">
                     <a class="is-active"
                        th:if="${item==currentPage}"
-                       th:href="@{/home/movie/watch/{page}(page=${item},id=movie.id)}"
+                       th:href="@{/home/movie/{page}(page=${item},id=${movie.id})}"
                        th:text="${item}">1</a>
                     <a
                             th:unless="${item==currentPage}"
-                            th:href="@{/home/movie/watch/{page}(page=${item},id=${movie.id})}"
+                            th:href="@{/home/movie/{page}(page=${item},id=${movie.id})}"
                             th:text="${item}">1</a>
                 </th:block>
                 <a th:if="${currentPage<totalPage}"
-                   th:href="@{/home/movie/watch/{page}(page=${currentPage+1},id=${movie.id})}"><li>></li></a>
+                   th:href="@{/home/movie/{page}(page=${currentPage+1},id=${movie.id})}"><li>></li></a>
             </ul>
         </div>
     </div>

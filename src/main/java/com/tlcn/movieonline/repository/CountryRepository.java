@@ -9,4 +9,5 @@ public interface CountryRepository extends JpaRepository<Country, Long > {
     Country getCountryById(Long id);
     void deleteById(Long id);
     Country[] getCountriesByName(String name);
+
 }

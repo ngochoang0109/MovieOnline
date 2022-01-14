@@ -17,7 +17,7 @@ $(document).ready(function (){
 
     $(".btn-watch-movie").click(function (){
         let id= $(this).attr("id");
-        let url="http://localhost:8080/home/movie/watch?id="+id;
+        let url="http://localhost:8080/home/movie/watch?id="+id+"&current="+1;
         window.location.replace(url)
     });
 

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="vi"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="admin/admin-layout.html::head">
+<head th:replace="admin/layout/admin-layout.html::head">
 </head>
 <body class="sb-nav-fixed">
-<nav th:replace="admin/admin-layout.html::header"></nav>
+<nav th:replace="admin/layout/admin-layout.html::header"></nav>
 <div id="layoutSidenav">
-    <div th:replace="admin/admin-layout.html::menu">
+    <div th:replace="admin/layout/admin-layout.html::menu">
     </div>
     <div id="layoutSidenav_content">
         <main>
@@ -149,7 +149,8 @@
                                           class="form-control"></textarea>
                             </div>
                             <button class="btn btn-info mx-4" type="submit">Lưu</button>
-                            <button class="btn btn-default" type="submit">Thoát</button>
+                            <a class="btn btn-default" type="button"
+                               th:href="@{/admin/movies}">Thoát</a>
                         </form>
                     </div>
                 </div>

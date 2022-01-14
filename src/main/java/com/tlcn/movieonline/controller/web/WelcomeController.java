@@ -3,22 +3,26 @@ package com.tlcn.movieonline.controller.web;
 import com.tlcn.movieonline.dto.RegisterRequest;
 import com.tlcn.movieonline.model.Movie;
 import com.tlcn.movieonline.model.User;
+import com.tlcn.movieonline.service.CountryService;
 import com.tlcn.movieonline.service.GenreService;
 
 import com.tlcn.movieonline.service.MovieService;
 import com.tlcn.movieonline.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @ControllerAdvice
@@ -32,6 +36,9 @@ public class WelcomeController {
 
     @Autowired
     private GenreService genreService;
+
+    @Autowired
+    private CountryService countryService;
 
     @RequestMapping(value ={"/","/home"} , method = RequestMethod.GET)
     public String index(Model model, Principal principal){
@@ -47,14 +54,14 @@ public class WelcomeController {
         catch (Exception e){
         }
         finally {
-            List<Movie> tvSeriesMovie=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(1));
-            List<Movie> cartoonMovie=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(2));
-            List<Movie> newPosts=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(3));
+            List<Movie> tvSeriesMovie=(movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(1))).stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
+            List<Movie> cartoonMovie=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(2)).stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
+            List<Movie> newPosts=movieService.getMovieMaxEpisodeAndUniqueTitle(lstMovie.get(3)).stream().filter(m->m.isStatus()==true).collect(Collectors.toList());
             model.addAttribute("theatersMovie",lstMovie.get(0));
             model.addAttribute("tvSeriesMovie", tvSeriesMovie);
             model.addAttribute("cartoonMovie", cartoonMovie);
             model.addAttribute("newPosts", newPosts);
-            model.addAttribute("myList", movies);
+            model.addAttribute("myList", movies.stream().filter(m->m.isStatus()==true).collect(Collectors.toList()));
         }
         return "/web/index";
     }
@@ -85,6 +92,20 @@ public class WelcomeController {
     @ModelAttribute
     public void commonAttrs(Model model){
         model.addAttribute("genres", genreService.findAll());
+        model.addAttribute("countries", countryService.findAll());
     }
 
+    @GetMapping(value = "/403")
+    public String accessDenied(){
+        return "/403";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/login";
+    }
 }

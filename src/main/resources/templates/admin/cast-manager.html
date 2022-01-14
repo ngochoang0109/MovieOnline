@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="vi"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="admin/admin-layout.html::head">
+<head th:replace="admin/layout/admin-layout.html::head">
 </head>
 <body class="sb-nav-fixed">
-<nav th:replace="admin/admin-layout.html::header">
+<nav th:replace="admin/layout/admin-layout.html::header">
 
 </nav>
 <div id="layoutSidenav">
-    <div th:replace="admin/admin-layout.html::menu">
+    <div th:replace="admin/layout/admin-layout.html::menu">
     </div>
 
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
                 <div class="row mt-5 d-flex justify-content-center">
-                    <div class="col-md-3">
-                        <div class="mb-3">
-                            <label class="form-label" for="txtNameCast">Tên diễn viên</label>
-                            <input class="form-control" id="txtNameCast" type="text">
-                        </div>
-                        <div class="mb-3">
-                            <button class="btn btn-primary" id="addCast" type="button">Thêm diễn viên</button>
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="txtNameCast">Tên diễn viên</label>
+                        <input class="form-control" id="txtNameCast" type="text">
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-primary btn btn-primary mb-4 mt-4" id="addCast" type="button">Thêm diễn viên</button>
                     </div>
 
-                    <div class="col-md-6">
-                        <div className="card">
+
+
+                        <div className="card mb-4">
                             <h5 className="card-header">Danh sách diễn viên</h5>
                             <div className="card-body">
-                                <table class="table table-dark table-borderless" id="castTable">
+                                <table class="castTable" id="datatablesSimple">
                                     <thead>
                                     <tr>
                                         <th scope="col">Mã</th>
@@ -54,13 +53,12 @@
                     </div>
                 </div>
 
-            </div>
         </main>
-        <footer th:replace="admin/admin-layout.html::footer">
+        <footer th:replace="admin/layout/admin-layout.html::footer">
         </footer>
     </div>
 </div>
-<section th:replace="admin/admin-layout.html::js">
+<section th:replace="admin/layout/admin-layout.html::js">
 </section>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script th:src="@{/admin/js/cast.js}" type="application/javascript">

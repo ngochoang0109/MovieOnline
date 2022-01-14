@@ -11,29 +11,36 @@
             </a>
         </li>
         <li>
-            <a class="nav-item home" href="browse.html">Trang Chủ</a>
+            <a class="nav-item home" href="http://localhost:8080/">Trang Chủ</a>
         </li>
         <li>
-            <a class="nav-item" href="tvshow.html">Phim Mới</a>
+            <a class="nav-item" th:href="@{/movies/{genre}(genre='Phim mới')}">Phim Mới</a>
         </li>
         <li>
-            <a class="nav-item" href="tvshow.html">Phim Bộ</a>
+            <a class="nav-item" th:href="@{/movies/{genre}(genre='Phim truyền hình')}">Phim Bộ</a>
         </li>
         <li>
-            <a class="nav-item" href="movies.html">Phim Lẻ</a>
+            <a class="nav-item" th:href="@{/movies/{genre}(genre='Phim chiếu rạp')}">Phim Lẻ</a>
         </li>
         <li id="header-genre" class="dropdown">
-            <a class="nav-item latest" href="latest.html">Thể Loại</a>
+            <a class="nav-item latest">Thể Loại</a>
             <ul class="sub-nav">
                 <th:block>
-                    <li th:each="item:${genres}">
-                        <a th:href="@{/movies/{genre}(genre=${item})}" th:text="${item.name}"></a>
+                    <li th:each="g:${genres}">
+                        <a th:href="@{/movies/search-genre/{genre}(genre=${g.name})}" th:text="${g.name}"></a>
                     </li>
                 </th:block>
             </ul>
         </li>
         <li>
-            <a class="nav-item" href="mylist.html">Quốc Gia</a>
+            <a class="nav-item">Quốc Gia</a>
+            <ul class="sub-nav">
+                <th:block>
+                    <li th:each="c:${countries}">
+                        <a th:href="@{/movies/search-contry/{country}(country=${c.name})}" th:text="${c.name}"></a>
+                    </li>
+                </th:block>
+            </ul>
         </li>
     </ul>
 
@@ -42,10 +49,9 @@
             <i aria-hidden="true" class="fa fa-search icon-search"></i>
         </a>
         <div class="dropdown notification">
-            <i aria-hidden="true" class="fa fa-heart icon-heart"></i>
             <div class="dropdown-content">
                 <a class="profile-item d-flex flex-middle" href="#">
-                    <span>You have new notification from <span>User 123</span></span>
+
                 </a>
             </div>
         </div>
@@ -56,7 +62,7 @@
             <div class="dropdown-content">
                 <div class="links d-flex direction-column">
                     <a th:href="@{/login}">Đăng nhập</a>
-                    <a href="#">Yêu thích</a>
+                    <a th:href="@{/logout}">Đăng xuất</a>
                 </div>
             </div>
         </div>

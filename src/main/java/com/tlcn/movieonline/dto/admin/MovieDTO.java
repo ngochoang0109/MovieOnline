@@ -33,5 +33,7 @@ public class MovieDTO {
         this.createDate=Calendar.getInstance().getTime();
     }
 
-
+    public MovieDTO(String title) {
+        this.title = title;
+    }
 }

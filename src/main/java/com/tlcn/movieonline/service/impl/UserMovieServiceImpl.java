@@ -20,7 +20,9 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserMovieServiceImpl implements UserMovieService {
@@ -98,21 +100,29 @@ public class UserMovieServiceImpl implements UserMovieService {
     @Override
     public List<Float> calculatorRating(Movie movie) {
         // calculator rating
-        List<UserMovie> lstUserMovie=userMovieRepository.getUserMoviesByMovie(movie);
-        if (lstUserMovie.size()==0){
+        List<Movie> movies=movieService.getMoviesByTitle(movie.getTitle());
+        List<UserMovie> lstUserMovie=new LinkedList<>();
+        for (Movie m:movies) {
+            lstUserMovie.addAll(userMovieRepository.getUserMoviesByMovie(m));
+        }
+
+        List<UserMovie> userMovies=lstUserMovie.stream().filter(um->um.getRate()!=0).collect(Collectors.toList());
+
+        if (userMovies.size()==0){
             return new ArrayList<Float>(Arrays.asList((float)0,(float)0));
         }
         float totalRating=0;
-        for (UserMovie item:lstUserMovie) {
+        for (UserMovie item:userMovies) {
             totalRating=totalRating+ item.getRate();
         }
-        float rating=totalRating/lstUserMovie.size();
+        float rating=totalRating/userMovies.size();
+
         BigDecimal bd = new BigDecimal(rating).setScale(2, RoundingMode.HALF_UP);
 
         List<Float> result= new ArrayList<>();
         result.add(bd.floatValue());
         result.add(rating);
-        result.add((float)lstUserMovie.size());
+        result.add((float)userMovies.size());
         return result;
     }
 }

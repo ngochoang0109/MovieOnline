@@ -14,8 +14,8 @@
                 <input type="text" th:field="*{name}">
                 <select id="genre" th:field="*{genre}">
                     <option value="none" selected disabled hidden>Thể loại</option>
-                    <th:block th:each="genre:${lstGenre}">
-                        <option th:text="${genre.name}" th:value="${genre.name}"></option>
+                    <th:block th:each="g:${lstGenre}">
+                        <option th:text="${g.name}" th:value="${g.name}"></option>
                     </th:block>
                 </select>
                 <select id="country" th:field="*{country}">
@@ -43,15 +43,12 @@
                 </a>
                 <div class="infor-movie">
                     <p th:text="${movie.title}">Ten phim</p>
-                    <th:block th:each="genre:${movie.genres}">
-                        <p th:text="${genre.name}"></p>
+                    <th:block th:each="g:${movie.genres}">
+                        <p th:text="${g.name}"></p>
                     </th:block>
-
                     <p th:text="${movie.view}"></p>
                 </div>
-
             </div>
-
         </div>
     </div>
 
